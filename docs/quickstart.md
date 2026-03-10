@@ -11,9 +11,22 @@ The strongest supported path is:
 - forecast paths: `persistence`, `csv`
 - config: `examples/configs/canonical/belgium_full_stack.yaml`
 
-## Local `dl` environment
+The canonical public flow assumes a clone of this repository. The promoted configs under `examples/` and notebook assets are not bundled into the PyPI wheel.
+
+## Package-only smoke path
 
 ```bash
+python -m pip install euroflex-bess-lab
+euroflex --version
+```
+
+Use this to verify the public CLI/library install. For the canonical Belgium walkthrough below, clone the repository and run from the repo root.
+
+## Repo checkout + local `dl` environment
+
+```bash
+git clone https://github.com/bozliu/euroflex-bess-lab.git
+cd euroflex-bess-lab
 conda env update -f environment.yml
 conda activate dl
 euroflex validate-config examples/configs/canonical/belgium_full_stack.yaml
@@ -22,14 +35,6 @@ euroflex backtest examples/configs/canonical/belgium_full_stack.yaml --market be
 euroflex reconcile artifacts/examples/<run_id> examples/configs/canonical/belgium_full_stack.yaml
 euroflex export-schedule artifacts/examples/<run_id> --profile operator
 euroflex export-bids artifacts/examples/<run_id> --profile bid_planning
-```
-
-## Package install
-
-```bash
-python -m pip install euroflex-bess-lab
-euroflex --version
-euroflex validate-config examples/configs/canonical/belgium_full_stack.yaml
 ```
 
 ## Docker

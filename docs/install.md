@@ -17,7 +17,11 @@ python -m pip install euroflex-bess-lab
 euroflex --version
 ```
 
-The release workflow smoke-tests a clean wheel install against the canonical Belgium full-stack path.
+This is the lightest way to install the public CLI and library surface.
+
+PyPI does not bundle the promoted `examples/`, notebooks, or docs pages. For the canonical Belgium walkthrough, clone the repository and use the `dl` environment from the repo root.
+
+The release workflow smoke-tests a clean wheel install from a repository checkout against the canonical Belgium full-stack path.
 
 ## Docker
 

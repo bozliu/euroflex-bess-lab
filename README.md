@@ -3,7 +3,7 @@
 ![Public release](https://img.shields.io/badge/repo-public_release-0a7f5a)
 ![Canonical path](https://img.shields.io/badge/canonical-ga_belgium_full_stack-1f6feb)
 ![Python 3.12](https://img.shields.io/badge/python-3.12-3776ab)
-![Package](https://img.shields.io/badge/package-euroflex--bess--lab-8a2be2)
+[![PyPI version](https://img.shields.io/pypi/v/euroflex-bess-lab)](https://pypi.org/project/euroflex-bess-lab/)
 
 `euroflex_bess_lab` is a commercial-grade benchmarking, scheduling, revision, and audit framework for European BESS workflows. It is designed to help an operator or optimizer answer one narrow but real question with a trustworthy public-core tool:
 
@@ -14,6 +14,15 @@
 The demo below shows forecast inputs turning into checkpoint revisions, asset SoC movement, expected-versus-realized value bridges, and the final operator plus bid-planning handoff artifacts.
 
 This public release is the open-core base for operator-facing benchmarking, scheduling support, revision, audit, and downstream handoff in European BESS workflows. Commercial integration, managed deployment, and market-specific adapters are available separately from the public core.
+
+## Install
+
+```bash
+python -m pip install euroflex-bess-lab
+euroflex --version
+```
+
+PyPI installs the CLI and library surface. The promoted configs, canonical examples, notebooks, and full implementation docs live in this repository and on the [docs site](https://bozliu.github.io/euroflex-bess-lab/).
 
 ## Narrow GA Promise
 
@@ -68,7 +77,14 @@ flowchart LR
 - intended to sit upstream of approval workflows, execution routers, and market-specific submission adapters
 - not a turnkey all-market deployment surface without company-specific process and IT integration
 
-## 5-minute Canonical Run
+## 5-minute Canonical Run From a Repo Checkout
+
+These flows assume you are running from a clone of this repository, because the promoted configs and notebook assets live under `examples/`, `notebooks/`, and `docs/`.
+
+```bash
+git clone https://github.com/bozliu/euroflex-bess-lab.git
+cd euroflex-bess-lab
+```
 
 ### Local `dl` environment
 

@@ -70,9 +70,7 @@ def test_load_demo_story_extracts_checkpoints_changed_intervals_and_filtered_wat
     assert "Availability" not in labels
 
 
-def test_build_demo_gif_renders_from_existing_run(
-    render_demo_module, revision_run_dir: Path, tmp_path: Path
-) -> None:
+def test_build_demo_gif_renders_from_existing_run(render_demo_module, revision_run_dir: Path, tmp_path: Path) -> None:
     output_path = tmp_path / "canonical-belgium-demo.gif"
     mp4_path = tmp_path / "canonical-belgium-demo.mp4"
 

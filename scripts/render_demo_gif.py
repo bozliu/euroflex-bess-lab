@@ -27,11 +27,6 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-from euroflex_bess_lab.backtesting.engine import run_walk_forward
-from euroflex_bess_lab.config import load_config
-from euroflex_bess_lab.exports import export_bids, export_schedule
-from euroflex_bess_lab.reconciliation import reconcile_run
-
 DEFAULT_CONFIG = REPO_ROOT / "examples" / "configs" / "canonical" / "belgium_full_stack.yaml"
 DEFAULT_OUTPUT = REPO_ROOT / "docs" / "assets" / "canonical-belgium-demo.gif"
 FRAME_FPS = 10
@@ -73,6 +68,15 @@ plt.rcParams.update(
         "ytick.labelsize": 9,
     }
 )
+
+
+def _load_runtime_helpers():
+    from euroflex_bess_lab.backtesting.engine import run_walk_forward
+    from euroflex_bess_lab.config import load_config
+    from euroflex_bess_lab.exports import export_bids, export_schedule
+    from euroflex_bess_lab.reconciliation import reconcile_run
+
+    return run_walk_forward, load_config, export_bids, export_schedule, reconcile_run
 
 
 @dataclass(frozen=True)
@@ -136,56 +140,63 @@ def _build_waterfall_steps(reconciliation_summary: dict[str, Any], *, threshold:
     steps = [WaterfallStep(label="Baseline", value=baseline_total, kind="total", color=BASELINE)]
     for label, value in revision_fields:
         if _material_delta(value, threshold=threshold):
-            steps.append(WaterfallStep(label=label, value=value, kind="delta", color=POSITIVE if value >= 0 else NEGATIVE))
+            steps.append(
+                WaterfallStep(label=label, value=value, kind="delta", color=POSITIVE if value >= 0 else NEGATIVE)
+            )
     steps.append(WaterfallStep(label="Revised", value=revised_total, kind="total", color=REVISED))
     for label, value in realized_fields:
         if _material_delta(value, threshold=threshold):
-            steps.append(WaterfallStep(label=label, value=value, kind="delta", color=POSITIVE if value >= 0 else NEGATIVE))
+            steps.append(
+                WaterfallStep(label=label, value=value, kind="delta", color=POSITIVE if value >= 0 else NEGATIVE)
+            )
     steps.append(WaterfallStep(label="Realized", value=realized_total, kind="total", color=REALIZED))
     return steps
 
 
-def _checkpoint_timestamps(config_snapshot: dict[str, Any], timestamps: pd.Series) -> tuple[list[pd.Timestamp], list[str]]:
+def _checkpoint_timestamps(
+    config_snapshot: dict[str, Any], timestamps: pd.Series
+) -> tuple[list[pd.Timestamp], list[str]]:
     revision = config_snapshot.get("revision", {})
     labels = list(revision.get("revision_checkpoints_local", []))
     if not labels:
         return [], []
     first_timestamp = pd.Timestamp(timestamps.min())
     first_date = first_timestamp.date().isoformat()
-    checkpoints = [
-        pd.Timestamp(f"{first_date} {label}").tz_localize(first_timestamp.tz)
-        for label in labels
-    ]
+    checkpoints = [pd.Timestamp(f"{first_date} {label}").tz_localize(first_timestamp.tz) for label in labels]
     return checkpoints, labels
 
 
 def _changed_intervals(baseline_schedule: pd.DataFrame, revision_schedule: pd.DataFrame) -> pd.DataFrame:
-    merged = baseline_schedule[
-        ["timestamp_local", "net_export_mw", "soc_mwh", "afrr_up_reserved_mw", "afrr_down_reserved_mw"]
-    ].rename(
-        columns={
-            "net_export_mw": "baseline_net_export_mw",
-            "soc_mwh": "baseline_soc_mwh",
-            "afrr_up_reserved_mw": "baseline_afrr_up_reserved_mw",
-            "afrr_down_reserved_mw": "baseline_afrr_down_reserved_mw",
-        }
-    ).merge(
-        revision_schedule[
+    merged = (
+        baseline_schedule[
             ["timestamp_local", "net_export_mw", "soc_mwh", "afrr_up_reserved_mw", "afrr_down_reserved_mw"]
-        ].rename(
+        ]
+        .rename(
             columns={
-                "net_export_mw": "revised_net_export_mw",
-                "soc_mwh": "revised_soc_mwh",
-                "afrr_up_reserved_mw": "revised_afrr_up_reserved_mw",
-                "afrr_down_reserved_mw": "revised_afrr_down_reserved_mw",
+                "net_export_mw": "baseline_net_export_mw",
+                "soc_mwh": "baseline_soc_mwh",
+                "afrr_up_reserved_mw": "baseline_afrr_up_reserved_mw",
+                "afrr_down_reserved_mw": "baseline_afrr_down_reserved_mw",
             }
-        ),
-        on="timestamp_local",
-        how="inner",
+        )
+        .merge(
+            revision_schedule[
+                ["timestamp_local", "net_export_mw", "soc_mwh", "afrr_up_reserved_mw", "afrr_down_reserved_mw"]
+            ].rename(
+                columns={
+                    "net_export_mw": "revised_net_export_mw",
+                    "soc_mwh": "revised_soc_mwh",
+                    "afrr_up_reserved_mw": "revised_afrr_up_reserved_mw",
+                    "afrr_down_reserved_mw": "revised_afrr_down_reserved_mw",
+                }
+            ),
+            on="timestamp_local",
+            how="inner",
+        )
     )
-    difference_mask = (
-        (merged["baseline_net_export_mw"] - merged["revised_net_export_mw"]).abs() > 1e-6
-    ) | ((merged["baseline_soc_mwh"] - merged["revised_soc_mwh"]).abs() > 1e-6)
+    difference_mask = ((merged["baseline_net_export_mw"] - merged["revised_net_export_mw"]).abs() > 1e-6) | (
+        (merged["baseline_soc_mwh"] - merged["revised_soc_mwh"]).abs() > 1e-6
+    )
     return merged.loc[difference_mask].reset_index(drop=True)
 
 
@@ -199,19 +210,31 @@ def load_demo_story(run_dir: Path) -> DemoStory:
     bids_payload = _load_json(resolved_run_dir / "exports" / "bids-bid_planning" / "site_bids.json")
     bids_manifest = _load_json(resolved_run_dir / "exports" / "bids-bid_planning" / "manifest.json")
 
-    site_dispatch = pd.read_parquet(resolved_run_dir / "site_dispatch.parquet").sort_values("timestamp_local").reset_index(drop=True)
-    asset_dispatch = pd.read_parquet(resolved_run_dir / "asset_dispatch.parquet").sort_values(
-        ["asset_id", "timestamp_local"]
-    ).reset_index(drop=True)
-    baseline_schedule = pd.read_parquet(resolved_run_dir / "baseline_schedule.parquet").sort_values(
-        "timestamp_local"
-    ).reset_index(drop=True)
-    revision_schedule = pd.read_parquet(resolved_run_dir / "revision_schedule.parquet").sort_values(
-        "timestamp_local"
-    ).reset_index(drop=True)
-    reconciliation_breakdown = pd.read_parquet(resolved_run_dir / "reconciliation_breakdown.parquet").sort_values(
-        "timestamp_utc"
-    ).reset_index(drop=True)
+    site_dispatch = (
+        pd.read_parquet(resolved_run_dir / "site_dispatch.parquet")
+        .sort_values("timestamp_local")
+        .reset_index(drop=True)
+    )
+    asset_dispatch = (
+        pd.read_parquet(resolved_run_dir / "asset_dispatch.parquet")
+        .sort_values(["asset_id", "timestamp_local"])
+        .reset_index(drop=True)
+    )
+    baseline_schedule = (
+        pd.read_parquet(resolved_run_dir / "baseline_schedule.parquet")
+        .sort_values("timestamp_local")
+        .reset_index(drop=True)
+    )
+    revision_schedule = (
+        pd.read_parquet(resolved_run_dir / "revision_schedule.parquet")
+        .sort_values("timestamp_local")
+        .reset_index(drop=True)
+    )
+    reconciliation_breakdown = (
+        pd.read_parquet(resolved_run_dir / "reconciliation_breakdown.parquet")
+        .sort_values("timestamp_utc")
+        .reset_index(drop=True)
+    )
 
     checkpoints, checkpoint_labels = _checkpoint_timestamps(config_snapshot, revision_schedule["timestamp_local"])
     changed = _changed_intervals(baseline_schedule, revision_schedule)
@@ -248,6 +271,7 @@ def load_demo_story(run_dir: Path) -> DemoStory:
 
 
 def _execute_canonical_run(config_path: Path, artifact_root: Path) -> Path:
+    run_walk_forward, load_config, _, _, _ = _load_runtime_helpers()
     config = load_config(config_path)
     config.artifacts.root_dir = artifact_root.resolve()
     result = run_walk_forward(config)
@@ -257,6 +281,7 @@ def _execute_canonical_run(config_path: Path, artifact_root: Path) -> Path:
 
 
 def _ensure_story_artifacts(run_dir: Path, config_path: Path) -> None:
+    _, _, export_bids, export_schedule, reconcile_run = _load_runtime_helpers()
     reconcile_run(run_dir, config_path.resolve())
     export_schedule(run_dir, profile="operator")
     export_bids(run_dir, profile="bid_planning")
@@ -320,7 +345,9 @@ def _render_signals_scene(story: DemoStory, progress: float, output_path: Path) 
 
     price_ax = figure.add_subplot(grid[0])
     _style_axis(price_ax, title="Day-ahead forecast price", y_label="EUR/MWh")
-    price_ax.plot(visible_times, site["day_ahead_forecast_price_eur_per_mwh"].iloc[:visible], color=REVISED, linewidth=2.5)
+    price_ax.plot(
+        visible_times, site["day_ahead_forecast_price_eur_per_mwh"].iloc[:visible], color=REVISED, linewidth=2.5
+    )
     price_ax.fill_between(
         visible_times,
         0,
@@ -371,7 +398,14 @@ def _render_signals_scene(story: DemoStory, progress: float, output_path: Path) 
         color=ACTIVATION_DOWN,
         alpha=0.32,
     )
-    ratio_ax.set_ylim(0.0, max(0.12, float(site[["afrr_activation_ratio_up_forecast", "afrr_activation_ratio_down_forecast"]].max().max()) * 1.25))
+    ratio_ax.set_ylim(
+        0.0,
+        max(
+            0.12,
+            float(site[["afrr_activation_ratio_up_forecast", "afrr_activation_ratio_down_forecast"]].max().max())
+            * 1.25,
+        ),
+    )
     ratio_ax.tick_params(axis="y", colors=MUTED)
     for spine in ratio_ax.spines.values():
         spine.set_visible(False)
@@ -402,7 +436,9 @@ def _render_revision_scene(story: DemoStory, progress: float, output_path: Path)
     times = baseline["timestamp_local"]
     visible = _visible_count(len(baseline), progress)
     visible_times = times.iloc[:visible]
-    figure = _create_figure("Revision overlays the unlocked future", "baseline stays fixed where commitments are locked")
+    figure = _create_figure(
+        "Revision overlays the unlocked future", "baseline stays fixed where commitments are locked"
+    )
     grid = GridSpec(2, 1, figure=figure, top=0.84, bottom=0.1, left=0.06, right=0.97, hspace=0.32)
 
     dispatch_ax = figure.add_subplot(grid[0])
@@ -559,8 +595,12 @@ def _render_export_cards(ax: Axes, cards: list[ExportCard], alpha: float) -> Non
 def _render_waterfall_scene(story: DemoStory, progress: float, output_path: Path) -> None:
     steps = story.waterfall_steps
     geometry = _waterfall_geometry(steps)
-    figure = _create_figure("Expected value bridges to realized value", "only material reconciliation buckets stay on screen")
-    grid = GridSpec(1, 2, figure=figure, top=0.84, bottom=0.12, left=0.06, right=0.97, width_ratios=[2.3, 1], wspace=0.16)
+    figure = _create_figure(
+        "Expected value bridges to realized value", "only material reconciliation buckets stay on screen"
+    )
+    grid = GridSpec(
+        1, 2, figure=figure, top=0.84, bottom=0.12, left=0.06, right=0.97, width_ratios=[2.3, 1], wspace=0.16
+    )
 
     waterfall_ax = figure.add_subplot(grid[0])
     _style_axis(waterfall_ax, title="Baseline -> revised -> realized PnL", y_label="EUR")
@@ -623,10 +663,7 @@ def _render_frame(story: DemoStory, *, scene_name: str, progress: float, output_
 
 
 def _scene_frame_total(frame_scale: float) -> dict[str, int]:
-    return {
-        name: max(6, int(round(frame_count * frame_scale)))
-        for name, frame_count in SCENE_FRAME_COUNTS.items()
-    }
+    return {name: max(6, int(round(frame_count * frame_scale))) for name, frame_count in SCENE_FRAME_COUNTS.items()}
 
 
 def _render_story_frames(story: DemoStory, frame_dir: Path, *, frame_scale: float) -> list[Path]:

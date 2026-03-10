@@ -63,6 +63,8 @@ def test_readme_references_demo_gif_and_positioning_sections() -> None:
     assert "docs/assets/canonical-belgium-demo.gif" in readme
     assert "## Install" in readme
     assert "python -m pip install euroflex-bess-lab" in readme
+    assert "## Data Provenance & Sample Datasets" in readme
+    assert "[Data provenance](docs/data_provenance.md)" in readme
     assert "## Who This Is For" in readme
     assert "## Why It Matters" in readme
 

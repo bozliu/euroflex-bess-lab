@@ -120,6 +120,21 @@ docker compose up notebooks
 euroflex batch examples/batches/canonical_belgium_full_stack.yaml
 ```
 
+## Data Provenance & Sample Datasets
+
+`euroflex_bess_lab` expects high-fidelity 15-minute market data for credible backtests, revision checkpoints, and operator handoff artifacts.
+
+The `examples/data/` directory contains frozen, normalized sample datasets so the quickstart, docs, CI, and public benchmarks stay deterministic without requiring API keys.
+
+- Day-ahead prices: sourced from ENTSO-E Transparency Platform workflows
+- Imbalance and reserve benchmark curves: derived from public Elia (Belgium) and TenneT (Netherlands) market publications
+
+Bundled example data is for reproducible examples, tests, docs, and benchmarks.
+Bundled data is not a live operational feed or settlement-grade statement.
+Users are responsible for validating licensing and suitability before production use.
+
+See the full [Data provenance guide](docs/data_provenance.md) for source/operator detail, raw-vs-derived status, redistribution posture, limitations, and live-data ingestion paths.
+
 ## What It Is
 
 - A market-rule encoder for Belgium-first BESS portfolio scheduling and revision
@@ -142,6 +157,7 @@ euroflex batch examples/batches/canonical_belgium_full_stack.yaml
 Start with:
 
 - [Quickstart](docs/quickstart.md)
+- [Data provenance](docs/data_provenance.md)
 - [Commercial positioning](docs/commercial_positioning.md)
 - [Capability matrix](docs/capability_matrix.md)
 - [Operator runbook](docs/operator_runbook.md)

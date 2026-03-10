@@ -19,7 +19,7 @@
 
 ## Data
 
-The CSV files under `examples/data/` are frozen sample inputs for demos, docs, CI, and Docker/Compose smoke paths. They are not live feeds and not a substitute for licensed historical data.
+The CSV files under `examples/data/` are frozen sample inputs for demos, docs, CI, and Docker/Compose smoke paths. They are not live feeds and not a substitute for licensed historical data. See the full provenance and redistribution notes in [`docs/data_provenance.md`](../docs/data_provenance.md).
 
 ## First run
 

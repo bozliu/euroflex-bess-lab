@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -680,10 +681,14 @@ def _render_story_frames(story: DemoStory, frame_dir: Path, *, frame_scale: floa
     return frame_paths
 
 
-def _build_mp4(frame_dir: Path, output_path: Path) -> None:
+def _resolve_ffmpeg_binary() -> str | None:
+    return shutil.which("ffmpeg")
+
+
+def _build_mp4(frame_dir: Path, output_path: Path, *, ffmpeg_binary: str) -> None:
     subprocess.run(
         [
-            "ffmpeg",
+            ffmpeg_binary,
             "-y",
             "-framerate",
             str(FRAME_FPS),
@@ -702,12 +707,12 @@ def _build_mp4(frame_dir: Path, output_path: Path) -> None:
     )
 
 
-def _build_gif_from_mp4(mp4_path: Path, output_path: Path) -> None:
+def _build_gif_from_mp4(mp4_path: Path, output_path: Path, *, ffmpeg_binary: str) -> None:
     with tempfile.TemporaryDirectory(prefix="euroflex-demo-palette-") as temp_dir_name:
         palette_path = Path(temp_dir_name) / "palette.png"
         subprocess.run(
             [
-                "ffmpeg",
+                ffmpeg_binary,
                 "-y",
                 "-i",
                 str(mp4_path),
@@ -722,7 +727,7 @@ def _build_gif_from_mp4(mp4_path: Path, output_path: Path) -> None:
         )
         subprocess.run(
             [
-                "ffmpeg",
+                ffmpeg_binary,
                 "-y",
                 "-i",
                 str(mp4_path),
@@ -737,6 +742,65 @@ def _build_gif_from_mp4(mp4_path: Path, output_path: Path) -> None:
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
+
+
+def _build_gif_with_pillow(frame_paths: list[Path], output_path: Path) -> None:
+    try:
+        from PIL import Image
+    except ModuleNotFoundError as exc:
+        raise RuntimeError(
+            "Animated GIF rendering without `ffmpeg` requires Pillow. "
+            "Install the dev dependencies or activate the `dl` conda environment."
+        ) from exc
+
+    frames = []
+    for frame_path in frame_paths:
+        with Image.open(frame_path) as image:
+            frames.append(image.convert("RGB"))
+
+    first_frame, *remaining_frames = frames
+    first_frame.save(
+        output_path,
+        save_all=True,
+        append_images=remaining_frames,
+        duration=max(1, int(round(1000 / FRAME_FPS))),
+        loop=0,
+        optimize=False,
+        disposal=2,
+    )
+
+
+def _render_story_outputs(
+    story: DemoStory,
+    *,
+    output_path: Path,
+    mp4_path: Path | None,
+    frame_scale: float,
+) -> None:
+    with tempfile.TemporaryDirectory(prefix="euroflex-demo-frames-") as frame_dir_name:
+        frame_dir = Path(frame_dir_name)
+        frame_paths = _render_story_frames(story, frame_dir, frame_scale=frame_scale)
+        ffmpeg_binary = _resolve_ffmpeg_binary()
+
+        if mp4_path is not None:
+            if ffmpeg_binary is None:
+                raise RuntimeError(
+                    "`--write-mp4` requires `ffmpeg` on PATH. "
+                    "Activate the `dl` conda environment to render the full-quality MP4 + GIF bundle."
+                )
+            mp4_path.parent.mkdir(parents=True, exist_ok=True)
+            _build_mp4(frame_dir, mp4_path, ffmpeg_binary=ffmpeg_binary)
+            _build_gif_from_mp4(mp4_path, output_path, ffmpeg_binary=ffmpeg_binary)
+            return
+
+        if ffmpeg_binary is None:
+            _build_gif_with_pillow(frame_paths, output_path)
+            return
+
+        with tempfile.TemporaryDirectory(prefix="euroflex-demo-mp4-") as mp4_dir_name:
+            master_mp4 = Path(mp4_dir_name) / "canonical-belgium-demo.mp4"
+            _build_mp4(frame_dir, master_mp4, ffmpeg_binary=ffmpeg_binary)
+            _build_gif_from_mp4(master_mp4, output_path, ffmpeg_binary=ffmpeg_binary)
 
 
 def build_demo_gif(
@@ -756,34 +820,12 @@ def build_demo_gif(
             resolved_run_dir = _execute_canonical_run(resolved_config_path, artifact_root)
             _ensure_story_artifacts(resolved_run_dir, resolved_config_path)
             story = load_demo_story(resolved_run_dir)
-            with tempfile.TemporaryDirectory(prefix="euroflex-demo-frames-") as frame_dir_name:
-                frame_dir = Path(frame_dir_name)
-                _render_story_frames(story, frame_dir, frame_scale=frame_scale)
-                if mp4_path is None:
-                    with tempfile.TemporaryDirectory(prefix="euroflex-demo-mp4-") as mp4_dir_name:
-                        master_mp4 = Path(mp4_dir_name) / "canonical-belgium-demo.mp4"
-                        _build_mp4(frame_dir, master_mp4)
-                        _build_gif_from_mp4(master_mp4, output_path)
-                else:
-                    mp4_path.parent.mkdir(parents=True, exist_ok=True)
-                    _build_mp4(frame_dir, mp4_path)
-                    _build_gif_from_mp4(mp4_path, output_path)
+            _render_story_outputs(story, output_path=output_path, mp4_path=mp4_path, frame_scale=frame_scale)
     else:
         resolved_run_dir = run_dir.resolve()
         _ensure_story_artifacts(resolved_run_dir, resolved_config_path)
         story = load_demo_story(resolved_run_dir)
-        with tempfile.TemporaryDirectory(prefix="euroflex-demo-frames-") as frame_dir_name:
-            frame_dir = Path(frame_dir_name)
-            _render_story_frames(story, frame_dir, frame_scale=frame_scale)
-            if mp4_path is None:
-                with tempfile.TemporaryDirectory(prefix="euroflex-demo-mp4-") as mp4_dir_name:
-                    master_mp4 = Path(mp4_dir_name) / "canonical-belgium-demo.mp4"
-                    _build_mp4(frame_dir, master_mp4)
-                    _build_gif_from_mp4(master_mp4, output_path)
-            else:
-                mp4_path.parent.mkdir(parents=True, exist_ok=True)
-                _build_mp4(frame_dir, mp4_path)
-                _build_gif_from_mp4(mp4_path, output_path)
+        _render_story_outputs(story, output_path=output_path, mp4_path=mp4_path, frame_scale=frame_scale)
 
     return output_path.resolve()
 

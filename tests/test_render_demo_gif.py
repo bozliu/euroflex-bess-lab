@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import shutil
 import sys
 from pathlib import Path
 
@@ -71,6 +72,71 @@ def test_load_demo_story_extracts_checkpoints_changed_intervals_and_filtered_wat
 
 
 def test_build_demo_gif_renders_from_existing_run(render_demo_module, revision_run_dir: Path, tmp_path: Path) -> None:
+    output_path = tmp_path / "canonical-belgium-demo.gif"
+
+    resolved_output = render_demo_module.build_demo_gif(
+        config_path=FIXTURE_CONFIG,
+        output_path=output_path,
+        run_dir=revision_run_dir,
+        frame_scale=0.25,
+    )
+
+    assert resolved_output == output_path.resolve()
+    assert output_path.exists()
+    assert output_path.stat().st_size > 1_000
+
+
+def test_build_demo_gif_falls_back_to_pillow_without_ffmpeg(
+    render_demo_module, revision_run_dir: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    output_path = tmp_path / "canonical-belgium-demo.gif"
+    original_which = shutil.which
+    monkeypatch.setattr(
+        render_demo_module.shutil,
+        "which",
+        lambda binary: None if binary == "ffmpeg" else original_which(binary),
+    )
+
+    resolved_output = render_demo_module.build_demo_gif(
+        config_path=FIXTURE_CONFIG,
+        output_path=output_path,
+        run_dir=revision_run_dir,
+        frame_scale=0.2,
+    )
+
+    assert resolved_output == output_path.resolve()
+    assert output_path.exists()
+    assert output_path.stat().st_size > 1_000
+
+
+def test_build_demo_gif_requires_ffmpeg_for_mp4_output(
+    render_demo_module, revision_run_dir: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    output_path = tmp_path / "canonical-belgium-demo.gif"
+    mp4_path = tmp_path / "canonical-belgium-demo.mp4"
+    original_which = shutil.which
+    monkeypatch.setattr(
+        render_demo_module.shutil,
+        "which",
+        lambda binary: None if binary == "ffmpeg" else original_which(binary),
+    )
+
+    with pytest.raises(RuntimeError, match="write-mp4.*ffmpeg|ffmpeg.*PATH"):
+        render_demo_module.build_demo_gif(
+            config_path=FIXTURE_CONFIG,
+            output_path=output_path,
+            run_dir=revision_run_dir,
+            mp4_path=mp4_path,
+            frame_scale=0.2,
+        )
+
+    assert not mp4_path.exists()
+
+
+@pytest.mark.skipif(shutil.which("ffmpeg") is None, reason="ffmpeg is required for MP4 rendering")
+def test_build_demo_gif_renders_mp4_when_ffmpeg_is_available(
+    render_demo_module, revision_run_dir: Path, tmp_path: Path
+) -> None:
     output_path = tmp_path / "canonical-belgium-demo.gif"
     mp4_path = tmp_path / "canonical-belgium-demo.mp4"
 

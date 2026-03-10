@@ -11,6 +11,8 @@
 
 ![Canonical Belgium demo](docs/assets/canonical-belgium-demo.gif)
 
+The demo below validates the canonical Belgium config, runs a portfolio schedule revision, reconciles expected versus realized outcomes, and exports operator plus bid-planning handoff files.
+
 This public release is the open-core base for operator-facing benchmarking, scheduling support, revision, audit, and downstream handoff in European BESS workflows. Commercial integration, managed deployment, and market-specific adapters are available separately from the public core.
 
 ## Narrow GA Promise

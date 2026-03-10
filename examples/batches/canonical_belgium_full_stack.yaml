@@ -1,0 +1,22 @@
+schema_version: 4
+batch_name: canonical-belgium-full-stack
+
+jobs:
+  - id: belgium-full-stack
+    config_path: ../configs/canonical/belgium_full_stack.yaml
+    market: belgium
+    workflow: schedule_revision
+    steps:
+      - validate_config
+      - validate_data
+      - backtest
+      - reconcile
+      - export_schedule
+      - export_bids
+      - export_revision
+    realized_input_path: ../configs/canonical/belgium_full_stack.yaml
+    export_schedule_profile: operator
+    export_bids_profile: bid_planning
+
+artifacts:
+  root_dir: ../../artifacts/batches

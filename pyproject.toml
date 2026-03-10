@@ -1,0 +1,108 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "euroflex-bess-lab"
+version = "1.1.0"
+description = "Narrow-GA Belgium portfolio scheduling, revision, audit, and operational integration for European BESS workflows."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = "Apache-2.0"
+authors = [
+  { name = "Boz Liu" }
+]
+keywords = [
+  "battery",
+  "energy",
+  "backtesting",
+  "power-markets",
+  "belgium",
+  "netherlands",
+  "optimization"
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Financial and Insurance Industry",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Office/Business :: Financial"
+]
+dependencies = [
+  "fastapi>=0.116",
+  "highspy>=1.8",
+  "matplotlib>=3.9",
+  "pandas>=2.2",
+  "pyarrow>=18.1",
+  "pydantic>=2.10",
+  "pyomo>=6.8",
+  "PyYAML>=6.0.2",
+  "requests>=2.32",
+  "rich>=13.9",
+  "typer>=0.15",
+  "uvicorn>=0.35"
+]
+
+[project.urls]
+Homepage = "https://github.com/bozliu/euroflex-bess-lab"
+Repository = "https://github.com/bozliu/euroflex-bess-lab"
+Documentation = "https://bozliu.github.io/euroflex-bess-lab/"
+
+[project.optional-dependencies]
+dev = [
+  "ipykernel>=6.29",
+  "jupyterlab>=4.4",
+  "build>=1.2",
+  "httpx>=0.28",
+  "mkdocs>=1.6,<2",
+  "mkdocs-material>=9.5",
+  "mypy>=1.15",
+  "nbclient>=0.10",
+  "nbformat>=5.10",
+  "Pillow>=10",
+  "jsonschema>=4.23",
+  "pre-commit>=4.1",
+  "ruff>=0.9",
+  "pytest>=8.3",
+  "pytest-cov>=6.0"
+]
+
+[project.scripts]
+euroflex = "euroflex_bess_lab.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["B008", "E501"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src"]
+ignore_missing_imports = true
+disable_error_code = ["import-untyped"]
+warn_unused_ignores = true
+warn_redundant_casts = true
+pretty = true
+
+[tool.coverage.run]
+source = ["src/euroflex_bess_lab"]
+branch = true
+
+[tool.coverage.report]
+skip_empty = true

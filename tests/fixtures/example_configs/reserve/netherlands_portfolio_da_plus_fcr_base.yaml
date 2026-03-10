@@ -1,0 +1,81 @@
+schema_version: 4
+run_name: netherlands-portfolio-da-fcr
+
+market:
+  id: netherlands
+  live_data_auth_env_var_names:
+    - ENTSOE_API_TOKEN
+    - TENNET_API_KEY
+
+workflow: da_plus_fcr
+
+forecast_provider:
+  name: perfect_foresight
+
+timing:
+  timezone: Europe/Amsterdam
+  resolution_minutes: 15
+  rebalance_cadence_minutes: 15
+  execution_lock_intervals: 1
+  day_ahead_gate_closure_local: "12:00"
+  delivery_start_date: 2025-06-17
+  delivery_end_date: 2025-06-17
+
+site:
+  id: netherlands-portfolio-site
+  poi_import_limit_mw: 1.6
+  poi_export_limit_mw: 1.6
+
+assets:
+  - id: nl-bess-1
+    kind: battery
+    battery:
+      name: nl_bess_1
+      power_mw: 1.1
+      energy_mwh: 2.2
+      initial_soc_mwh: 1.1
+      terminal_soc_mwh: 1.1
+      soc_min_mwh: 0.2
+      soc_max_mwh: 2.0
+      charge_efficiency: 0.95
+      discharge_efficiency: 0.95
+      connection_limit_mw: 1.1
+      minimum_headroom_mwh: 0.1
+  - id: nl-bess-2
+    kind: battery
+    battery:
+      name: nl_bess_2
+      power_mw: 0.8
+      energy_mwh: 1.4
+      initial_soc_mwh: 0.7
+      terminal_soc_mwh: 0.7
+      soc_min_mwh: 0.1
+      soc_max_mwh: 1.2
+      charge_efficiency: 0.93
+      discharge_efficiency: 0.93
+      connection_limit_mw: 0.8
+      minimum_headroom_mwh: 0.05
+
+degradation:
+  mode: throughput_linear
+  throughput_cost_eur_per_mwh: 4.0
+
+data:
+  day_ahead:
+    actual_path: ../../../../examples/data/netherlands_day_ahead_prices.csv
+  fcr_capacity:
+    actual_path: ../../../../examples/data/netherlands_fcr_capacity_prices.csv
+
+fcr:
+  product_id: fcr_symmetric
+  sustain_duration_minutes: 15
+  settlement_mode: capacity_only
+  activation_mode: none
+  non_delivery_penalty_eur_per_mw: 0.0
+  simplified_product_logic: true
+
+artifacts:
+  root_dir: ../../../../artifacts/examples
+  save_inputs: true
+  save_plots: true
+  save_forecast_snapshots: true

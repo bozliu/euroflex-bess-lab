@@ -1,0 +1,102 @@
+{
+  "dataset_id": "ods162",
+  "total_count": 8,
+  "results": [
+    {
+      "datetime": "2024-03-31T00:00:00+00:00",
+      "resolutioncode": "PT15M",
+      "qualitystatus": "Validated",
+      "ace": -20.0,
+      "systemimbalance": -145.0,
+      "alpha": 0.0,
+      "alpha_prime": 0.0,
+      "marginalincrementalprice": 78.0,
+      "marginaldecrementalprice": 45.0,
+      "imbalanceprice": 78.0
+    },
+    {
+      "datetime": "2024-03-31T00:15:00+00:00",
+      "resolutioncode": "PT15M",
+      "qualitystatus": "Validated",
+      "ace": 11.0,
+      "systemimbalance": 95.0,
+      "alpha": 0.0,
+      "alpha_prime": 0.0,
+      "marginalincrementalprice": 60.0,
+      "marginaldecrementalprice": 40.0,
+      "imbalanceprice": 40.0
+    },
+    {
+      "datetime": "2024-03-31T00:30:00+00:00",
+      "resolutioncode": "PT15M",
+      "qualitystatus": "Validated",
+      "ace": -18.0,
+      "systemimbalance": -310.0,
+      "alpha": 6.0,
+      "alpha_prime": 0.0,
+      "marginalincrementalprice": 88.0,
+      "marginaldecrementalprice": 40.0,
+      "imbalanceprice": 94.0
+    },
+    {
+      "datetime": "2024-03-31T00:45:00+00:00",
+      "resolutioncode": "PT15M",
+      "qualitystatus": "Validated",
+      "ace": -4.0,
+      "systemimbalance": -260.0,
+      "alpha": 4.0,
+      "alpha_prime": 0.0,
+      "marginalincrementalprice": 85.0,
+      "marginaldecrementalprice": 42.0,
+      "imbalanceprice": 89.0
+    },
+    {
+      "datetime": "2024-03-31T01:00:00+00:00",
+      "resolutioncode": "PT15M",
+      "qualitystatus": "Validated",
+      "ace": 13.0,
+      "systemimbalance": 130.0,
+      "alpha": 0.0,
+      "alpha_prime": 0.0,
+      "marginalincrementalprice": 65.0,
+      "marginaldecrementalprice": 36.0,
+      "imbalanceprice": 36.0
+    },
+    {
+      "datetime": "2024-03-31T01:15:00+00:00",
+      "resolutioncode": "PT15M",
+      "qualitystatus": "Validated",
+      "ace": 2.0,
+      "systemimbalance": -40.0,
+      "alpha": 0.0,
+      "alpha_prime": 0.0,
+      "marginalincrementalprice": 57.0,
+      "marginaldecrementalprice": 39.0,
+      "imbalanceprice": 57.0
+    },
+    {
+      "datetime": "2024-03-31T01:30:00+00:00",
+      "resolutioncode": "PT15M",
+      "qualitystatus": "Validated",
+      "ace": 0.0,
+      "systemimbalance": -85.0,
+      "alpha": 0.0,
+      "alpha_prime": 0.0,
+      "marginalincrementalprice": 59.0,
+      "marginaldecrementalprice": 38.0,
+      "imbalanceprice": 59.0
+    },
+    {
+      "datetime": "2024-03-31T01:45:00+00:00",
+      "resolutioncode": "PT15M",
+      "qualitystatus": "Validated",
+      "ace": -7.0,
+      "systemimbalance": -180.0,
+      "alpha": 2.0,
+      "alpha_prime": 0.0,
+      "marginalincrementalprice": 68.0,
+      "marginaldecrementalprice": 41.0,
+      "imbalanceprice": 70.0
+    }
+  ]
+}

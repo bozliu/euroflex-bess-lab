@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "description": "Tolerance-band performance baseline for the canonical Belgium full-stack pipeline.",
+  "tolerance_ratio": 3.0,
+  "slack_seconds": 2.0,
+  "stages": {
+    "validate_config": 0.2,
+    "validate_data": 1.0,
+    "backtest": 6.0,
+    "reconcile": 2.0,
+    "export_schedule": 0.6,
+    "export_bids": 0.6,
+    "export_revision": 0.6,
+    "pipeline_total": 12.0
+  }
+}

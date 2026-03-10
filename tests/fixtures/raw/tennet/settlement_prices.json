@@ -1,0 +1,122 @@
+{
+  "TimeSeries": [
+    {
+      "mRID": 1,
+      "informationType": "SETTLEMENT_PRICES",
+      "currency_Unit_name": "EUR",
+      "price_Measurement_Unit_name": "MWh",
+      "Period": {
+        "timeInterval": {
+          "start": "2025-06-20T00:00",
+          "end": "2025-06-20T02:00"
+        },
+        "Points": [
+          {
+            "isp": "1",
+            "surplus": "60.00",
+            "shortage": "82.00",
+            "dispatch_up": "82.00",
+            "dispatch_down": "60.00",
+            "regulation_state": 1,
+            "timeInterval_start": "2025-06-20T00:00",
+            "timeInterval_end": "2025-06-20T00:15",
+            "regulating_condition": "UP",
+            "incident_reserve_up": "NO",
+            "incident_reserve_down": "NO"
+          },
+          {
+            "isp": "2",
+            "surplus": "61.00",
+            "shortage": "83.00",
+            "dispatch_up": "83.00",
+            "dispatch_down": "61.00",
+            "regulation_state": -1,
+            "timeInterval_start": "2025-06-20T00:15",
+            "timeInterval_end": "2025-06-20T00:30",
+            "regulating_condition": "DOWN",
+            "incident_reserve_up": "NO",
+            "incident_reserve_down": "NO"
+          },
+          {
+            "isp": "3",
+            "surplus": "62.00",
+            "shortage": "84.00",
+            "dispatch_up": "84.00",
+            "dispatch_down": "62.00",
+            "regulation_state": 1,
+            "timeInterval_start": "2025-06-20T00:30",
+            "timeInterval_end": "2025-06-20T00:45",
+            "regulating_condition": "UP",
+            "incident_reserve_up": "NO",
+            "incident_reserve_down": "NO"
+          },
+          {
+            "isp": "4",
+            "surplus": "63.00",
+            "shortage": "85.00",
+            "dispatch_up": "85.00",
+            "dispatch_down": "63.00",
+            "regulation_state": -1,
+            "timeInterval_start": "2025-06-20T00:45",
+            "timeInterval_end": "2025-06-20T01:00",
+            "regulating_condition": "DOWN",
+            "incident_reserve_up": "NO",
+            "incident_reserve_down": "NO"
+          },
+          {
+            "isp": "5",
+            "surplus": "64.00",
+            "shortage": "86.00",
+            "dispatch_up": "86.00",
+            "dispatch_down": "64.00",
+            "regulation_state": 1,
+            "timeInterval_start": "2025-06-20T01:00",
+            "timeInterval_end": "2025-06-20T01:15",
+            "regulating_condition": "UP",
+            "incident_reserve_up": "NO",
+            "incident_reserve_down": "NO"
+          },
+          {
+            "isp": "6",
+            "surplus": "65.00",
+            "shortage": "87.00",
+            "dispatch_up": "87.00",
+            "dispatch_down": "65.00",
+            "regulation_state": -1,
+            "timeInterval_start": "2025-06-20T01:15",
+            "timeInterval_end": "2025-06-20T01:30",
+            "regulating_condition": "DOWN",
+            "incident_reserve_up": "NO",
+            "incident_reserve_down": "NO"
+          },
+          {
+            "isp": "7",
+            "surplus": "66.00",
+            "shortage": "88.00",
+            "dispatch_up": "88.00",
+            "dispatch_down": "66.00",
+            "regulation_state": 1,
+            "timeInterval_start": "2025-06-20T01:30",
+            "timeInterval_end": "2025-06-20T01:45",
+            "regulating_condition": "UP",
+            "incident_reserve_up": "NO",
+            "incident_reserve_down": "NO"
+          },
+          {
+            "isp": "8",
+            "surplus": "67.00",
+            "shortage": "89.00",
+            "dispatch_up": "89.00",
+            "dispatch_down": "67.00",
+            "regulation_state": -1,
+            "timeInterval_start": "2025-06-20T01:45",
+            "timeInterval_end": "2025-06-20T02:00",
+            "regulating_condition": "DOWN",
+            "incident_reserve_up": "NO",
+            "incident_reserve_down": "NO"
+          }
+        ]
+      }
+    }
+  ]
+}

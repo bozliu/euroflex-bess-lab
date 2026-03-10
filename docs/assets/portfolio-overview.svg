@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360" role="img" aria-label="Portfolio overview">
+  <rect width="960" height="360" fill="#f6f7fb"/>
+  <rect x="40" y="50" width="240" height="120" rx="18" fill="#0a7f5a"/>
+  <text x="160" y="95" font-family="Helvetica, Arial, sans-serif" font-size="28" text-anchor="middle" fill="#ffffff">Market Adapter</text>
+  <text x="160" y="130" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" fill="#dff5ec">Belgium / Netherlands</text>
+  <rect x="360" y="35" width="240" height="150" rx="18" fill="#1f6feb"/>
+  <text x="480" y="85" font-family="Helvetica, Arial, sans-serif" font-size="28" text-anchor="middle" fill="#ffffff">Walk-Forward Engine</text>
+  <text x="480" y="120" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" fill="#e8f0ff">Forecast-aware + auditable</text>
+  <text x="480" y="150" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" fill="#e8f0ff">single asset or portfolio</text>
+  <rect x="680" y="50" width="240" height="120" rx="18" fill="#8a2be2"/>
+  <text x="800" y="95" font-family="Helvetica, Arial, sans-serif" font-size="28" text-anchor="middle" fill="#ffffff">Portfolio Solver</text>
+  <text x="800" y="130" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" fill="#f1e7ff">Shared POI + FCR headroom</text>
+  <rect x="180" y="235" width="600" height="90" rx="18" fill="#ffffff" stroke="#d5d9e2" stroke-width="2"/>
+  <text x="480" y="272" font-family="Helvetica, Arial, sans-serif" font-size="26" text-anchor="middle" fill="#202632">Stable outputs</text>
+  <text x="480" y="304" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" fill="#5a6473">summary.json • site_dispatch.parquet • asset_dispatch.parquet • exports</text>
+  <path d="M280 110 L360 110" stroke="#4c566a" stroke-width="4" fill="none"/>
+  <path d="M600 110 L680 110" stroke="#4c566a" stroke-width="4" fill="none"/>
+</svg>

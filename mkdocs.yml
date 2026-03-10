@@ -1,0 +1,46 @@
+site_name: euroflex_bess_lab
+site_description: Belgium-first BESS portfolio scheduling, revision, audit, and operational integration for European flexibility workflows
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+plugins:
+  - search
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+nav:
+  - Home: index.md
+  - Quickstart: quickstart.md
+  - Install matrix: install.md
+  - Commercial positioning: commercial_positioning.md
+  - Capability matrix: capability_matrix.md
+  - Stable vs experimental: stable_experimental_matrix.md
+  - Compatibility and deprecation: compatibility_and_deprecation_policy.md
+  - Operator runbook: operator_runbook.md
+  - Execution handoff: execution_handoff.md
+  - Service API: service_api.md
+  - Run registry: run_registry.md
+  - Release notes: release_notes.md
+  - BYO-ML forecast provider: byo_ml_forecast_provider.md
+  - Export profiles: export_profiles.md
+  - Migration v3 to v4: migration_v3_to_v4.md
+  - Architecture: architecture.md
+  - Config schema: config_schema.md
+  - Connector caching and freshness: connector_caching_and_freshness.md
+  - Revision workflow: revision_workflow.md
+  - Commitment locking: commitment_locking.md
+  - Reconciliation and audit: reconciliation.md
+  - Public checkpoint revision limitations: public_checkpoint_revision_limitations.md
+  - Artifact contract: artifact_contract.md
+  - Data provenance: data_provenance.md
+  - Assumptions and limitations: assumptions_and_limitations.md
+  - Known limitations: known_limitations.md
+  - Benchmark trust model: benchmark_trust_model.md
+  - Common failure modes: common_failure_modes.md
+  - How to add a market adapter: how_to_add_market_adapter.md

@@ -1,0 +1,19 @@
+schema_version: 4
+sweep_name: cross-market-walk-forward
+base_config_path: ../configs/basic/belgium_da_plus_imbalance_base.yaml
+
+matrix:
+  __bundle__:
+    - run_label: belgium
+      market.id: belgium
+      timing.timezone: Europe/Brussels
+      data.day_ahead.actual_path: ../../data/belgium_day_ahead_prices.csv
+      data.imbalance.actual_path: ../../data/belgium_imbalance_prices.csv
+    - run_label: netherlands
+      market.id: netherlands
+      timing.timezone: Europe/Amsterdam
+      data.day_ahead.actual_path: ../../data/netherlands_day_ahead_prices.csv
+      data.imbalance.actual_path: ../../data/netherlands_imbalance_prices.csv
+
+artifacts:
+  root_dir: ../../artifacts/sweeps

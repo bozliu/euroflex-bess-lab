@@ -1,0 +1,570 @@
+{
+  "$defs": {
+    "ForecastErrorContract": {
+      "additionalProperties": true,
+      "properties": {
+        "afrr_activation_price_down": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ForecastErrorMetricContract"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "afrr_activation_price_up": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ForecastErrorMetricContract"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "afrr_activation_ratio_down": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ForecastErrorMetricContract"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "afrr_activation_ratio_up": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ForecastErrorMetricContract"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "afrr_capacity_down": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ForecastErrorMetricContract"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "afrr_capacity_up": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ForecastErrorMetricContract"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "day_ahead": {
+          "$ref": "#/$defs/ForecastErrorMetricContract"
+        },
+        "fcr_capacity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ForecastErrorMetricContract"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "imbalance": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ForecastErrorMetricContract"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "day_ahead"
+      ],
+      "title": "ForecastErrorContract",
+      "type": "object"
+    },
+    "ForecastErrorMetricContract": {
+      "additionalProperties": false,
+      "properties": {
+        "bias": {
+          "title": "Bias",
+          "type": "number"
+        },
+        "mae": {
+          "title": "Mae",
+          "type": "number"
+        },
+        "rmse": {
+          "title": "Rmse",
+          "type": "number"
+        }
+      },
+      "required": [
+        "mae",
+        "rmse",
+        "bias"
+      ],
+      "title": "ForecastErrorMetricContract",
+      "type": "object"
+    },
+    "InlineReconciliationSummaryContract": {
+      "additionalProperties": true,
+      "properties": {
+        "activation_settlement_deviation_eur": {
+          "title": "Activation Settlement Deviation Eur",
+          "type": "number"
+        },
+        "availability_deviation_eur": {
+          "title": "Availability Deviation Eur",
+          "type": "number"
+        },
+        "baseline_expected_total_pnl_eur": {
+          "title": "Baseline Expected Total Pnl Eur",
+          "type": "number"
+        },
+        "degradation_cost_drift_eur": {
+          "title": "Degradation Cost Drift Eur",
+          "type": "number"
+        },
+        "delta_vs_baseline_expected_eur": {
+          "title": "Delta Vs Baseline Expected Eur",
+          "type": "number"
+        },
+        "delta_vs_revised_expected_eur": {
+          "title": "Delta Vs Revised Expected Eur",
+          "type": "number"
+        },
+        "forecast_error_eur": {
+          "title": "Forecast Error Eur",
+          "type": "number"
+        },
+        "imbalance_settlement_deviation_eur": {
+          "title": "Imbalance Settlement Deviation Eur",
+          "type": "number"
+        },
+        "locked_commitment_opportunity_cost_eur": {
+          "title": "Locked Commitment Opportunity Cost Eur",
+          "type": "number"
+        },
+        "realized_total_pnl_eur": {
+          "title": "Realized Total Pnl Eur",
+          "type": "number"
+        },
+        "reserve_headroom_opportunity_cost_eur": {
+          "title": "Reserve Headroom Opportunity Cost Eur",
+          "type": "number"
+        },
+        "revised_expected_total_pnl_eur": {
+          "title": "Revised Expected Total Pnl Eur",
+          "type": "number"
+        },
+        "scenario_analysis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ScenarioAnalysisContract"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "baseline_expected_total_pnl_eur",
+        "revised_expected_total_pnl_eur",
+        "realized_total_pnl_eur",
+        "delta_vs_baseline_expected_eur",
+        "delta_vs_revised_expected_eur",
+        "forecast_error_eur",
+        "locked_commitment_opportunity_cost_eur",
+        "reserve_headroom_opportunity_cost_eur",
+        "degradation_cost_drift_eur",
+        "availability_deviation_eur",
+        "imbalance_settlement_deviation_eur",
+        "activation_settlement_deviation_eur"
+      ],
+      "title": "InlineReconciliationSummaryContract",
+      "type": "object"
+    },
+    "ScenarioAnalysisContract": {
+      "additionalProperties": true,
+      "properties": {
+        "downside_penalty_contribution_eur": {
+          "title": "Downside Penalty Contribution Eur",
+          "type": "number"
+        },
+        "forecast_mode": {
+          "const": "scenario_bundle",
+          "title": "Forecast Mode",
+          "type": "string"
+        },
+        "nearest_scenario_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nearest Scenario Id"
+        },
+        "nearest_scenario_total_pnl_eur": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nearest Scenario Total Pnl Eur"
+        },
+        "realized_vs_scenario_envelope_distance_eur": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Realized Vs Scenario Envelope Distance Eur"
+        },
+        "reserve_fragility_eur": {
+          "title": "Reserve Fragility Eur",
+          "type": "number"
+        },
+        "risk_mode": {
+          "enum": [
+            "expected_value",
+            "downside_penalty",
+            "cvar_lite"
+          ],
+          "title": "Risk Mode",
+          "type": "string"
+        },
+        "scenario_best_id": {
+          "title": "Scenario Best Id",
+          "type": "string"
+        },
+        "scenario_best_total_pnl_eur": {
+          "title": "Scenario Best Total Pnl Eur",
+          "type": "number"
+        },
+        "scenario_count": {
+          "title": "Scenario Count",
+          "type": "integer"
+        },
+        "scenario_expected_total_pnl_eur": {
+          "title": "Scenario Expected Total Pnl Eur",
+          "type": "number"
+        },
+        "scenario_posture": {
+          "anyOf": [
+            {
+              "enum": [
+                "within_envelope",
+                "aggressive",
+                "conservative"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scenario Posture"
+        },
+        "scenario_spread_total_pnl_eur": {
+          "title": "Scenario Spread Total Pnl Eur",
+          "type": "number"
+        },
+        "scenario_weights": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Scenario Weights",
+          "type": "object"
+        },
+        "scenario_worst_id": {
+          "title": "Scenario Worst Id",
+          "type": "string"
+        },
+        "scenario_worst_total_pnl_eur": {
+          "title": "Scenario Worst Total Pnl Eur",
+          "type": "number"
+        }
+      },
+      "required": [
+        "forecast_mode",
+        "risk_mode",
+        "scenario_count",
+        "scenario_expected_total_pnl_eur",
+        "scenario_best_total_pnl_eur",
+        "scenario_worst_total_pnl_eur",
+        "scenario_spread_total_pnl_eur",
+        "downside_penalty_contribution_eur",
+        "reserve_fragility_eur",
+        "scenario_weights",
+        "scenario_best_id",
+        "scenario_worst_id"
+      ],
+      "title": "ScenarioAnalysisContract",
+      "type": "object"
+    }
+  },
+  "additionalProperties": true,
+  "properties": {
+    "asset_contribution_ranking": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Asset Contribution Ranking",
+      "type": "array"
+    },
+    "asset_count": {
+      "title": "Asset Count",
+      "type": "integer"
+    },
+    "auditable": {
+      "title": "Auditable",
+      "type": "boolean"
+    },
+    "base_workflow": {
+      "title": "Base Workflow",
+      "type": "string"
+    },
+    "benchmark_family": {
+      "title": "Benchmark Family",
+      "type": "string"
+    },
+    "benchmark_name": {
+      "title": "Benchmark Name",
+      "type": "string"
+    },
+    "da_revenue_eur": {
+      "title": "Da Revenue Eur",
+      "type": "number"
+    },
+    "data_provenance": {
+      "additionalProperties": true,
+      "title": "Data Provenance",
+      "type": "object"
+    },
+    "decision_count": {
+      "title": "Decision Count",
+      "type": "integer"
+    },
+    "degradation_cost_eur": {
+      "title": "Degradation Cost Eur",
+      "type": "number"
+    },
+    "energy_revenue_eur": {
+      "title": "Energy Revenue Eur",
+      "type": "number"
+    },
+    "expected_total_pnl_eur": {
+      "title": "Expected Total Pnl Eur",
+      "type": "number"
+    },
+    "forecast_error": {
+      "$ref": "#/$defs/ForecastErrorContract"
+    },
+    "forecast_mode": {
+      "enum": [
+        "point",
+        "scenario_bundle"
+      ],
+      "title": "Forecast Mode",
+      "type": "string"
+    },
+    "idle_share": {
+      "title": "Idle Share",
+      "type": "number"
+    },
+    "imbalance_revenue_eur": {
+      "title": "Imbalance Revenue Eur",
+      "type": "number"
+    },
+    "interval_count": {
+      "title": "Interval Count",
+      "type": "integer"
+    },
+    "locked_interval_count": {
+      "title": "Locked Interval Count",
+      "type": "integer"
+    },
+    "market_id": {
+      "title": "Market Id",
+      "type": "string"
+    },
+    "market_timezone": {
+      "title": "Market Timezone",
+      "type": "string"
+    },
+    "poi_export_limit_mw": {
+      "title": "Poi Export Limit Mw",
+      "type": "number"
+    },
+    "poi_import_limit_mw": {
+      "title": "Poi Import Limit Mw",
+      "type": "number"
+    },
+    "provider_name": {
+      "title": "Provider Name",
+      "type": "string"
+    },
+    "reason_code_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Reason Code Counts",
+      "type": "object"
+    },
+    "reconciliation": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/InlineReconciliationSummaryContract"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "reserve_activation_revenue_eur": {
+      "title": "Reserve Activation Revenue Eur",
+      "type": "number"
+    },
+    "reserve_capacity_revenue_eur": {
+      "title": "Reserve Capacity Revenue Eur",
+      "type": "number"
+    },
+    "reserve_penalty_eur": {
+      "title": "Reserve Penalty Eur",
+      "type": "number"
+    },
+    "reserve_share_of_total_revenue": {
+      "title": "Reserve Share Of Total Revenue",
+      "type": "number"
+    },
+    "risk_mode": {
+      "enum": [
+        "expected_value",
+        "downside_penalty",
+        "cvar_lite"
+      ],
+      "title": "Risk Mode",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "run_scope": {
+      "enum": [
+        "single_asset",
+        "portfolio"
+      ],
+      "title": "Run Scope",
+      "type": "string"
+    },
+    "scenario_analysis": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ScenarioAnalysisContract"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "schema_version": {
+      "const": 4,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "site_id": {
+      "title": "Site Id",
+      "type": "string"
+    },
+    "throughput_mwh": {
+      "title": "Throughput Mwh",
+      "type": "number"
+    },
+    "total_pnl_eur": {
+      "title": "Total Pnl Eur",
+      "type": "number"
+    },
+    "workflow": {
+      "title": "Workflow",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "site_id",
+    "run_scope",
+    "asset_count",
+    "poi_import_limit_mw",
+    "poi_export_limit_mw",
+    "market_id",
+    "market_timezone",
+    "workflow",
+    "base_workflow",
+    "benchmark_name",
+    "benchmark_family",
+    "provider_name",
+    "forecast_mode",
+    "risk_mode",
+    "auditable",
+    "interval_count",
+    "decision_count",
+    "locked_interval_count",
+    "da_revenue_eur",
+    "imbalance_revenue_eur",
+    "reserve_capacity_revenue_eur",
+    "reserve_activation_revenue_eur",
+    "reserve_penalty_eur",
+    "degradation_cost_eur",
+    "total_pnl_eur",
+    "expected_total_pnl_eur",
+    "throughput_mwh",
+    "idle_share",
+    "reserve_share_of_total_revenue",
+    "energy_revenue_eur",
+    "reason_code_counts",
+    "asset_contribution_ranking",
+    "data_provenance",
+    "forecast_error"
+  ],
+  "title": "SummaryContract",
+  "type": "object"
+}

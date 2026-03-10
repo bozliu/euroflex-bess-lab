@@ -1,0 +1,119 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e '.[dev]'
+      - name: Lint
+        run: make lint
+      - name: Typecheck
+        run: make typecheck
+      - name: Test
+        run: make test
+
+  canonical-ga-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e '.[dev]'
+      - name: Canonical Belgium full-stack validate + backtest + reconcile + export
+        run: |
+          python scripts/canonical_pipeline.py \
+            --config examples/configs/canonical/belgium_full_stack.yaml \
+            --write-json .ci-artifacts/canonical-pipeline.json
+      - name: Performance baseline tolerance check
+        run: |
+          make perf-check
+
+  notebooks-and-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e '.[dev]'
+      - name: Execute notebooks
+        run: make notebooks
+      - name: Build docs
+        run: make docs
+      - name: Generate schemas
+        run: make schemas
+
+  docker-smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t euroflex-bess-lab:ci .
+      - name: Docker version smoke test
+        run: docker run --rm euroflex-bess-lab:ci euroflex --version
+      - name: Docker canonical Belgium full-stack smoke test
+        run: |
+          docker run --rm euroflex-bess-lab:ci \
+            python scripts/canonical_pipeline.py \
+            --config examples/configs/canonical/belgium_full_stack.yaml
+      - name: Docker Compose notebook smoke test
+        run: |
+          docker compose up -d notebooks
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8888/lab >/dev/null; then
+              break
+            fi
+            sleep 2
+          done
+          curl --fail --silent http://127.0.0.1:8888/lab >/dev/null
+      - name: Docker Compose teardown
+        if: always()
+        run: docker compose down -v
+
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install build tooling
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e '.[dev]'
+      - name: Build distributions
+        run: make package
+      - name: Clean install smoke test
+        run: |
+          python -m venv .venv-smoke
+          . .venv-smoke/bin/activate
+          python -m pip install --upgrade pip
+          pip install dist/*.whl
+          euroflex --version
+          python scripts/canonical_pipeline.py \
+            --config examples/configs/canonical/belgium_full_stack.yaml \
+            --write-json .ci-artifacts/wheel-canonical-pipeline.json

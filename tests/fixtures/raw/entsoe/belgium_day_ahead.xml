@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Publication_MarketDocument>
+  <TimeSeries>
+    <Period>
+      <timeInterval>
+        <start>2025-01-01T00:00Z</start>
+        <end>2025-01-01T04:00Z</end>
+      </timeInterval>
+      <resolution>PT60M</resolution>
+      <Point>
+        <position>1</position>
+        <price.amount>-35.0</price.amount>
+      </Point>
+      <Point>
+        <position>2</position>
+        <price.amount>-10.0</price.amount>
+      </Point>
+      <Point>
+        <position>3</position>
+        <price.amount>85.0</price.amount>
+      </Point>
+      <Point>
+        <position>4</position>
+        <price.amount>140.0</price.amount>
+      </Point>
+    </Period>
+  </TimeSeries>
+</Publication_MarketDocument>

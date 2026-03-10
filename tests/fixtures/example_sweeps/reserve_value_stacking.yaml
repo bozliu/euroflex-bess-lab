@@ -1,0 +1,25 @@
+schema_version: 4
+sweep_name: reserve-value-stacking
+base_config_path: ../configs/reserve/belgium_da_plus_fcr_base.yaml
+
+matrix:
+  __bundle__:
+    - run_label: belgium
+      market.id: belgium
+      timing.timezone: Europe/Brussels
+      data.day_ahead.actual_path: ../../data/belgium_day_ahead_prices.csv
+      data.fcr_capacity.actual_path: ../../data/belgium_fcr_capacity_prices.csv
+    - run_label: netherlands
+      market.id: netherlands
+      timing.timezone: Europe/Amsterdam
+      data.day_ahead.actual_path: ../../data/netherlands_day_ahead_prices.csv
+      data.fcr_capacity.actual_path: ../../data/netherlands_fcr_capacity_prices.csv
+  fcr.non_delivery_penalty_eur_per_mw:
+    - 0.0
+    - 4.0
+  degradation.throughput_cost_eur_per_mwh:
+    - 2.0
+    - 6.0
+
+artifacts:
+  root_dir: ../../artifacts/sweeps

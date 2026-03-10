@@ -1,0 +1,92 @@
+schema_version: 4
+run_name: belgium-schedule-revision-da-fcr
+
+market:
+  id: belgium
+  live_data_auth_env_var_names:
+    - ENTSOE_API_TOKEN
+
+workflow: schedule_revision
+
+forecast_provider:
+  name: perfect_foresight
+
+timing:
+  timezone: Europe/Brussels
+  resolution_minutes: 15
+  rebalance_cadence_minutes: 15
+  execution_lock_intervals: 1
+  day_ahead_gate_closure_local: "12:00"
+  delivery_start_date: 2025-06-17
+  delivery_end_date: 2025-06-17
+
+site:
+  id: belgium-revision-portfolio-site
+  poi_import_limit_mw: 1.5
+  poi_export_limit_mw: 1.5
+
+assets:
+  - id: be-bess-1
+    kind: battery
+    battery:
+      name: be_bess_1
+      power_mw: 1.0
+      energy_mwh: 2.0
+      initial_soc_mwh: 0.9
+      terminal_soc_mwh: 0.9
+      soc_min_mwh: 0.2
+      soc_max_mwh: 1.8
+      charge_efficiency: 0.95
+      discharge_efficiency: 0.95
+      connection_limit_mw: 1.0
+      minimum_headroom_mwh: 0.1
+  - id: be-bess-2
+    kind: battery
+    battery:
+      name: be_bess_2
+      power_mw: 1.0
+      energy_mwh: 1.5
+      initial_soc_mwh: 0.7
+      terminal_soc_mwh: 0.7
+      soc_min_mwh: 0.15
+      soc_max_mwh: 1.35
+      charge_efficiency: 0.94
+      discharge_efficiency: 0.94
+      connection_limit_mw: 1.0
+      minimum_headroom_mwh: 0.05
+
+degradation:
+  mode: throughput_linear
+  throughput_cost_eur_per_mwh: 4.0
+
+data:
+  day_ahead:
+    actual_path: ../../../../examples/data/belgium_day_ahead_prices.csv
+  fcr_capacity:
+    actual_path: ../../../../examples/data/belgium_fcr_capacity_prices.csv
+
+fcr:
+  product_id: fcr_symmetric
+  sustain_duration_minutes: 15
+  settlement_mode: capacity_only
+  activation_mode: none
+  non_delivery_penalty_eur_per_mw: 0.0
+  simplified_product_logic: true
+
+revision:
+  base_workflow: da_plus_fcr
+  revision_market_mode: public_checkpoint_reoptimization
+  revision_checkpoints_local:
+    - "06:00"
+    - "12:00"
+  lock_policy: committed_intervals_only
+  allow_day_ahead_revision: false
+  allow_fcr_revision: false
+  allow_energy_revision: true
+  max_revision_horizon_intervals: 16
+
+artifacts:
+  root_dir: ../../../../artifacts/examples
+  save_inputs: true
+  save_plots: true
+  save_forecast_snapshots: true

@@ -1,0 +1,243 @@
+{
+  "$defs": {
+    "ScenarioAnalysisContract": {
+      "additionalProperties": true,
+      "properties": {
+        "downside_penalty_contribution_eur": {
+          "title": "Downside Penalty Contribution Eur",
+          "type": "number"
+        },
+        "forecast_mode": {
+          "const": "scenario_bundle",
+          "title": "Forecast Mode",
+          "type": "string"
+        },
+        "nearest_scenario_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nearest Scenario Id"
+        },
+        "nearest_scenario_total_pnl_eur": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nearest Scenario Total Pnl Eur"
+        },
+        "realized_vs_scenario_envelope_distance_eur": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Realized Vs Scenario Envelope Distance Eur"
+        },
+        "reserve_fragility_eur": {
+          "title": "Reserve Fragility Eur",
+          "type": "number"
+        },
+        "risk_mode": {
+          "enum": [
+            "expected_value",
+            "downside_penalty",
+            "cvar_lite"
+          ],
+          "title": "Risk Mode",
+          "type": "string"
+        },
+        "scenario_best_id": {
+          "title": "Scenario Best Id",
+          "type": "string"
+        },
+        "scenario_best_total_pnl_eur": {
+          "title": "Scenario Best Total Pnl Eur",
+          "type": "number"
+        },
+        "scenario_count": {
+          "title": "Scenario Count",
+          "type": "integer"
+        },
+        "scenario_expected_total_pnl_eur": {
+          "title": "Scenario Expected Total Pnl Eur",
+          "type": "number"
+        },
+        "scenario_posture": {
+          "anyOf": [
+            {
+              "enum": [
+                "within_envelope",
+                "aggressive",
+                "conservative"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scenario Posture"
+        },
+        "scenario_spread_total_pnl_eur": {
+          "title": "Scenario Spread Total Pnl Eur",
+          "type": "number"
+        },
+        "scenario_weights": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Scenario Weights",
+          "type": "object"
+        },
+        "scenario_worst_id": {
+          "title": "Scenario Worst Id",
+          "type": "string"
+        },
+        "scenario_worst_total_pnl_eur": {
+          "title": "Scenario Worst Total Pnl Eur",
+          "type": "number"
+        }
+      },
+      "required": [
+        "forecast_mode",
+        "risk_mode",
+        "scenario_count",
+        "scenario_expected_total_pnl_eur",
+        "scenario_best_total_pnl_eur",
+        "scenario_worst_total_pnl_eur",
+        "scenario_spread_total_pnl_eur",
+        "downside_penalty_contribution_eur",
+        "reserve_fragility_eur",
+        "scenario_weights",
+        "scenario_best_id",
+        "scenario_worst_id"
+      ],
+      "title": "ScenarioAnalysisContract",
+      "type": "object"
+    }
+  },
+  "additionalProperties": true,
+  "properties": {
+    "activation_settlement_deviation_eur": {
+      "title": "Activation Settlement Deviation Eur",
+      "type": "number"
+    },
+    "availability_deviation_eur": {
+      "title": "Availability Deviation Eur",
+      "type": "number"
+    },
+    "base_workflow": {
+      "title": "Base Workflow",
+      "type": "string"
+    },
+    "baseline_expected_total_pnl_eur": {
+      "title": "Baseline Expected Total Pnl Eur",
+      "type": "number"
+    },
+    "degradation_cost_drift_eur": {
+      "title": "Degradation Cost Drift Eur",
+      "type": "number"
+    },
+    "delta_vs_baseline_expected_eur": {
+      "title": "Delta Vs Baseline Expected Eur",
+      "type": "number"
+    },
+    "delta_vs_revised_expected_eur": {
+      "title": "Delta Vs Revised Expected Eur",
+      "type": "number"
+    },
+    "forecast_error_eur": {
+      "title": "Forecast Error Eur",
+      "type": "number"
+    },
+    "imbalance_settlement_deviation_eur": {
+      "title": "Imbalance Settlement Deviation Eur",
+      "type": "number"
+    },
+    "locked_commitment_opportunity_cost_eur": {
+      "title": "Locked Commitment Opportunity Cost Eur",
+      "type": "number"
+    },
+    "market_id": {
+      "title": "Market Id",
+      "type": "string"
+    },
+    "realized_input_path": {
+      "title": "Realized Input Path",
+      "type": "string"
+    },
+    "realized_total_pnl_eur": {
+      "title": "Realized Total Pnl Eur",
+      "type": "number"
+    },
+    "reserve_headroom_opportunity_cost_eur": {
+      "title": "Reserve Headroom Opportunity Cost Eur",
+      "type": "number"
+    },
+    "revised_expected_total_pnl_eur": {
+      "title": "Revised Expected Total Pnl Eur",
+      "type": "number"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "scenario_analysis": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ScenarioAnalysisContract"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "source_run_dir": {
+      "title": "Source Run Dir",
+      "type": "string"
+    },
+    "workflow": {
+      "title": "Workflow",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "market_id",
+    "workflow",
+    "base_workflow",
+    "source_run_dir",
+    "realized_input_path",
+    "baseline_expected_total_pnl_eur",
+    "revised_expected_total_pnl_eur",
+    "realized_total_pnl_eur",
+    "delta_vs_baseline_expected_eur",
+    "delta_vs_revised_expected_eur",
+    "forecast_error_eur",
+    "locked_commitment_opportunity_cost_eur",
+    "reserve_headroom_opportunity_cost_eur",
+    "degradation_cost_drift_eur",
+    "availability_deviation_eur",
+    "imbalance_settlement_deviation_eur",
+    "activation_settlement_deviation_eur"
+  ],
+  "title": "ReconciliationSummaryContract",
+  "type": "object"
+}

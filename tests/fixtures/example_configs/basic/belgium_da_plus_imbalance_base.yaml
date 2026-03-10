@@ -1,0 +1,63 @@
+schema_version: 4
+run_name: belgium-da-imbalance
+
+market:
+  id: belgium
+  live_data_auth_env_var_names:
+    - ENTSOE_API_TOKEN
+
+workflow: da_plus_imbalance
+
+forecast_provider:
+  name: perfect_foresight
+
+timing:
+  timezone: Europe/Brussels
+  resolution_minutes: 15
+  rebalance_cadence_minutes: 15
+  execution_lock_intervals: 1
+  day_ahead_gate_closure_local: "12:00"
+  delivery_start_date: 2025-06-17
+  delivery_end_date: 2025-06-17
+
+site:
+  id: belgium-demo-site
+  poi_import_limit_mw: 1.0
+  poi_export_limit_mw: 1.0
+
+assets:
+  - id: be-bess-1
+    kind: battery
+    battery:
+      name: demo_bess
+      power_mw: 1.0
+      energy_mwh: 2.0
+      initial_soc_mwh: 1.0
+      terminal_soc_mwh: 1.0
+      soc_min_mwh: 0.2
+      soc_max_mwh: 1.9
+      charge_efficiency: 0.95
+      discharge_efficiency: 0.95
+      connection_limit_mw: 1.0
+      minimum_headroom_mwh: 0.1
+      availability:
+        outages:
+          - start: 2025-06-17T09:00:00+02:00
+            end: 2025-06-17T10:00:00+02:00
+            availability_factor: 0.0
+
+degradation:
+  mode: throughput_linear
+  throughput_cost_eur_per_mwh: 4.0
+
+data:
+  day_ahead:
+    actual_path: ../../../../examples/data/belgium_day_ahead_prices.csv
+  imbalance:
+    actual_path: ../../../../examples/data/belgium_imbalance_prices.csv
+
+artifacts:
+  root_dir: ../../../../artifacts/examples
+  save_inputs: true
+  save_plots: true
+  save_forecast_snapshots: true

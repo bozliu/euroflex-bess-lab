@@ -1,0 +1,147 @@
+{
+  "$defs": {
+    "ExportFileContract": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "title": "Bytes",
+          "type": "integer"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "title": "ExportFileContract",
+      "type": "object"
+    },
+    "ExportManifestMetadataContract": {
+      "additionalProperties": true,
+      "properties": {
+        "benchmark_grade_only": {
+          "title": "Benchmark Grade Only",
+          "type": "boolean"
+        },
+        "benchmark_name": {
+          "title": "Benchmark Name",
+          "type": "string"
+        },
+        "config_run_name": {
+          "title": "Config Run Name",
+          "type": "string"
+        },
+        "export_kind": {
+          "enum": [
+            "schedule",
+            "bids",
+            "revision"
+          ],
+          "title": "Export Kind",
+          "type": "string"
+        },
+        "generation_time_utc": {
+          "title": "Generation Time Utc",
+          "type": "string"
+        },
+        "intended_consumer": {
+          "title": "Intended Consumer",
+          "type": "string"
+        },
+        "live_submission_ready": {
+          "title": "Live Submission Ready",
+          "type": "boolean"
+        },
+        "market_id": {
+          "title": "Market Id",
+          "type": "string"
+        },
+        "market_timezone": {
+          "title": "Market Timezone",
+          "type": "string"
+        },
+        "profile": {
+          "title": "Profile",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "run_scope": {
+          "title": "Run Scope",
+          "type": "string"
+        },
+        "site_id": {
+          "title": "Site Id",
+          "type": "string"
+        },
+        "workflow": {
+          "title": "Workflow",
+          "type": "string"
+        }
+      },
+      "required": [
+        "export_kind",
+        "profile",
+        "intended_consumer",
+        "benchmark_grade_only",
+        "live_submission_ready",
+        "run_id",
+        "site_id",
+        "market_id",
+        "workflow",
+        "run_scope",
+        "benchmark_name",
+        "market_timezone",
+        "generation_time_utc",
+        "config_run_name"
+      ],
+      "title": "ExportManifestMetadataContract",
+      "type": "object"
+    }
+  },
+  "additionalProperties": true,
+  "properties": {
+    "created_at_utc": {
+      "title": "Created At Utc",
+      "type": "string"
+    },
+    "files": {
+      "items": {
+        "$ref": "#/$defs/ExportFileContract"
+      },
+      "title": "Files",
+      "type": "array"
+    },
+    "metadata": {
+      "$ref": "#/$defs/ExportManifestMetadataContract"
+    },
+    "schema_version": {
+      "const": 4,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "source_run_dir": {
+      "title": "Source Run Dir",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "created_at_utc",
+    "source_run_dir",
+    "metadata",
+    "files"
+  ],
+  "title": "ExportManifestContract",
+  "type": "object"
+}

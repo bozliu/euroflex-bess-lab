@@ -1,0 +1,30 @@
+name: dl
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pandas>=2.2
+  - pydantic>=2.10
+  - pyomo>=6.8
+  - highspy>=1.8
+  - typer>=0.15
+  - rich>=13.9
+  - matplotlib>=3.9
+  - pyarrow>=18.1
+  - pyyaml>=6.0.2
+  - requests>=2.32
+  - pytest>=8.3
+  - ruff>=0.9
+  - mypy>=1.15
+  - pre-commit>=4.1
+  - nbclient>=0.10
+  - nbformat>=5.10
+  - ipykernel>=6.29
+  - jupyterlab>=4.4
+  - build>=1.2
+  - mkdocs>=1.6,<2
+  - mkdocs-material>=9.5
+  - pillow>=10
+  - pip:
+      - -e .[dev]

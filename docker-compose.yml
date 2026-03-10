@@ -1,0 +1,25 @@
+services:
+  notebooks:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: euroflex-bess-lab:notebooks
+    working_dir: /workspace
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/workspace
+    command:
+      - /bin/sh
+      - -lc
+      - |
+        python -m pip install --upgrade pip
+        pip install -e '.[dev]'
+        jupyter lab \
+          --ip=0.0.0.0 \
+          --port=8888 \
+          --no-browser \
+          --allow-root \
+          --ServerApp.token='' \
+          --ServerApp.password='' \
+          /workspace/notebooks

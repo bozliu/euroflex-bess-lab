@@ -1,0 +1,1033 @@
+{
+  "$defs": {
+    "AfrrConfig": {
+      "properties": {
+        "activation_mode": {
+          "const": "expected_value",
+          "default": "expected_value",
+          "title": "Activation Mode",
+          "type": "string"
+        },
+        "non_delivery_penalty_eur_per_mw": {
+          "default": 0.0,
+          "minimum": 0.0,
+          "title": "Non Delivery Penalty Eur Per Mw",
+          "type": "number"
+        },
+        "product_id": {
+          "const": "afrr_asymmetric",
+          "default": "afrr_asymmetric",
+          "title": "Product Id",
+          "type": "string"
+        },
+        "settlement_mode": {
+          "const": "capacity_plus_activation_expected_value",
+          "default": "capacity_plus_activation_expected_value",
+          "title": "Settlement Mode",
+          "type": "string"
+        },
+        "simplified_product_logic": {
+          "const": true,
+          "default": true,
+          "title": "Simplified Product Logic",
+          "type": "boolean"
+        },
+        "sustain_duration_minutes": {
+          "default": 15,
+          "minimum": 15,
+          "title": "Sustain Duration Minutes",
+          "type": "integer"
+        }
+      },
+      "title": "AfrrConfig",
+      "type": "object"
+    },
+    "ArtifactConfig": {
+      "properties": {
+        "root_dir": {
+          "default": "artifacts",
+          "format": "path",
+          "title": "Root Dir",
+          "type": "string"
+        },
+        "save_forecast_snapshots": {
+          "default": true,
+          "title": "Save Forecast Snapshots",
+          "type": "boolean"
+        },
+        "save_inputs": {
+          "default": true,
+          "title": "Save Inputs",
+          "type": "boolean"
+        },
+        "save_plots": {
+          "default": true,
+          "title": "Save Plots",
+          "type": "boolean"
+        }
+      },
+      "title": "ArtifactConfig",
+      "type": "object"
+    },
+    "AssetSpec": {
+      "properties": {
+        "battery": {
+          "$ref": "#/$defs/BatterySpec"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "battery",
+          "default": "battery",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "battery"
+      ],
+      "title": "AssetSpec",
+      "type": "object"
+    },
+    "AvailabilityMask": {
+      "properties": {
+        "outages": {
+          "items": {
+            "$ref": "#/$defs/AvailabilityWindow"
+          },
+          "title": "Outages",
+          "type": "array"
+        }
+      },
+      "title": "AvailabilityMask",
+      "type": "object"
+    },
+    "AvailabilityWindow": {
+      "properties": {
+        "availability_factor": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Availability Factor",
+          "type": "number"
+        },
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        },
+        "start": {
+          "format": "date-time",
+          "title": "Start",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "AvailabilityWindow",
+      "type": "object"
+    },
+    "BatterySpec": {
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/AvailabilityMask"
+        },
+        "charge_efficiency": {
+          "exclusiveMinimum": 0.0,
+          "maximum": 1.0,
+          "title": "Charge Efficiency",
+          "type": "number"
+        },
+        "connection_limit_mw": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Connection Limit Mw"
+        },
+        "discharge_efficiency": {
+          "exclusiveMinimum": 0.0,
+          "maximum": 1.0,
+          "title": "Discharge Efficiency",
+          "type": "number"
+        },
+        "energy_mwh": {
+          "exclusiveMinimum": 0.0,
+          "title": "Energy Mwh",
+          "type": "number"
+        },
+        "initial_soc_mwh": {
+          "minimum": 0.0,
+          "title": "Initial Soc Mwh",
+          "type": "number"
+        },
+        "minimum_headroom_mwh": {
+          "default": 0.0,
+          "minimum": 0.0,
+          "title": "Minimum Headroom Mwh",
+          "type": "number"
+        },
+        "name": {
+          "default": "battery",
+          "title": "Name",
+          "type": "string"
+        },
+        "power_mw": {
+          "exclusiveMinimum": 0.0,
+          "title": "Power Mw",
+          "type": "number"
+        },
+        "soc_max_mwh": {
+          "exclusiveMinimum": 0.0,
+          "title": "Soc Max Mwh",
+          "type": "number"
+        },
+        "soc_min_mwh": {
+          "minimum": 0.0,
+          "title": "Soc Min Mwh",
+          "type": "number"
+        },
+        "terminal_soc_mwh": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Terminal Soc Mwh"
+        }
+      },
+      "required": [
+        "power_mw",
+        "energy_mwh",
+        "initial_soc_mwh",
+        "soc_min_mwh",
+        "soc_max_mwh",
+        "charge_efficiency",
+        "discharge_efficiency"
+      ],
+      "title": "BatterySpec",
+      "type": "object"
+    },
+    "DataConfig": {
+      "properties": {
+        "afrr_activation_price_down": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "afrr_activation_price_up": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "afrr_activation_ratio_down": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "afrr_activation_ratio_up": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "afrr_capacity_down": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "afrr_capacity_up": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "day_ahead": {
+          "$ref": "#/$defs/MarketSeriesInput"
+        },
+        "fcr_capacity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "imbalance": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "day_ahead"
+      ],
+      "title": "DataConfig",
+      "type": "object"
+    },
+    "DegradationConfig": {
+      "properties": {
+        "eur_per_equivalent_cycle": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Eur Per Equivalent Cycle"
+        },
+        "mode": {
+          "default": "throughput_linear",
+          "enum": [
+            "throughput_linear",
+            "equivalent_cycle_linear",
+            "rainflow_offline"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "throughput_cost_eur_per_mwh": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 0.0,
+          "title": "Throughput Cost Eur Per Mwh"
+        }
+      },
+      "title": "DegradationConfig",
+      "type": "object"
+    },
+    "FcrConfig": {
+      "properties": {
+        "activation_mode": {
+          "const": "none",
+          "default": "none",
+          "title": "Activation Mode",
+          "type": "string"
+        },
+        "non_delivery_penalty_eur_per_mw": {
+          "default": 0.0,
+          "minimum": 0.0,
+          "title": "Non Delivery Penalty Eur Per Mw",
+          "type": "number"
+        },
+        "product_id": {
+          "const": "fcr_symmetric",
+          "default": "fcr_symmetric",
+          "title": "Product Id",
+          "type": "string"
+        },
+        "settlement_mode": {
+          "const": "capacity_only",
+          "default": "capacity_only",
+          "title": "Settlement Mode",
+          "type": "string"
+        },
+        "simplified_product_logic": {
+          "const": true,
+          "default": true,
+          "title": "Simplified Product Logic",
+          "type": "boolean"
+        },
+        "sustain_duration_minutes": {
+          "default": 15,
+          "minimum": 15,
+          "title": "Sustain Duration Minutes",
+          "type": "integer"
+        }
+      },
+      "title": "FcrConfig",
+      "type": "object"
+    },
+    "ForecastProviderConfig": {
+      "properties": {
+        "afrr_activation_price_down_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Afrr Activation Price Down Path"
+        },
+        "afrr_activation_price_up_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Afrr Activation Price Up Path"
+        },
+        "afrr_activation_ratio_down_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Afrr Activation Ratio Down Path"
+        },
+        "afrr_activation_ratio_up_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Afrr Activation Ratio Up Path"
+        },
+        "afrr_capacity_down_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Afrr Capacity Down Path"
+        },
+        "afrr_capacity_up_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Afrr Capacity Up Path"
+        },
+        "class_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Class Name"
+        },
+        "day_ahead_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Day Ahead Path"
+        },
+        "fcr_capacity_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fcr Capacity Path"
+        },
+        "imbalance_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Imbalance Path"
+        },
+        "init_kwargs": {
+          "additionalProperties": true,
+          "title": "Init Kwargs",
+          "type": "object"
+        },
+        "mode": {
+          "default": "point",
+          "enum": [
+            "point",
+            "scenario_bundle"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "module_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Module Path"
+        },
+        "name": {
+          "enum": [
+            "perfect_foresight",
+            "persistence",
+            "csv",
+            "custom_python"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "scenario_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scenario Id"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "ForecastProviderConfig",
+      "type": "object"
+    },
+    "MarketConfig": {
+      "properties": {
+        "id": {
+          "enum": [
+            "belgium",
+            "netherlands"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "live_data_auth_env_var_names": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Live Data Auth Env Var Names",
+          "type": "array"
+        },
+        "overrides": {
+          "additionalProperties": true,
+          "title": "Overrides",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "MarketConfig",
+      "type": "object"
+    },
+    "MarketSeriesInput": {
+      "properties": {
+        "actual_path": {
+          "format": "path",
+          "title": "Actual Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "actual_path"
+      ],
+      "title": "MarketSeriesInput",
+      "type": "object"
+    },
+    "RevisionConfig": {
+      "properties": {
+        "allow_afrr_revision": {
+          "default": false,
+          "title": "Allow Afrr Revision",
+          "type": "boolean"
+        },
+        "allow_day_ahead_revision": {
+          "const": false,
+          "default": false,
+          "title": "Allow Day Ahead Revision",
+          "type": "boolean"
+        },
+        "allow_energy_revision": {
+          "const": true,
+          "default": true,
+          "title": "Allow Energy Revision",
+          "type": "boolean"
+        },
+        "allow_fcr_revision": {
+          "default": false,
+          "title": "Allow Fcr Revision",
+          "type": "boolean"
+        },
+        "base_workflow": {
+          "enum": [
+            "da_only",
+            "da_plus_imbalance",
+            "da_plus_fcr",
+            "da_plus_afrr"
+          ],
+          "title": "Base Workflow",
+          "type": "string"
+        },
+        "lock_policy": {
+          "const": "committed_intervals_only",
+          "default": "committed_intervals_only",
+          "title": "Lock Policy",
+          "type": "string"
+        },
+        "max_revision_horizon_intervals": {
+          "default": 96,
+          "minimum": 1,
+          "title": "Max Revision Horizon Intervals",
+          "type": "integer"
+        },
+        "realized_inputs": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RevisionRealizedInputsConfig"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "revision_checkpoints_local": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Revision Checkpoints Local",
+          "type": "array"
+        },
+        "revision_market_mode": {
+          "const": "public_checkpoint_reoptimization",
+          "default": "public_checkpoint_reoptimization",
+          "title": "Revision Market Mode",
+          "type": "string"
+        }
+      },
+      "required": [
+        "base_workflow",
+        "revision_checkpoints_local"
+      ],
+      "title": "RevisionConfig",
+      "type": "object"
+    },
+    "RevisionRealizedInputsConfig": {
+      "properties": {
+        "afrr_activation_price_down": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "afrr_activation_price_up": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "afrr_activation_ratio_down": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "afrr_activation_ratio_up": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "afrr_capacity_down": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "afrr_capacity_up": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "day_ahead": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "fcr_capacity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "imbalance": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketSeriesInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "RevisionRealizedInputsConfig",
+      "type": "object"
+    },
+    "RiskConfig": {
+      "properties": {
+        "mode": {
+          "default": "expected_value",
+          "enum": [
+            "expected_value",
+            "downside_penalty",
+            "cvar_lite"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "penalty_lambda": {
+          "default": 0.0,
+          "minimum": 0.0,
+          "title": "Penalty Lambda",
+          "type": "number"
+        },
+        "tail_alpha": {
+          "anyOf": [
+            {
+              "exclusiveMaximum": 1.0,
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tail Alpha"
+        }
+      },
+      "title": "RiskConfig",
+      "type": "object"
+    },
+    "SiteSpec": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "poi_export_limit_mw": {
+          "exclusiveMinimum": 0.0,
+          "title": "Poi Export Limit Mw",
+          "type": "number"
+        },
+        "poi_import_limit_mw": {
+          "exclusiveMinimum": 0.0,
+          "title": "Poi Import Limit Mw",
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "poi_import_limit_mw",
+        "poi_export_limit_mw"
+      ],
+      "title": "SiteSpec",
+      "type": "object"
+    },
+    "TimingConfig": {
+      "properties": {
+        "day_ahead_gate_closure_local": {
+          "default": "12:00",
+          "title": "Day Ahead Gate Closure Local",
+          "type": "string"
+        },
+        "delivery_end_date": {
+          "format": "date",
+          "title": "Delivery End Date",
+          "type": "string"
+        },
+        "delivery_start_date": {
+          "format": "date",
+          "title": "Delivery Start Date",
+          "type": "string"
+        },
+        "execution_lock_intervals": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Execution Lock Intervals",
+          "type": "integer"
+        },
+        "rebalance_cadence_minutes": {
+          "default": 15,
+          "minimum": 15,
+          "title": "Rebalance Cadence Minutes",
+          "type": "integer"
+        },
+        "resolution_minutes": {
+          "default": 15,
+          "minimum": 15,
+          "title": "Resolution Minutes",
+          "type": "integer"
+        },
+        "timezone": {
+          "title": "Timezone",
+          "type": "string"
+        }
+      },
+      "required": [
+        "timezone",
+        "delivery_start_date",
+        "delivery_end_date"
+      ],
+      "title": "TimingConfig",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "afrr": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AfrrConfig"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "artifacts": {
+      "$ref": "#/$defs/ArtifactConfig"
+    },
+    "assets": {
+      "items": {
+        "$ref": "#/$defs/AssetSpec"
+      },
+      "title": "Assets",
+      "type": "array"
+    },
+    "data": {
+      "$ref": "#/$defs/DataConfig"
+    },
+    "degradation": {
+      "$ref": "#/$defs/DegradationConfig"
+    },
+    "fcr": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/FcrConfig"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "forecast_provider": {
+      "$ref": "#/$defs/ForecastProviderConfig"
+    },
+    "market": {
+      "$ref": "#/$defs/MarketConfig"
+    },
+    "revision": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RevisionConfig"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "risk": {
+      "$ref": "#/$defs/RiskConfig"
+    },
+    "run_name": {
+      "title": "Run Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 4,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "site": {
+      "$ref": "#/$defs/SiteSpec"
+    },
+    "timing": {
+      "$ref": "#/$defs/TimingConfig"
+    },
+    "workflow": {
+      "enum": [
+        "da_only",
+        "da_plus_imbalance",
+        "da_plus_fcr",
+        "da_plus_afrr",
+        "schedule_revision"
+      ],
+      "title": "Workflow",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_name",
+    "market",
+    "workflow",
+    "forecast_provider",
+    "timing",
+    "site",
+    "assets",
+    "data"
+  ],
+  "title": "BacktestConfig",
+  "type": "object"
+}

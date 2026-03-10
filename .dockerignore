@@ -1,0 +1,11 @@
+.git
+.pytest_cache
+.ruff_cache
+.mypy_cache
+__pycache__
+artifacts
+tmp
+build
+dist
+site
+src/*.egg-info

@@ -13,6 +13,8 @@
 
 The demo below shows forecast inputs turning into checkpoint revisions, asset SoC movement, expected-versus-realized value bridges, and the final operator plus bid-planning handoff artifacts.
 
+![Canonical Terminal demo](docs/assets/canonical-demo-terminal.gif)
+
 This public release is the open-core base for operator-facing benchmarking, scheduling support, revision, audit, and downstream handoff in European BESS workflows. Commercial integration, managed deployment, and market-specific adapters are available separately from the public core.
 
 ## Install

@@ -5,19 +5,31 @@
 ![Python 3.12](https://img.shields.io/badge/python-3.12-3776ab)
 [![PyPI version](https://img.shields.io/pypi/v/euroflex-bess-lab)](https://pypi.org/project/euroflex-bess-lab/)
 
-`euroflex_bess_lab` is a commercial-grade benchmarking, scheduling, revision, and audit framework for European BESS workflows. It is designed to help an operator or optimizer answer one narrow but real question with a trustworthy public-core tool:
+`euroflex_bess_lab` is a commercial-grade benchmarking, scheduling, revision, and audit framework for European BESS workflows.
 
-> Given the information visible at decision time, how should a Belgium battery portfolio behind a shared POI be scheduled, revised, reconciled, and handed off to an operator?
+The release shape is intentionally two-layered:
+
+- the **narrow GA promise** remains the Belgium portfolio + shared-POI `schedule_revision` path with `da_plus_afrr`
+- the new **live-supported Dutch secondary surface** brings TenneT-backed Netherlands market data into the same normalization, validation, revision, reconciliation, and operator-handoff workflow
 
 ![TenneT live workflow](docs/assets/tennet-live-workflow.gif)
 
-From TenneT live data to operator handoff: live Dutch inputs, provenance-aware normalization, revision-aware scheduling, and operator-facing exports.
+From TenneT live data to operator handoff: live Dutch inputs, provenance-aware normalization, revision-aware scheduling, and operator-facing exports on a stable secondary Netherlands surface.
 
 ![Canonical Belgium demo](docs/assets/canonical-belgium-demo.gif)
 
 The Belgium canonical path remains the narrow GA promise: forecast inputs turn into checkpoint revisions, asset SoC movement, expected-versus-realized value bridges, and the final operator plus bid-planning handoff artifacts.
 
 This public release is the open-core base for operator-facing benchmarking, scheduling support, revision, audit, and downstream handoff in European BESS workflows. Commercial integration, managed deployment, and market-specific adapters are available separately from the public core.
+
+## Release Shape
+
+- **Narrow GA:** Belgium, portfolio / shared POI, `schedule_revision`, `base_workflow: da_plus_afrr`, forecast paths `persistence` and `csv`
+- **Stable secondary surface:** Belgium and Netherlands `da_only`, `da_plus_fcr`, `da_plus_afrr`, and `schedule_revision` where the adapter support is explicit
+- **Live Dutch connector surface:** TenneT-backed settlement prices, merit-order data, FRR activations, and derived Dutch aFRR activation price / ratio series
+- **Integration point:** `custom_python` for trusted local forecast logic
+- **Oracle only:** `perfect_foresight`
+- **Out of scope:** live submission, EMS / SCADA control, autonomous trading
 
 ## Install
 
@@ -46,13 +58,13 @@ Everything else is explicitly tiered:
 
 - `perfect_foresight`: oracle-only benchmark surface
 - `custom_python`: stable integration point for trusted local forecast code
-- Netherlands: promoted stable full-stack surface, but still outside the narrow Belgium GA promise
+- Netherlands: promoted stable full-stack surface with live-supported TenneT ingestion, but still outside the narrow Belgium GA promise
 - live submission / EMS control: out of scope
 
 ```mermaid
 flowchart LR
-    A["Visible inputs at checkpoint<br/>day-ahead, reserve curves, SoC, availability"] --> B["Forecast layer<br/>persistence | csv | custom_python"]
-    B --> C["Pyomo optimizer<br/>Belgium portfolio + shared POI + locked aFRR commitments"]
+    A["Visible inputs at checkpoint<br/>Belgium forecasts or Dutch live TenneT inputs"] --> B["Normalize + validate<br/>timezone alignment, provenance, contract checks"]
+    B --> C["Forecast + optimizer layer<br/>persistence | csv | custom_python + market-rule scheduling"]
     C --> D["Operator handoff<br/>schedule exports + bid-planning exports"]
     D --> E["Realized settlement<br/>reconcile, update SoC, attribute deltas"]
     E --> A

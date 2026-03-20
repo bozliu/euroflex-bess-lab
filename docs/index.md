@@ -1,6 +1,6 @@
 # euroflex_bess_lab
 
-`euroflex_bess_lab` is a public-core decision-support and operator-handoff framework for European BESS workflows. The current GA promise is intentionally narrow and centered on one canonical Belgium path, while the broader public surface is meant for enterprise evaluation, benchmarking, integration, and operator-facing support.
+`euroflex_bess_lab` is a public-core decision-support and operator-handoff framework for European BESS workflows. The current GA promise is intentionally narrow and centered on one canonical Belgium path, while the broader public surface now also includes a live-supported Netherlands workflow layer built around TenneT-backed ingestion, normalization, validation, reconciliation, and operator handoff.
 
 `euroflex_bess_lab` is especially relevant for:
 
@@ -21,6 +21,7 @@ The repository is now centered on one narrow GA promise:
 Start with:
 
 - [Quickstart](quickstart.md)
+- [Using TenneT live inputs](using_tennet_live_inputs.md)
 - [Commercial positioning](commercial_positioning.md)
 - [Capability matrix](capability_matrix.md)
 - [Operator runbook](operator_runbook.md)
@@ -37,9 +38,15 @@ The repository also keeps:
 
 - stable secondary surfaces for Belgium/Netherlands energy and FCR workflows
 - promoted Netherlands full-stack stable surfaces for `da_plus_afrr` and `schedule_revision`
+- a live-supported Dutch connector surface for TenneT settlement prices, merit-order data, FRR activations, and derived activation price / ratio series
 - Belgium aFRR benchmarking outside the narrow GA promise
 - `custom_python` as a stable integration point
 - oracle-only benchmarking through `perfect_foresight`
+
+Canonical secondary Dutch configs:
+
+- `examples/configs/canonical/netherlands_full_stack.yaml`
+- `examples/configs/basic/netherlands_da_only_live_inputs.yaml`
 
 What it does **not** promise:
 

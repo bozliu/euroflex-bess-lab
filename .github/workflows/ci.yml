@@ -119,24 +119,37 @@ jobs:
             --write-json .ci-artifacts/wheel-canonical-pipeline.json
 
   live-connector-smoke:
-    if: ${{ secrets.TENNET_API_KEY != '' || secrets.TENNET_API_KEY_ACCEPTANCE != '' }}
     runs-on: ubuntu-latest
     env:
       TENNET_API_KEY: ${{ secrets.TENNET_API_KEY }}
       TENNET_API_KEY_ACCEPTANCE: ${{ secrets.TENNET_API_KEY_ACCEPTANCE }}
     steps:
       - uses: actions/checkout@v4
+      - name: Check live connector credentials
+        id: live-creds
+        run: |
+          if [ -n "${TENNET_API_KEY:-}" ] || [ -n "${TENNET_API_KEY_ACCEPTANCE:-}" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-python@v5
+        if: ${{ steps.live-creds.outputs.available == 'true' }}
         with:
           python-version: "3.12"
       - name: Install package
+        if: ${{ steps.live-creds.outputs.available == 'true' }}
         run: |
           python -m pip install --upgrade pip
           pip install -e '.[dev]'
       - name: Live TenneT smoke
+        if: ${{ steps.live-creds.outputs.available == 'true' }}
         run: |
           export TENNET_API_ENV=acceptance
           if [ -n "${TENNET_API_KEY_ACCEPTANCE:-}" ]; then
             export TENNET_API_KEY="$TENNET_API_KEY_ACCEPTANCE"
           fi
           pytest -q tests/test_live_connectors.py
+      - name: Skip live TenneT smoke when secrets are unavailable
+        if: ${{ steps.live-creds.outputs.available != 'true' }}
+        run: echo "Skipping live TenneT smoke because no TenneT API secrets are configured for this run."

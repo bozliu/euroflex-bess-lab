@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
 from euroflex_bess_lab.config import BacktestConfig
 from euroflex_bess_lab.markets import MarketRegistry
 
@@ -145,8 +143,16 @@ def test_belgium_afrr_adapter_contract(two_day_market_data: dict[str, Path]) -> 
     assert reserve.product_id == "afrr_asymmetric"
 
 
-def test_netherlands_afrr_is_explicitly_rejected(two_day_market_data_nl: dict[str, Path]) -> None:
+def test_netherlands_afrr_adapter_contract(two_day_market_data_nl: dict[str, Path]) -> None:
     config = _build_config("netherlands", "Europe/Amsterdam", two_day_market_data_nl, workflow="da_plus_afrr")
     adapter = MarketRegistry.get("netherlands")
-    with pytest.raises(ValueError, match="not yet supported"):
-        adapter.validate_timing(config)
+    adapter.validate_timing(config)
+    actuals = adapter.load_actuals(config)
+    reserve = adapter.build_reserve_product(config)
+    assert actuals.afrr_capacity_up is not None
+    assert actuals.afrr_capacity_down is not None
+    assert actuals.afrr_activation_price_up is not None
+    assert actuals.afrr_activation_ratio_down is not None
+    assert reserve is not None
+    assert reserve.product_id == "afrr_asymmetric"
+    assert reserve.metadata["operator"] == "TenneT"

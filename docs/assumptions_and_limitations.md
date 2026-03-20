@@ -20,13 +20,13 @@ Other surfaces may remain stable, oracle-only, or integration-only, but they are
 - `da_plus_fcr` is capacity-first and does not model full activation dispatch.
 - `da_plus_afrr` is expected-value only.
 - Expected-value aFRR activation can diverge from realized discrete activation, so simulated SoC may diverge from real physical SoC.
+- This caveat now applies to both Belgium and Netherlands aFRR surfaces.
 - Schedule revision is checkpoint-based, not continuous intraday order-book trading.
 - Export profiles are human-in-the-loop handoff formats, not live exchange payloads.
 - Reconciliation uses benchmark-grade settlement logic and public/frozen realized inputs.
 
 ## Explicitly out of scope
 
-- Netherlands `da_plus_afrr`
 - live bid submission
 - EMS / SCADA control
 - continuous intraday execution and order-book simulation

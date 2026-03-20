@@ -32,3 +32,8 @@ def test_portfolio_notebook_executes_top_to_bottom(tmp_path: Path) -> None:
 def test_revision_notebook_executes_top_to_bottom(tmp_path: Path) -> None:
     source = Path(__file__).resolve().parents[1] / "notebooks" / "schedule_revision_reconciliation.ipynb"
     _execute_notebook(source, tmp_path / "revision.ipynb")
+
+
+def test_netherlands_afrr_notebook_executes_top_to_bottom(tmp_path: Path) -> None:
+    source = Path(__file__).resolve().parents[1] / "notebooks" / "netherlands_afrr_dual_pricing_value.ipynb"
+    _execute_notebook(source, tmp_path / "netherlands-afrr.ipynb")

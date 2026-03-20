@@ -66,10 +66,10 @@ def public_workflow_capabilities() -> list[dict[str, Any]]:
         {
             "workflow": "da_plus_afrr",
             "market": "netherlands",
-            "single_asset": False,
-            "portfolio": False,
-            "tier": "unsupported",
-            "notes": "Extension point only; explicit runtime rejection.",
+            "single_asset": True,
+            "portfolio": True,
+            "tier": "stable",
+            "notes": "Promoted Dutch full-stack asymmetric aFRR surface. Belgium remains the narrow GA promise.",
         },
         {
             "workflow": "schedule_revision",
@@ -84,8 +84,8 @@ def public_workflow_capabilities() -> list[dict[str, Any]]:
             "market": "netherlands",
             "single_asset": True,
             "portfolio": True,
-            "tier": "stable_partial",
-            "notes": "Supports da_only and da_plus_fcr base workflows only.",
+            "tier": "stable",
+            "notes": "Supports Dutch full-stack revision, including da_plus_afrr with locked reserve commitments.",
         },
     ]
 

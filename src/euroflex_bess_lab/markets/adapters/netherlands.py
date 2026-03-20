@@ -110,10 +110,6 @@ class NetherlandsMarketAdapter(MarketAdapter):
             raise ValueError(f"Netherlands adapter requires timezone={self.timezone}")
         if config.timing.resolution_minutes != self.resolution_minutes:
             raise ValueError("Netherlands adapter only supports 15-minute resolution")
-        if config.execution_workflow == "da_plus_afrr":
-            raise ValueError(
-                "Netherlands adapter exposes an aFRR extension point, but da_plus_afrr is not yet supported"
-            )
 
     def settlement_engine(self, workflow: str) -> SettlementRule:
         if workflow == "da_only":
@@ -155,7 +151,6 @@ class NetherlandsMarketAdapter(MarketAdapter):
                     "operator": "TenneT",
                     "zone": self.afrr_zone or self.day_ahead_zone,
                     "simplified_product_logic": config.afrr.simplified_product_logic,
-                    "status": "not_yet_supported",
                 },
             )
         return None

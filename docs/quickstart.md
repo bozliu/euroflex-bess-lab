@@ -60,6 +60,12 @@ Treat the Compose notebook path as local-only convenience for a trusted workstat
 
 - Belgium single-asset aFRR baseline:
   `examples/configs/reserve/belgium_da_plus_afrr_base.yaml`
+- Netherlands single-asset aFRR baseline:
+  `examples/configs/reserve/netherlands_da_plus_afrr_base.yaml`
+- Netherlands promoted full-stack stable path:
+  `examples/configs/canonical/netherlands_full_stack.yaml`
+- Netherlands live-ingest secondary path:
+  `examples/configs/basic/netherlands_da_only_live_inputs.yaml`
 - Trusted local forecast integration:
   `examples/configs/custom/belgium_full_stack_custom_python.yaml`
 - Secondary Netherlands energy-only surface:

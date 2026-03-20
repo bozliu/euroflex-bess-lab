@@ -116,6 +116,24 @@ def test_export_bids_includes_afrr_up_and_down_columns(tmp_path: Path) -> None:
     assert "afrr_down_reserved_mw" in asset_annex.columns
 
 
+def test_netherlands_afrr_exports_include_revision_and_bid_columns(tmp_path: Path) -> None:
+    config = load_config(EXAMPLE_RESERVE_DIR / "netherlands_portfolio_schedule_revision_da_plus_afrr_base.yaml")
+    config.artifacts.root_dir = tmp_path / "runs"
+    result = run_walk_forward(config)
+
+    schedule_dir = export_schedule(result.output_dir, profile="operator")
+    bids_dir = export_bids(result.output_dir, profile="bid_planning")
+    operator_site = pd.read_csv(schedule_dir / "site_schedule.csv")
+    site_bids = pd.read_csv(bids_dir / "site_bids.csv")
+
+    assert operator_site["market_id"].eq("netherlands").all()
+    assert "afrr_up_reserved_mw" in operator_site.columns
+    assert "afrr_down_reserved_mw" in operator_site.columns
+    assert site_bids["workflow"].eq("schedule_revision").all()
+    assert "afrr_up_reserved_mw" in site_bids.columns
+    assert "afrr_down_reserved_mw" in site_bids.columns
+
+
 def test_export_schedule_includes_baseline_and_revision_payloads_for_schedule_revision(tmp_path: Path) -> None:
     config = load_config(EXAMPLE_BASIC_DIR / "belgium_da_only_base.yaml")
     payload = config.model_dump(mode="json")

@@ -17,9 +17,9 @@ This page is code-derived and kept under test so the published matrix stays alig
 | `da_plus_fcr` | `belgium` | Yes | Yes | stable | Capacity-first symmetric reserve benchmark. |
 | `da_plus_fcr` | `netherlands` | Yes | Yes | stable | Supported secondary reserve surface; not GA-promised. |
 | `da_plus_afrr` | `belgium` | Yes | Yes | stable | Expected-value asymmetric aFRR benchmark. The GA promise is the revision-wrapped portfolio path. |
-| `da_plus_afrr` | `netherlands` | No | No | unsupported | Extension point only; explicit runtime rejection. |
+| `da_plus_afrr` | `netherlands` | Yes | Yes | stable | Promoted Dutch full-stack asymmetric aFRR surface. Belgium remains the narrow GA promise. |
 | `schedule_revision` | `belgium` | Yes | Yes | stable | Publicly supported wrapper. Only the portfolio + da_plus_afrr base workflow is GA-promised. |
-| `schedule_revision` | `netherlands` | Yes | Yes | stable_partial | Supports da_only and da_plus_fcr base workflows only. |
+| `schedule_revision` | `netherlands` | Yes | Yes | stable | Supports Dutch full-stack revision, including da_plus_afrr with locked reserve commitments. |
 
 ## Forecast provider tiers
 

@@ -5,6 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import cast
 
+import pandas as pd
 import typer
 from rich.console import Console
 from rich.panel import Panel
@@ -19,24 +20,39 @@ from .data.connectors import (
     ConnectorFetchMetadata,
     EliaImbalanceConnector,
     EntsoeDayAheadConnector,
+    TenneTFrequencyRestorationReserveActivationsConnector,
+    TenneTMeritOrderListConnector,
     TenneTSettlementPricesConnector,
 )
 from .data.io import save_json, save_price_series
 from .data.normalization import (
+    derive_tennet_afrr_activation_series,
     normalize_elia_imbalance_json,
     normalize_entsoe_day_ahead_xml,
+    normalize_tennet_frequency_restoration_reserve_activations_json,
+    normalize_tennet_merit_order_list_json,
     normalize_tennet_settlement_prices_json,
 )
 from .diagnostics import append_jsonl_event
 from .exports import export_bids, export_revision, export_schedule
 from .reconciliation import reconcile_run
 from .run_registry import RunRegistry, register_backtest_result, register_derived_artifact, registry_path_for_run_dir
+from .types import PriceSeries
 from .validation import ValidationReport, validate_config_file, validate_data_file
 from .validation import doctor as run_doctor
 
 app = typer.Typer(help="Forecast-aware BESS market benchmarking for European flexibility markets.")
 ingest_app = typer.Typer(help="Fetch and normalize public market data.")
 console = Console()
+
+
+def _parse_cli_datetime(value: str) -> datetime:
+    try:
+        return pd.Timestamp(value).to_pydatetime()
+    except Exception as exc:  # pragma: no cover - defensive wrapper around pandas parsing
+        raise typer.BadParameter(
+            "Expected an ISO-8601 or YYYY-MM-DD timestamp, for example `2026-03-19T23:00:00Z` or `2026-03-19 23:00:00`."
+        ) from exc
 
 
 def _write_raw_payload(path: Path, payload: object, metadata: dict[str, object]) -> None:
@@ -46,6 +62,78 @@ def _write_raw_payload(path: Path, payload: object, metadata: dict[str, object])
     else:
         save_json(payload if isinstance(payload, dict) else {"data": payload}, path)
     save_json(metadata, path.with_name(f"{path.name}.meta.json"))
+
+
+def _augment_ingest_metadata(
+    metadata: dict[str, object],
+    *,
+    normalization_name: str,
+    local_timezone: str,
+    source_operator: str,
+    auth_mode: str,
+    series: PriceSeries | None = None,
+) -> dict[str, object]:
+    payload = dict(metadata)
+    payload.setdefault("source_operator", source_operator)
+    payload.setdefault("auth_mode", auth_mode)
+    payload["normalization_name"] = normalization_name
+    payload["local_timezone"] = local_timezone
+    if series is not None:
+        payload["series_name"] = series.name
+        payload["market"] = series.market
+        payload["zone"] = series.zone
+        payload["resolution_minutes"] = series.resolution_minutes
+        payload["value_kind"] = series.value_kind
+        payload["series_metadata"] = series.metadata
+    return payload
+
+
+def _write_normalized_metadata(path: Path, metadata: dict[str, object]) -> None:
+    save_json(metadata, path.with_name(f"{path.name}.meta.json"))
+
+
+def _write_normalized_frame(path: Path, frame: pd.DataFrame) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    suffix = path.suffix.lower()
+    if suffix == ".parquet":
+        frame.to_parquet(path, index=False)
+        return
+    if suffix == ".csv":
+        frame.to_csv(path, index=False)
+        return
+    if suffix == ".json":
+        save_json({"data": frame.to_dict(orient="records")}, path)
+        return
+    raise typer.BadParameter("Normalized connector outputs must use .parquet, .csv, or .json")
+
+
+def _augment_table_metadata(
+    metadata: dict[str, object],
+    *,
+    normalization_name: str,
+    local_timezone: str,
+    source_operator: str,
+    auth_mode: str,
+    table_name: str,
+    market: str,
+    zone: str,
+    resolution_minutes: int,
+    frame: pd.DataFrame,
+) -> dict[str, object]:
+    payload = _augment_ingest_metadata(
+        metadata,
+        normalization_name=normalization_name,
+        local_timezone=local_timezone,
+        source_operator=source_operator,
+        auth_mode=auth_mode,
+    )
+    payload["table_name"] = table_name
+    payload["market"] = market
+    payload["zone"] = zone
+    payload["resolution_minutes"] = resolution_minutes
+    payload["row_count"] = int(len(frame))
+    payload["columns"] = list(frame.columns)
+    return payload
 
 
 def _version_callback(value: bool) -> None:
@@ -134,8 +222,8 @@ def _render_validation_report(report: ValidationReport) -> None:
 
 @ingest_app.command("entsoe-da")
 def ingest_entsoe_da(
-    start: datetime = typer.Option(..., help="Start time in ISO-8601."),
-    end: datetime = typer.Option(..., help="End time in ISO-8601."),
+    start: str = typer.Option(..., help="Start time in ISO-8601."),
+    end: str = typer.Option(..., help="End time in ISO-8601."),
     out_raw: Path = typer.Option(..., help="Output path for the raw XML payload."),
     out_parquet: Path = typer.Option(..., help="Output path for the standardized Parquet."),
     zone: str = typer.Option("10YBE----------2", help="ENTSO-E bidding zone EIC."),
@@ -146,12 +234,14 @@ def ingest_entsoe_da(
     cache_dir: Path | None = typer.Option(None, help="Optional connector cache directory."),
     cache_ttl_minutes: int | None = typer.Option(None, help="Optional cache TTL in minutes."),
 ) -> None:
+    start_dt = _parse_cli_datetime(start)
+    end_dt = _parse_cli_datetime(end)
     connector = EntsoeDayAheadConnector(timeout_seconds=timeout_seconds)
     xml_payload, metadata = cast(
         tuple[str, ConnectorFetchMetadata],
         connector.fetch(
-            start=start,
-            end=end,
+            start=start_dt,
+            end=end_dt,
             zone=zone,
             max_retries=max_retries,
             backoff_factor=backoff_factor,
@@ -160,17 +250,35 @@ def ingest_entsoe_da(
             return_metadata=True,
         ),
     )
-    _write_raw_payload(out_raw, xml_payload, metadata.as_dict())
+    raw_metadata = _augment_ingest_metadata(
+        metadata.as_dict(),
+        normalization_name="normalize_entsoe_day_ahead_xml",
+        local_timezone=timezone,
+        source_operator="ENTSO-E",
+        auth_mode="query_token_env_var",
+    )
+    _write_raw_payload(out_raw, xml_payload, raw_metadata)
     series = normalize_entsoe_day_ahead_xml(xml_payload, zone=zone, local_timezone=timezone)
     save_price_series(series, out_parquet)
+    _write_normalized_metadata(
+        out_parquet,
+        _augment_ingest_metadata(
+            metadata.as_dict(),
+            normalization_name="normalize_entsoe_day_ahead_xml",
+            local_timezone=timezone,
+            source_operator="ENTSO-E",
+            auth_mode="query_token_env_var",
+            series=series,
+        ),
+    )
     console.print(f"Saved raw ENTSO-E XML to [bold]{out_raw}[/bold]")
     console.print(f"Saved normalized day-ahead prices to [bold]{out_parquet}[/bold]")
 
 
 @ingest_app.command("elia-imbalance")
 def ingest_elia_imbalance(
-    start: datetime = typer.Option(..., help="Start time in ISO-8601."),
-    end: datetime = typer.Option(..., help="End time in ISO-8601."),
+    start: str = typer.Option(..., help="Start time in ISO-8601."),
+    end: str = typer.Option(..., help="End time in ISO-8601."),
     out_raw: Path = typer.Option(..., help="Output path for the raw JSON payload."),
     out_parquet: Path = typer.Option(..., help="Output path for the standardized Parquet."),
     timeout_seconds: int = typer.Option(30, help="Request timeout in seconds."),
@@ -179,12 +287,14 @@ def ingest_elia_imbalance(
     cache_dir: Path | None = typer.Option(None, help="Optional connector cache directory."),
     cache_ttl_minutes: int | None = typer.Option(None, help="Optional cache TTL in minutes."),
 ) -> None:
+    start_dt = _parse_cli_datetime(start)
+    end_dt = _parse_cli_datetime(end)
     connector = EliaImbalanceConnector(timeout_seconds=timeout_seconds)
     payload, metadata = cast(
         tuple[dict[str, object], ConnectorFetchMetadata],
         connector.fetch(
-            start=start,
-            end=end,
+            start=start_dt,
+            end=end_dt,
             max_retries=max_retries,
             backoff_factor=backoff_factor,
             cache_dir=cache_dir,
@@ -192,31 +302,52 @@ def ingest_elia_imbalance(
             return_metadata=True,
         ),
     )
-    _write_raw_payload(out_raw, payload, metadata.as_dict())
+    raw_metadata = _augment_ingest_metadata(
+        metadata.as_dict(),
+        normalization_name="normalize_elia_imbalance_json",
+        local_timezone="Europe/Brussels",
+        source_operator="Elia",
+        auth_mode="public_open_data",
+    )
+    _write_raw_payload(out_raw, payload, raw_metadata)
     series = normalize_elia_imbalance_json(payload, local_timezone="Europe/Brussels")
     save_price_series(series, out_parquet)
+    _write_normalized_metadata(
+        out_parquet,
+        _augment_ingest_metadata(
+            metadata.as_dict(),
+            normalization_name="normalize_elia_imbalance_json",
+            local_timezone="Europe/Brussels",
+            source_operator="Elia",
+            auth_mode="public_open_data",
+            series=series,
+        ),
+    )
     console.print(f"Saved raw Elia JSON to [bold]{out_raw}[/bold]")
     console.print(f"Saved normalized imbalance prices to [bold]{out_parquet}[/bold]")
 
 
 @ingest_app.command("tennet-nl-imbalance")
 def ingest_tennet_nl_imbalance(
-    start: datetime = typer.Option(..., help="Start time in ISO-8601."),
-    end: datetime = typer.Option(..., help="End time in ISO-8601."),
+    start: str = typer.Option(..., help="Start time in ISO-8601."),
+    end: str = typer.Option(..., help="End time in ISO-8601."),
     out_raw: Path = typer.Option(..., help="Output path for the raw JSON payload."),
     out_parquet: Path = typer.Option(..., help="Output path for the standardized Parquet."),
+    env: str = typer.Option(..., "--env", help="TenneT environment: production or acceptance."),
     timeout_seconds: int = typer.Option(30, help="Request timeout in seconds."),
     max_retries: int = typer.Option(0, help="Maximum retries for transient upstream failures."),
     backoff_factor: float = typer.Option(0.5, help="Retry backoff factor."),
     cache_dir: Path | None = typer.Option(None, help="Optional connector cache directory."),
     cache_ttl_minutes: int | None = typer.Option(None, help="Optional cache TTL in minutes."),
 ) -> None:
-    connector = TenneTSettlementPricesConnector(timeout_seconds=timeout_seconds)
+    start_dt = _parse_cli_datetime(start)
+    end_dt = _parse_cli_datetime(end)
+    connector = TenneTSettlementPricesConnector(timeout_seconds=timeout_seconds, environment=env)
     payload, metadata = cast(
         tuple[dict[str, object], ConnectorFetchMetadata],
         connector.fetch(
-            start=start,
-            end=end,
+            start=start_dt,
+            end=end_dt,
             max_retries=max_retries,
             backoff_factor=backoff_factor,
             cache_dir=cache_dir,
@@ -224,11 +355,301 @@ def ingest_tennet_nl_imbalance(
             return_metadata=True,
         ),
     )
-    _write_raw_payload(out_raw, payload, metadata.as_dict())
+    raw_metadata = _augment_ingest_metadata(
+        metadata.as_dict(),
+        normalization_name="normalize_tennet_settlement_prices_json",
+        local_timezone="Europe/Amsterdam",
+        source_operator="TenneT",
+        auth_mode="apikey_header_env_var",
+    )
+    _write_raw_payload(out_raw, payload, raw_metadata)
     series = normalize_tennet_settlement_prices_json(payload, local_timezone="Europe/Amsterdam")
     save_price_series(series, out_parquet)
+    _write_normalized_metadata(
+        out_parquet,
+        _augment_ingest_metadata(
+            metadata.as_dict(),
+            normalization_name="normalize_tennet_settlement_prices_json",
+            local_timezone="Europe/Amsterdam",
+            source_operator="TenneT",
+            auth_mode="apikey_header_env_var",
+            series=series,
+        ),
+    )
     console.print(f"Saved raw TenneT JSON to [bold]{out_raw}[/bold]")
     console.print(f"Saved normalized NL imbalance prices to [bold]{out_parquet}[/bold]")
+
+
+@ingest_app.command("tennet-nl-merit-order")
+def ingest_tennet_nl_merit_order(
+    start: str = typer.Option(..., help="Start time in ISO-8601."),
+    end: str = typer.Option(..., help="End time in ISO-8601."),
+    out_raw: Path = typer.Option(..., help="Output path for the raw JSON payload."),
+    out_parquet: Path = typer.Option(..., help="Output path for the normalized ladder table."),
+    env: str = typer.Option(..., "--env", help="TenneT environment: production or acceptance."),
+    timeout_seconds: int = typer.Option(30, help="Request timeout in seconds."),
+    max_retries: int = typer.Option(0, help="Maximum retries for transient upstream failures."),
+    backoff_factor: float = typer.Option(0.5, help="Retry backoff factor."),
+    cache_dir: Path | None = typer.Option(None, help="Optional connector cache directory."),
+    cache_ttl_minutes: int | None = typer.Option(None, help="Optional cache TTL in minutes."),
+) -> None:
+    start_dt = _parse_cli_datetime(start)
+    end_dt = _parse_cli_datetime(end)
+    connector = TenneTMeritOrderListConnector(timeout_seconds=timeout_seconds, environment=env)
+    payload, metadata = cast(
+        tuple[dict[str, object], ConnectorFetchMetadata],
+        connector.fetch(
+            start=start_dt,
+            end=end_dt,
+            max_retries=max_retries,
+            backoff_factor=backoff_factor,
+            cache_dir=cache_dir,
+            cache_ttl_minutes=cache_ttl_minutes,
+            return_metadata=True,
+        ),
+    )
+    raw_metadata = _augment_ingest_metadata(
+        metadata.as_dict(),
+        normalization_name="normalize_tennet_merit_order_list_json",
+        local_timezone="Europe/Amsterdam",
+        source_operator="TenneT",
+        auth_mode="apikey_header_env_var",
+    )
+    _write_raw_payload(out_raw, payload, raw_metadata)
+    frame = normalize_tennet_merit_order_list_json(payload, local_timezone="Europe/Amsterdam")
+    _write_normalized_frame(out_parquet, frame)
+    _write_normalized_metadata(
+        out_parquet,
+        _augment_table_metadata(
+            metadata.as_dict(),
+            normalization_name="normalize_tennet_merit_order_list_json",
+            local_timezone="Europe/Amsterdam",
+            source_operator="TenneT",
+            auth_mode="apikey_header_env_var",
+            table_name="tennet_merit_order_list",
+            market="afrr_merit_order",
+            zone="10YNL----------L",
+            resolution_minutes=15,
+            frame=frame,
+        ),
+    )
+    console.print(f"Saved raw TenneT merit-order JSON to [bold]{out_raw}[/bold]")
+    console.print(f"Saved normalized NL merit-order ladder to [bold]{out_parquet}[/bold]")
+
+
+@ingest_app.command("tennet-nl-afrr-activations")
+def ingest_tennet_nl_afrr_activations(
+    start: str = typer.Option(..., help="Start time in ISO-8601."),
+    end: str = typer.Option(..., help="End time in ISO-8601."),
+    out_raw: Path = typer.Option(..., help="Output path for the raw JSON payload."),
+    out_parquet: Path = typer.Option(..., help="Output path for the normalized activation table."),
+    env: str = typer.Option(..., "--env", help="TenneT environment: production or acceptance."),
+    timeout_seconds: int = typer.Option(30, help="Request timeout in seconds."),
+    max_retries: int = typer.Option(0, help="Maximum retries for transient upstream failures."),
+    backoff_factor: float = typer.Option(0.5, help="Retry backoff factor."),
+    cache_dir: Path | None = typer.Option(None, help="Optional connector cache directory."),
+    cache_ttl_minutes: int | None = typer.Option(None, help="Optional cache TTL in minutes."),
+) -> None:
+    start_dt = _parse_cli_datetime(start)
+    end_dt = _parse_cli_datetime(end)
+    connector = TenneTFrequencyRestorationReserveActivationsConnector(timeout_seconds=timeout_seconds, environment=env)
+    payload, metadata = cast(
+        tuple[dict[str, object], ConnectorFetchMetadata],
+        connector.fetch(
+            start=start_dt,
+            end=end_dt,
+            max_retries=max_retries,
+            backoff_factor=backoff_factor,
+            cache_dir=cache_dir,
+            cache_ttl_minutes=cache_ttl_minutes,
+            return_metadata=True,
+        ),
+    )
+    raw_metadata = _augment_ingest_metadata(
+        metadata.as_dict(),
+        normalization_name="normalize_tennet_frequency_restoration_reserve_activations_json",
+        local_timezone="Europe/Amsterdam",
+        source_operator="TenneT",
+        auth_mode="apikey_header_env_var",
+    )
+    _write_raw_payload(out_raw, payload, raw_metadata)
+    frame = normalize_tennet_frequency_restoration_reserve_activations_json(payload, local_timezone="Europe/Amsterdam")
+    _write_normalized_frame(out_parquet, frame)
+    _write_normalized_metadata(
+        out_parquet,
+        _augment_table_metadata(
+            metadata.as_dict(),
+            normalization_name="normalize_tennet_frequency_restoration_reserve_activations_json",
+            local_timezone="Europe/Amsterdam",
+            source_operator="TenneT",
+            auth_mode="apikey_header_env_var",
+            table_name="tennet_frequency_restoration_reserve_activations",
+            market="afrr_activation_volume",
+            zone="10YNL----------L",
+            resolution_minutes=15,
+            frame=frame,
+        ),
+    )
+    console.print(f"Saved raw TenneT aFRR activations JSON to [bold]{out_raw}[/bold]")
+    console.print(f"Saved normalized NL aFRR activations to [bold]{out_parquet}[/bold]")
+
+
+@ingest_app.command("tennet-nl-afrr-derived")
+def ingest_tennet_nl_afrr_derived(
+    start: str = typer.Option(..., help="Start time in ISO-8601."),
+    end: str = typer.Option(..., help="End time in ISO-8601."),
+    out_dir: Path = typer.Option(..., help="Directory for raw, normalized, and derived Dutch reserve outputs."),
+    env: str = typer.Option(..., "--env", help="TenneT environment: production or acceptance."),
+    timeout_seconds: int = typer.Option(30, help="Request timeout in seconds."),
+    max_retries: int = typer.Option(0, help="Maximum retries for transient upstream failures."),
+    backoff_factor: float = typer.Option(0.5, help="Retry backoff factor."),
+    cache_dir: Path | None = typer.Option(None, help="Optional connector cache directory."),
+    cache_ttl_minutes: int | None = typer.Option(None, help="Optional cache TTL in minutes."),
+) -> None:
+    start_dt = _parse_cli_datetime(start)
+    end_dt = _parse_cli_datetime(end)
+    merit_order_connector = TenneTMeritOrderListConnector(timeout_seconds=timeout_seconds, environment=env)
+    activations_connector = TenneTFrequencyRestorationReserveActivationsConnector(
+        timeout_seconds=timeout_seconds, environment=env
+    )
+    merit_payload, merit_metadata = cast(
+        tuple[dict[str, object], ConnectorFetchMetadata],
+        merit_order_connector.fetch(
+            start=start_dt,
+            end=end_dt,
+            max_retries=max_retries,
+            backoff_factor=backoff_factor,
+            cache_dir=cache_dir,
+            cache_ttl_minutes=cache_ttl_minutes,
+            return_metadata=True,
+        ),
+    )
+    activations_payload, activations_metadata = cast(
+        tuple[dict[str, object], ConnectorFetchMetadata],
+        activations_connector.fetch(
+            start=start_dt,
+            end=end_dt,
+            max_retries=max_retries,
+            backoff_factor=backoff_factor,
+            cache_dir=cache_dir,
+            cache_ttl_minutes=cache_ttl_minutes,
+            return_metadata=True,
+        ),
+    )
+
+    raw_dir = out_dir / "raw"
+    normalized_dir = out_dir / "normalized"
+    merit_raw_path = raw_dir / "tennet_merit_order.json"
+    activations_raw_path = raw_dir / "tennet_afrr_activations.json"
+    merit_parquet = normalized_dir / "netherlands_merit_order.parquet"
+    activations_parquet = normalized_dir / "netherlands_afrr_activations.parquet"
+    _write_raw_payload(
+        merit_raw_path,
+        merit_payload,
+        _augment_ingest_metadata(
+            merit_metadata.as_dict(),
+            normalization_name="normalize_tennet_merit_order_list_json",
+            local_timezone="Europe/Amsterdam",
+            source_operator="TenneT",
+            auth_mode="apikey_header_env_var",
+        ),
+    )
+    _write_raw_payload(
+        activations_raw_path,
+        activations_payload,
+        _augment_ingest_metadata(
+            activations_metadata.as_dict(),
+            normalization_name="normalize_tennet_frequency_restoration_reserve_activations_json",
+            local_timezone="Europe/Amsterdam",
+            source_operator="TenneT",
+            auth_mode="apikey_header_env_var",
+        ),
+    )
+
+    merit_frame = normalize_tennet_merit_order_list_json(merit_payload, local_timezone="Europe/Amsterdam")
+    activations_frame = normalize_tennet_frequency_restoration_reserve_activations_json(
+        activations_payload, local_timezone="Europe/Amsterdam"
+    )
+    _write_normalized_frame(merit_parquet, merit_frame)
+    _write_normalized_frame(activations_parquet, activations_frame)
+    _write_normalized_metadata(
+        merit_parquet,
+        _augment_table_metadata(
+            merit_metadata.as_dict(),
+            normalization_name="normalize_tennet_merit_order_list_json",
+            local_timezone="Europe/Amsterdam",
+            source_operator="TenneT",
+            auth_mode="apikey_header_env_var",
+            table_name="tennet_merit_order_list",
+            market="afrr_merit_order",
+            zone="10YNL----------L",
+            resolution_minutes=15,
+            frame=merit_frame,
+        ),
+    )
+    _write_normalized_metadata(
+        activations_parquet,
+        _augment_table_metadata(
+            activations_metadata.as_dict(),
+            normalization_name="normalize_tennet_frequency_restoration_reserve_activations_json",
+            local_timezone="Europe/Amsterdam",
+            source_operator="TenneT",
+            auth_mode="apikey_header_env_var",
+            table_name="tennet_frequency_restoration_reserve_activations",
+            market="afrr_activation_volume",
+            zone="10YNL----------L",
+            resolution_minutes=15,
+            frame=activations_frame,
+        ),
+    )
+
+    derived_series = derive_tennet_afrr_activation_series(
+        merit_frame,
+        activations_frame,
+        zone="10YNL----------L",
+        source="tennet_live_derived",
+        local_timezone="Europe/Amsterdam",
+    )
+    for market_name, series in derived_series.items():
+        target_path = normalized_dir / f"netherlands_{market_name}.parquet"
+        save_price_series(series, target_path)
+        source_metadata = merit_metadata if "price" in market_name else activations_metadata
+        _write_normalized_metadata(
+            target_path,
+            _augment_ingest_metadata(
+                source_metadata.as_dict(),
+                normalization_name="derive_tennet_afrr_activation_series",
+                local_timezone="Europe/Amsterdam",
+                source_operator="TenneT",
+                auth_mode="apikey_header_env_var",
+                series=series,
+            ),
+        )
+
+    save_json(
+        {
+            "environment": env,
+            "raw_paths": {
+                "merit_order": str(merit_raw_path),
+                "afrr_activations": str(activations_raw_path),
+            },
+            "normalized_paths": {
+                "merit_order": str(merit_parquet),
+                "afrr_activations": str(activations_parquet),
+                **{
+                    market_name: str(normalized_dir / f"netherlands_{market_name}.parquet")
+                    for market_name in derived_series
+                },
+            },
+            "notes": [
+                "Derived Dutch live reserve outputs include merit-order ladders, activation volumes, and derived activation price/ratio series.",
+                "Direct live TenneT aFRR capacity remuneration prices are not yet emitted here because the connector milestone does not freeze a public capacity-price endpoint.",
+            ],
+        },
+        out_dir / "manifest.json",
+    )
+    console.print(f"Saved Dutch reserve raw payloads to [bold]{raw_dir}[/bold]")
+    console.print(f"Saved Dutch reserve normalized outputs to [bold]{normalized_dir}[/bold]")
 
 
 @app.command()

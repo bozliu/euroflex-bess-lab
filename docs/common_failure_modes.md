@@ -13,9 +13,17 @@ Use `schema_version: 4`. The current release line expects `site` and `assets`, n
 - `lock_policy`
 - `max_revision_horizon_intervals`
 
-## Netherlands `da_plus_afrr` is rejected
+## TenneT live ingest fails before normalization
 
-This is intentional. Belgium is the only GA aFRR market in the current release line. The Netherlands adapter exposes the extension point, but it fails fast on runnable `da_plus_afrr` configs.
+Check:
+
+- you passed `--env acceptance` or `--env production` intentionally
+- `TENNET_API_KEY` is present in the environment, or the matching `TENNET_API_KEY_ACCEPTANCE` / `TENNET_API_KEY_PRODUCTION`
+- if TenneT gave you an environment-specific hostname, set `TENNET_API_BASE_URL_ACCEPTANCE` or `TENNET_API_BASE_URL_PRODUCTION`
+- the requested window is within TenneT historical coverage
+- the payload still contains native 15-minute settlement rows
+
+The connector now fails early on missing credentials, rate limits, timeouts after the configured retries, and schema drift before normalization.
 
 ## Revision checkpoints are rejected
 
@@ -45,7 +53,7 @@ and check that:
 
 ## Reserve results look too optimistic
 
-That usually means you are interpreting reserve outputs as a live reserve engine. `da_plus_fcr` is a capacity-first benchmark and Belgium `da_plus_afrr` is an expected-value benchmark with explicit simplifications.
+That usually means you are interpreting reserve outputs as a live reserve engine. `da_plus_fcr` is a capacity-first benchmark and Belgium/Netherlands `da_plus_afrr` are expected-value benchmarks with explicit simplifications.
 
 ## `reconcile` does not match operator settlement
 

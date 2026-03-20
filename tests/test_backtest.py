@@ -98,6 +98,21 @@ def test_example_afrr_backtest_writes_expected_outputs(tmp_path: Path) -> None:
     assert summary["reserve_activation_revenue_eur"] >= 0.0
 
 
+def test_example_netherlands_afrr_backtest_writes_expected_outputs(tmp_path: Path) -> None:
+    config = load_config(EXAMPLE_RESERVE_DIR / "netherlands_da_plus_afrr_base.yaml")
+    config.artifacts.root_dir = tmp_path
+    result = run_walk_forward(config)
+    assert result.output_dir is not None
+    dispatch = result.site_dispatch
+    assert "afrr_up_reserved_mw" in dispatch.columns
+    assert "afrr_down_reserved_mw" in dispatch.columns
+    assert dispatch["afrr_up_reserved_mw"].gt(0.0).any() or dispatch["afrr_down_reserved_mw"].gt(0.0).any()
+    summary = load_report_summary(result.output_dir)
+    assert summary["benchmark_name"] == "netherlands.da_plus_afrr.perfect_foresight.single_asset"
+    assert summary["reserve_product_id"] == "afrr_asymmetric"
+    assert summary["market_id"] == "netherlands"
+
+
 def test_portfolio_schedule_revision_afrr_writes_revision_outputs(tmp_path: Path) -> None:
     config = load_config(EXAMPLE_RESERVE_DIR / "belgium_portfolio_schedule_revision_da_plus_afrr_base.yaml")
     config.artifacts.root_dir = tmp_path
@@ -109,6 +124,20 @@ def test_portfolio_schedule_revision_afrr_writes_revision_outputs(tmp_path: Path
     assert summary["workflow"] == "schedule_revision"
     assert summary["base_workflow"] == "da_plus_afrr"
     assert summary["run_scope"] == "portfolio"
+
+
+def test_netherlands_portfolio_schedule_revision_afrr_writes_revision_outputs(tmp_path: Path) -> None:
+    config = load_config(EXAMPLE_RESERVE_DIR / "netherlands_portfolio_schedule_revision_da_plus_afrr_base.yaml")
+    config.artifacts.root_dir = tmp_path
+    result = run_walk_forward(config)
+    assert result.output_dir is not None
+    assert (result.output_dir / "baseline_schedule.parquet").exists()
+    assert (result.output_dir / "revision_schedule.parquet").exists()
+    summary = load_report_summary(result.output_dir)
+    assert summary["workflow"] == "schedule_revision"
+    assert summary["base_workflow"] == "da_plus_afrr"
+    assert summary["run_scope"] == "portfolio"
+    assert summary["market_id"] == "netherlands"
 
 
 def test_schedule_revision_backtest_writes_revision_outputs(tmp_path: Path) -> None:

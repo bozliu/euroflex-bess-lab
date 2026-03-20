@@ -1,5 +1,18 @@
 # Release Notes
 
+## `v1.2.0`
+
+- promotes Netherlands to a public full-stack stable surface with `da_plus_afrr` and `schedule_revision`
+- adds Dutch canonical, reserve, and notebook examples on top of frozen Dutch aFRR benchmark curves
+- expands the TenneT live connector surface into Dutch reserve ladders, activation volumes, and derived activation price / ratio series
+- keeps Belgium as the narrow GA promise while lifting the explicit Netherlands aFRR runtime rejection
+
+## `v1.1.1`
+
+- hardens the TenneT live connector around settlement-price ingestion only
+- adds normalized provenance sidecars and a Dutch live-input example path
+- adds env-gated live TenneT smoke coverage without making deterministic CI depend on upstream availability
+
 ## `v1.1.0`
 
 - adds the first operational integration layer

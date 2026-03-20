@@ -18,6 +18,7 @@ dist/
 src/*.egg-info/
 htmlcov/
 site/
+.ci-artifacts/
 artifacts/**
 !artifacts/.gitkeep
 data/raw/*

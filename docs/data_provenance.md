@@ -22,6 +22,12 @@ These samples may be truncated, normalized, or simplified so the public quicksta
 | `examples/data/netherlands_day_ahead_prices.csv` | Netherlands day-ahead | ENTSO-E Transparency Platform workflow | Derived, normalized sample | Bundled in this repo for demo/CI/docs; verify upstream rights before wider reuse | secondary-surface example, docs, tests | secondary surface only; not a promoted live workflow |
 | `examples/data/netherlands_imbalance_prices.csv` | Netherlands imbalance | TenneT public settlement-price publications | Derived, normalized sample | Bundled in this repo for demo/CI/docs; verify upstream rights before wider reuse | secondary-surface examples and tests | frozen sample only; not a live settlement feed |
 | `examples/data/netherlands_fcr_capacity_prices.csv` | Netherlands FCR capacity | Netherlands public market-derived benchmark curve | Derived, simplified sample | Bundled in this repo for demo/CI/docs; verify upstream rights before wider reuse | secondary-surface reserve examples | simplified benchmark surface |
+| `examples/data/netherlands_afrr_capacity_up_prices.csv` | Netherlands aFRR capacity up | TenneT-style public reserve benchmark workflow | Derived, simplified sample | Bundled in this repo for demo/CI/docs; verify upstream rights before wider reuse | Dutch aFRR reserve examples | simplified expected-value benchmark input |
+| `examples/data/netherlands_afrr_capacity_down_prices.csv` | Netherlands aFRR capacity down | TenneT-style public reserve benchmark workflow | Derived, simplified sample | Bundled in this repo for demo/CI/docs; verify upstream rights before wider reuse | Dutch aFRR reserve examples | simplified expected-value benchmark input |
+| `examples/data/netherlands_afrr_activation_price_up.csv` | Netherlands aFRR activation up | TenneT-style public reserve benchmark workflow | Derived, simplified sample | Bundled in this repo for demo/CI/docs; verify upstream rights before wider reuse | Dutch aFRR reserve examples | simplified expected-value benchmark input |
+| `examples/data/netherlands_afrr_activation_price_down.csv` | Netherlands aFRR activation down | TenneT-style public reserve benchmark workflow | Derived, simplified sample | Bundled in this repo for demo/CI/docs; verify upstream rights before wider reuse | Dutch aFRR reserve examples | simplified expected-value benchmark input |
+| `examples/data/netherlands_afrr_activation_ratio_up.csv` | Netherlands aFRR activation ratio up | TenneT-style public reserve benchmark workflow | Derived, simplified sample | Bundled in this repo for demo/CI/docs; verify upstream rights before wider reuse | Dutch aFRR reserve examples | simplified expected-value benchmark input |
+| `examples/data/netherlands_afrr_activation_ratio_down.csv` | Netherlands aFRR activation ratio down | TenneT-style public reserve benchmark workflow | Derived, simplified sample | Bundled in this repo for demo/CI/docs; verify upstream rights before wider reuse | Dutch aFRR reserve examples | simplified expected-value benchmark input |
 
 ## Raw connector fixtures
 
@@ -31,7 +37,7 @@ The near-raw payloads under `tests/fixtures/raw/` are included to test connector
 | --- | --- | --- |
 | `tests/fixtures/raw/entsoe/` | ENTSO-E Transparency Platform XML | normalization coverage plus DST edge-case checks |
 | `tests/fixtures/raw/elia/` | Elia Opendatasoft JSON | imbalance parsing and schema-shape checks |
-| `tests/fixtures/raw/tennet/` | TenneT settlement-price JSON | NL imbalance normalization checks |
+| `tests/fixtures/raw/tennet/` | TenneT settlement-price, merit-order, and activation JSON | Dutch imbalance plus reserve connector normalization checks |
 
 ## Normalization, timezones, and missing-value handling
 
@@ -50,14 +56,52 @@ For live or fresh historical pulls, use the built-in ingestion commands and conn
 ```bash
 euroflex ingest entsoe-da --start 2026-01-01T00:00:00Z --end 2026-01-02T00:00:00Z --out-raw raw/entsoe.xml --out-parquet normalized/day_ahead.parquet
 euroflex ingest elia-imbalance --start 2026-01-01T00:00:00Z --end 2026-01-02T00:00:00Z --out-raw raw/elia.json --out-parquet normalized/imbalance.parquet
-euroflex ingest tennet-nl-imbalance --start 2026-01-01T00:00:00Z --end 2026-01-02T00:00:00Z --out-raw raw/tennet.json --out-parquet normalized/nl_imbalance.parquet
+euroflex ingest tennet-nl-imbalance --start 2026-01-01T00:00:00Z --end 2026-01-02T00:00:00Z --env acceptance --out-raw raw/tennet.json --out-parquet normalized/nl_imbalance.parquet
+euroflex ingest tennet-nl-afrr-derived --start 2025-01-13T00:00:00Z --end 2025-01-14T00:00:00Z --env acceptance --out-dir normalized/dutch_reserve
 ```
 
 Current upstream connector surfaces:
 
 - ENTSO-E day-ahead: `https://web-api.tp.entsoe.eu/api` with `documentType=A44` and an `ENTSOE_API_TOKEN`
 - Elia imbalance: `https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods162/records`
-- TenneT NL settlement prices: `https://api.tennet.eu/publications/v1/settlement-prices` with a `TENNET_API_KEY`
+- TenneT NL settlement prices:
+  - `production`: `https://api.tennet.eu/publications/v1/settlement-prices`
+  - `acceptance`: `https://api.acc.tennet.eu/publications/v1/settlement-prices`
+- TenneT NL merit order list:
+  - `production`: `https://api.tennet.eu/publications/v1/merit-order-list`
+  - `acceptance`: `https://api.acc.tennet.eu/publications/v1/merit-order-list`
+- TenneT NL frequency restoration reserve activations:
+  - `production`: `https://api.tennet.eu/publications/v1/frequency-restoration-reserve-activations`
+  - `acceptance`: `https://api.acc.tennet.eu/publications/v1/frequency-restoration-reserve-activations`
+  - auth via `TENNET_API_KEY` or the environment-specific `TENNET_API_KEY_ACCEPTANCE` / `TENNET_API_KEY_PRODUCTION`
+  - optional env-specific host overrides via `TENNET_API_BASE_URL_PRODUCTION`, `TENNET_API_BASE_URL_ACCEPTANCE`, or `TENNET_API_BASE_URL`
+
+## TenneT connector contract
+
+The current live Dutch connector milestone freezes three live TenneT publication surfaces:
+
+- settlement prices
+- merit order list
+- frequency restoration reserve activations
+
+- endpoint ids:
+  - `publications_v1_settlement_prices`
+  - `publications_v1_merit_order_list`
+  - `publications_v1_frequency_restoration_reserve_activations`
+- auth mechanism: API-key header, selected from `TENNET_API_KEY`, `TENNET_API_KEY_ACCEPTANCE`, or `TENNET_API_KEY_PRODUCTION`
+- environment selector: `--env acceptance|production` on the CLI or `TENNET_API_ENV` / connector `environment=...` in Python
+- base-url overrides: `TENNET_API_BASE_URL_PRODUCTION`, `TENNET_API_BASE_URL_ACCEPTANCE`, or `TENNET_API_BASE_URL`
+- request window: `date_from` and `date_to`
+- timezone contract: treat upstream TenneT `timeInterval_*` values as UTC, then normalize to `Europe/Amsterdam`
+- cadence contract: native 15-minute rows only
+- schema-drift behavior: fail before normalization if neither `TimeSeries` nor `Response -> TimeSeries` contains the required `Period -> Points` structure
+- provenance sidecars: raw and normalized outputs write `.meta.json` files with connector id, endpoint id, operator, auth mode, environment, base URL, request window, freshness, cache, retry, and normalization metadata
+- historical coverage caveat: treat live API coverage and retention as an upstream dependency, not a repo guarantee
+
+Dutch reserve live ingestion also exposes a derived layer:
+
+- `euroflex ingest tennet-nl-afrr-derived` produces normalized merit-order and activation tables plus derived live `afrr_activation_price_*` and `afrr_activation_ratio_*` series.
+- direct live Dutch `afrr_capacity_up` and `afrr_capacity_down` remuneration prices are **not** frozen in the public connector contract yet, because this release does not claim a verified public TenneT capacity-price endpoint with the same support posture.
 
 For commercial or operational use, point these commands at a governed internal data lake, warehouse, or vendor-backed feed rather than relying on the frozen CSVs in this repository.
 

@@ -37,9 +37,12 @@ def test_public_examples_surface_is_curated() -> None:
     )
     assert public_configs == [
         "configs/basic/netherlands_da_only_base.yaml",
+        "configs/basic/netherlands_da_only_live_inputs.yaml",
         "configs/canonical/belgium_full_stack.yaml",
+        "configs/canonical/netherlands_full_stack.yaml",
         "configs/custom/belgium_full_stack_custom_python.yaml",
         "configs/reserve/belgium_da_plus_afrr_base.yaml",
+        "configs/reserve/netherlands_da_plus_afrr_base.yaml",
     ]
 
 
@@ -60,13 +63,36 @@ def test_public_release_shell_files_exist() -> None:
 
 def test_readme_references_demo_gif_and_positioning_sections() -> None:
     readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    assert "docs/assets/tennet-live-workflow.gif" in readme
     assert "docs/assets/canonical-belgium-demo.gif" in readme
+    assert "docs/assets/canonical-demo-terminal.gif" not in readme
     assert "## Install" in readme
     assert "python -m pip install euroflex-bess-lab" in readme
     assert "## Data Provenance & Sample Datasets" in readme
     assert "[Data provenance](docs/data_provenance.md)" in readme
     assert "## Who This Is For" in readme
     assert "## Why It Matters" in readme
+
+
+def test_public_demo_surfaces_do_not_expose_tennet_secrets_or_raw_payload_shapes() -> None:
+    target_paths = [
+        REPO_ROOT / "README.md",
+        REPO_ROOT / "docs" / "index.md",
+        REPO_ROOT / "scripts" / "render_demo_gif.py",
+        REPO_ROOT / "scripts" / "render_tennet_hero_gif.py",
+    ]
+    forbidden_markers = (
+        "/tmp/",
+        "/private/tmp/",
+        "TENNET_API_KEY=",
+        "Response.TimeSeries",
+        '"TimeSeries"',
+        "<TimeSeries",
+    )
+    for path in target_paths:
+        content = path.read_text(encoding="utf-8")
+        for marker in forbidden_markers:
+            assert marker not in content, f"Unexpected public demo marker {marker!r} found in {path}"
 
 
 def test_repo_tree_has_no_local_user_absolute_paths_in_text_files() -> None:

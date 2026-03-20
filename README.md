@@ -9,11 +9,13 @@
 
 > Given the information visible at decision time, how should a Belgium battery portfolio behind a shared POI be scheduled, revised, reconciled, and handed off to an operator?
 
+![TenneT live workflow](docs/assets/tennet-live-workflow.gif)
+
+From TenneT live data to operator handoff: live Dutch inputs, provenance-aware normalization, revision-aware scheduling, and operator-facing exports.
+
 ![Canonical Belgium demo](docs/assets/canonical-belgium-demo.gif)
 
-The demo below shows forecast inputs turning into checkpoint revisions, asset SoC movement, expected-versus-realized value bridges, and the final operator plus bid-planning handoff artifacts.
-
-![Canonical Terminal demo](docs/assets/canonical-demo-terminal.gif)
+The Belgium canonical path remains the narrow GA promise: forecast inputs turn into checkpoint revisions, asset SoC movement, expected-versus-realized value bridges, and the final operator plus bid-planning handoff artifacts.
 
 This public release is the open-core base for operator-facing benchmarking, scheduling support, revision, audit, and downstream handoff in European BESS workflows. Commercial integration, managed deployment, and market-specific adapters are available separately from the public core.
 
@@ -44,7 +46,7 @@ Everything else is explicitly tiered:
 
 - `perfect_foresight`: oracle-only benchmark surface
 - `custom_python`: stable integration point for trusted local forecast code
-- Netherlands: supported secondary surface, not part of the GA promise
+- Netherlands: promoted stable full-stack surface, but still outside the narrow Belgium GA promise
 - live submission / EMS control: out of scope
 
 ```mermaid
@@ -162,6 +164,7 @@ Start with:
 - [Capability matrix](docs/capability_matrix.md)
 - [Operator runbook](docs/operator_runbook.md)
 - [Execution handoff](docs/execution_handoff.md)
+- [Using TenneT live inputs](docs/using_tennet_live_inputs.md)
 - [Service API](docs/service_api.md)
 - [Run registry](docs/run_registry.md)
 - [Export profiles](docs/export_profiles.md)
@@ -174,9 +177,12 @@ Start with:
 The curated public examples are intentionally small:
 
 - [`examples/configs/canonical/belgium_full_stack.yaml`](examples/configs/canonical/belgium_full_stack.yaml)
+- [`examples/configs/canonical/netherlands_full_stack.yaml`](examples/configs/canonical/netherlands_full_stack.yaml)
 - [`examples/configs/reserve/belgium_da_plus_afrr_base.yaml`](examples/configs/reserve/belgium_da_plus_afrr_base.yaml)
+- [`examples/configs/reserve/netherlands_da_plus_afrr_base.yaml`](examples/configs/reserve/netherlands_da_plus_afrr_base.yaml)
 - [`examples/configs/custom/belgium_full_stack_custom_python.yaml`](examples/configs/custom/belgium_full_stack_custom_python.yaml)
 - [`examples/configs/basic/netherlands_da_only_base.yaml`](examples/configs/basic/netherlands_da_only_base.yaml)
+- [`examples/configs/basic/netherlands_da_only_live_inputs.yaml`](examples/configs/basic/netherlands_da_only_live_inputs.yaml)
 - [`examples/batches/canonical_belgium_full_stack.yaml`](examples/batches/canonical_belgium_full_stack.yaml)
 
 Everything else needed for tests and non-promoted scenarios lives under `tests/fixtures/`.

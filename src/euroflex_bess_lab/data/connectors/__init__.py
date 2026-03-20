@@ -7,7 +7,11 @@ from .common import (
 )
 from .elia import EliaImbalanceConnector
 from .entsoe import EntsoeDayAheadConnector
-from .tennet import TenneTSettlementPricesConnector
+from .tennet import (
+    TenneTFrequencyRestorationReserveActivationsConnector,
+    TenneTMeritOrderListConnector,
+    TenneTSettlementPricesConnector,
+)
 
 __all__ = [
     "ConnectorAuthError",
@@ -17,5 +21,7 @@ __all__ = [
     "ConnectorSchemaError",
     "EliaImbalanceConnector",
     "EntsoeDayAheadConnector",
+    "TenneTFrequencyRestorationReserveActivationsConnector",
+    "TenneTMeritOrderListConnector",
     "TenneTSettlementPricesConnector",
 ]

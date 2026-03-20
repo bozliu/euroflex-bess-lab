@@ -1,0 +1,64 @@
+{
+  "Response": {
+    "TimeSeries": [
+      {
+        "mRID": 1,
+        "currency_Unit_name": "EUR",
+        "price_Measurement_Unit_name": "MWh",
+        "quantity_Measurement_Unit_name": "MW",
+        "Period": {
+          "timeInterval": {
+            "start": "2025-06-20T00:00",
+            "end": "2025-06-20T00:30"
+          },
+          "Points": [
+            {
+              "isp": "1",
+              "timeInterval_start": "2025-06-20T00:00",
+              "timeInterval_end": "2025-06-20T00:15",
+              "Thresholds": [
+                {
+                  "capacity_threshold": "10",
+                  "price_up": "80.0",
+                  "price_down": "62.0"
+                },
+                {
+                  "capacity_threshold": "20",
+                  "price_up": "100.0",
+                  "price_down": "54.0"
+                },
+                {
+                  "capacity_threshold": "30",
+                  "price_up": "125.0",
+                  "price_down": "46.0"
+                }
+              ]
+            },
+            {
+              "isp": "2",
+              "timeInterval_start": "2025-06-20T00:15",
+              "timeInterval_end": "2025-06-20T00:30",
+              "Thresholds": [
+                {
+                  "capacity_threshold": "10",
+                  "price_up": "84.0",
+                  "price_down": "66.0"
+                },
+                {
+                  "capacity_threshold": "20",
+                  "price_up": "108.0",
+                  "price_down": "58.0"
+                },
+                {
+                  "capacity_threshold": "30",
+                  "price_up": "140.0",
+                  "price_down": "50.0"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -36,6 +36,7 @@ Canonical config:
 The repository also keeps:
 
 - stable secondary surfaces for Belgium/Netherlands energy and FCR workflows
+- promoted Netherlands full-stack stable surfaces for `da_plus_afrr` and `schedule_revision`
 - Belgium aFRR benchmarking outside the narrow GA promise
 - `custom_python` as a stable integration point
 - oracle-only benchmarking through `perfect_foresight`

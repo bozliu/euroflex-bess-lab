@@ -22,6 +22,7 @@ def test_ci_workflow_enforces_canonical_pipeline_and_perf_gates() -> None:
     workflow = yaml.safe_load((REPO_ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8"))
     jobs = workflow["jobs"]
     assert "canonical-ga-smoke" in jobs
+    assert "live-connector-smoke" in jobs
     smoke_steps = "\n".join(
         step.get("run", "") for step in jobs["canonical-ga-smoke"]["steps"] if isinstance(step, dict)
     )
@@ -36,6 +37,12 @@ def test_ci_workflow_enforces_canonical_pipeline_and_perf_gates() -> None:
 
     package_steps = "\n".join(step.get("run", "") for step in jobs["package"]["steps"] if isinstance(step, dict))
     assert "python scripts/canonical_pipeline.py" in package_steps
+
+    live_steps = "\n".join(
+        step.get("run", "") for step in jobs["live-connector-smoke"]["steps"] if isinstance(step, dict)
+    )
+    assert "tests/test_live_connectors.py" in live_steps
+    assert "TENNET_API_ENV=acceptance" in live_steps
 
 
 def test_release_workflow_uses_canonical_pipeline_smoke() -> None:

@@ -31,6 +31,11 @@ class ConnectorSchemaError(ConnectorError):
 @dataclass(frozen=True)
 class ConnectorFetchMetadata:
     connector_id: str
+    endpoint_id: str | None
+    source_operator: str | None
+    auth_mode: str | None
+    environment: str | None
+    base_url: str | None
     fetched_at_utc: str
     request_start_utc: str
     request_end_utc: str
@@ -45,6 +50,11 @@ class ConnectorFetchMetadata:
     def as_dict(self) -> dict[str, Any]:
         return {
             "connector_id": self.connector_id,
+            "endpoint_id": self.endpoint_id,
+            "source_operator": self.source_operator,
+            "auth_mode": self.auth_mode,
+            "environment": self.environment,
+            "base_url": self.base_url,
             "fetched_at_utc": self.fetched_at_utc,
             "request_start_utc": self.request_start_utc,
             "request_end_utc": self.request_end_utc,
@@ -161,6 +171,11 @@ def fetch_remote_payload(
     url: str,
     request_start_utc: datetime,
     request_end_utc: datetime,
+    endpoint_id: str | None = None,
+    source_operator: str | None = None,
+    auth_mode: str | None = None,
+    environment: str | None = None,
+    base_url: str | None = None,
     method: str = "GET",
     params: dict[str, Any] | None = None,
     headers: dict[str, str] | None = None,
@@ -181,6 +196,11 @@ def fetch_remote_payload(
         payload, cached_metadata = cached
         return payload, ConnectorFetchMetadata(
             connector_id=connector_id,
+            endpoint_id=endpoint_id,
+            source_operator=source_operator,
+            auth_mode=auth_mode,
+            environment=environment,
+            base_url=base_url,
             fetched_at_utc=datetime.now(tz=UTC).isoformat(),
             request_start_utc=request_start_utc.astimezone(UTC).isoformat(),
             request_end_utc=request_end_utc.astimezone(UTC).isoformat(),
@@ -213,6 +233,11 @@ def fetch_remote_payload(
             raise ConnectorSchemaError(f"{connector_id} response schema validation failed: {exc}") from exc
     metadata = ConnectorFetchMetadata(
         connector_id=connector_id,
+        endpoint_id=endpoint_id,
+        source_operator=source_operator,
+        auth_mode=auth_mode,
+        environment=environment,
+        base_url=base_url,
         fetched_at_utc=datetime.now(tz=UTC).isoformat(),
         request_start_utc=request_start_utc.astimezone(UTC).isoformat(),
         request_end_utc=request_end_utc.astimezone(UTC).isoformat(),

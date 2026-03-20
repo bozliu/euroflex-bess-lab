@@ -117,3 +117,26 @@ jobs:
           python scripts/canonical_pipeline.py \
             --config examples/configs/canonical/belgium_full_stack.yaml \
             --write-json .ci-artifacts/wheel-canonical-pipeline.json
+
+  live-connector-smoke:
+    if: ${{ secrets.TENNET_API_KEY != '' || secrets.TENNET_API_KEY_ACCEPTANCE != '' }}
+    runs-on: ubuntu-latest
+    env:
+      TENNET_API_KEY: ${{ secrets.TENNET_API_KEY }}
+      TENNET_API_KEY_ACCEPTANCE: ${{ secrets.TENNET_API_KEY_ACCEPTANCE }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e '.[dev]'
+      - name: Live TenneT smoke
+        run: |
+          export TENNET_API_ENV=acceptance
+          if [ -n "${TENNET_API_KEY_ACCEPTANCE:-}" ]; then
+            export TENNET_API_KEY="$TENNET_API_KEY_ACCEPTANCE"
+          fi
+          pytest -q tests/test_live_connectors.py

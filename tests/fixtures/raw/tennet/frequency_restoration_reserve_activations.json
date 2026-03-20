@@ -1,0 +1,40 @@
+{
+  "Response": {
+    "TimeSeries": [
+      {
+        "mRID": 1,
+        "quantity_Measurement_Unit_name": "MW",
+        "Period": {
+          "timeInterval": {
+            "start": "2025-06-20T00:00",
+            "end": "2025-06-20T00:30"
+          },
+          "Points": [
+            {
+              "isp": "1",
+              "timeInterval_start": "2025-06-20T00:00",
+              "timeInterval_end": "2025-06-20T00:15",
+              "aFRR_up": "12",
+              "aFRR_down": "0",
+              "mfrrda_volume_up": "0",
+              "mfrrda_volume_down": "0",
+              "total_volume": "12",
+              "absolute_total_volume": "12"
+            },
+            {
+              "isp": "2",
+              "timeInterval_start": "2025-06-20T00:15",
+              "timeInterval_end": "2025-06-20T00:30",
+              "aFRR_up": "0",
+              "aFRR_down": "-18",
+              "mfrrda_volume_up": "0",
+              "mfrrda_volume_down": "0",
+              "total_volume": "-18",
+              "absolute_total_volume": "18"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

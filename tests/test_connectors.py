@@ -9,6 +9,11 @@ import requests
 from euroflex_bess_lab.data.connectors import ConnectorAuthError, ConnectorRateLimitError, ConnectorSchemaError
 from euroflex_bess_lab.data.connectors.common import fetch_remote_payload
 from euroflex_bess_lab.data.connectors.elia import EliaImbalanceConnector
+from euroflex_bess_lab.data.connectors.tennet import (
+    TenneTFrequencyRestorationReserveActivationsConnector,
+    TenneTMeritOrderListConnector,
+    TenneTSettlementPricesConnector,
+)
 
 
 class DummyResponse:
@@ -108,3 +113,241 @@ def test_fetch_remote_payload_cache_hit_and_ttl(monkeypatch, tmp_path: Path) -> 
     assert second_meta.cache_hit is True
     assert calls["count"] == 1
     assert any(path.suffix == ".json" for path in tmp_path.iterdir())
+
+
+def test_tennet_connector_requires_api_key(monkeypatch) -> None:
+    monkeypatch.delenv("TENNET_API_KEY", raising=False)
+    monkeypatch.delenv("TENNET_API_KEY_ACCEPTANCE", raising=False)
+    monkeypatch.delenv("TENNET_API_KEY_PRODUCTION", raising=False)
+    connector = TenneTSettlementPricesConnector(api_key=None)
+    with pytest.raises(RuntimeError, match="A TenneT API key is required"):
+        connector.fetch(start=datetime.now(tz=UTC), end=datetime.now(tz=UTC))
+
+
+def test_tennet_connector_detects_schema_drift(monkeypatch) -> None:
+    malformed = {
+        "TimeSeries": [
+            {
+                "Period": {
+                    "Points": [
+                        {
+                            "shortage": "82.00",
+                            "dispatch_up": "82.00",
+                            "dispatch_down": "60.00",
+                            "timeInterval_start": "2025-06-20T00:00",
+                            "timeInterval_end": "2025-06-20T00:15",
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+    monkeypatch.setattr(
+        "euroflex_bess_lab.data.connectors.common.requests.request",
+        lambda **kwargs: DummyResponse(status_code=200, json_payload=malformed),
+    )
+    connector = TenneTSettlementPricesConnector(api_key="dummy-token")
+    with pytest.raises(ConnectorSchemaError, match="missing required fields"):
+        connector.fetch(start=datetime.now(tz=UTC), end=datetime.now(tz=UTC))
+
+
+def test_tennet_connector_acceptance_environment_uses_acceptance_base_url(monkeypatch) -> None:
+    calls: list[dict[str, object]] = []
+
+    def fake_request(**kwargs):
+        calls.append(kwargs)
+        return DummyResponse(
+            status_code=200,
+            json_payload={
+                "TimeSeries": [
+                    {
+                        "Period": {
+                            "Points": [
+                                {
+                                    "shortage": "82.00",
+                                    "surplus": "60.00",
+                                    "dispatch_up": "82.00",
+                                    "dispatch_down": "60.00",
+                                    "timeInterval_start": "2025-06-20T00:00",
+                                    "timeInterval_end": "2025-06-20T00:15",
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+        )
+
+    monkeypatch.setattr("euroflex_bess_lab.data.connectors.common.requests.request", fake_request)
+    monkeypatch.setenv("TENNET_API_KEY_ACCEPTANCE", "acceptance-token")
+    connector = TenneTSettlementPricesConnector(environment="acceptance")
+    payload, metadata = connector.fetch(
+        start=datetime.now(tz=UTC),
+        end=datetime.now(tz=UTC),
+        return_metadata=True,
+    )
+    assert payload["TimeSeries"]
+    assert metadata.environment == "acceptance"
+    assert metadata.base_url == "https://api.acc.tennet.eu"
+    assert calls[0]["url"] == "https://api.acc.tennet.eu/publications/v1/settlement-prices"
+    assert calls[0]["headers"]["apikey"] == "acceptance-token"
+
+
+def test_tennet_connector_accepts_wrapped_response_payload(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "euroflex_bess_lab.data.connectors.common.requests.request",
+        lambda **kwargs: DummyResponse(
+            status_code=200,
+            json_payload={
+                "Response": {
+                    "TimeSeries": [
+                        {
+                            "Period": {
+                                "Points": [
+                                    {
+                                        "shortage": "82.00",
+                                        "surplus": "60.00",
+                                        "dispatch_up": None,
+                                        "dispatch_down": "60.00",
+                                        "timeInterval_start": "2025-06-20T00:00",
+                                        "timeInterval_end": "2025-06-20T00:15",
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+        ),
+    )
+    connector = TenneTSettlementPricesConnector(api_key="dummy-token", environment="production")
+    payload, metadata = connector.fetch(
+        start=datetime.now(tz=UTC),
+        end=datetime.now(tz=UTC),
+        return_metadata=True,
+    )
+    assert payload["Response"]["TimeSeries"]
+    assert metadata.environment == "production"
+    assert metadata.base_url == "https://api.tennet.eu"
+
+
+def test_tennet_connector_prefers_env_specific_base_url_override(monkeypatch) -> None:
+    monkeypatch.setenv("TENNET_API_BASE_URL_ACCEPTANCE", "https://acceptance.example.test")
+    connector = TenneTSettlementPricesConnector(api_key="dummy-token", environment="acceptance")
+    assert connector.base_url == "https://acceptance.example.test"
+
+
+def test_tennet_connector_rejects_unknown_environment() -> None:
+    with pytest.raises(ValueError, match="Unsupported TenneT environment"):
+        TenneTSettlementPricesConnector(api_key="dummy-token", environment="staging")
+
+
+def test_tennet_merit_order_connector_detects_schema_drift(monkeypatch) -> None:
+    malformed = {"Response": {"TimeSeries": [{"Period": {"Points": [{"isp": "1"}]}}]}}
+    monkeypatch.setattr(
+        "euroflex_bess_lab.data.connectors.common.requests.request",
+        lambda **kwargs: DummyResponse(status_code=200, json_payload=malformed),
+    )
+    connector = TenneTMeritOrderListConnector(api_key="dummy-token")
+    with pytest.raises(ConnectorSchemaError, match="missing required fields"):
+        connector.fetch(start=datetime.now(tz=UTC), end=datetime.now(tz=UTC))
+
+
+def test_tennet_afrr_activations_connector_detects_schema_drift(monkeypatch) -> None:
+    malformed = {"Response": {"TimeSeries": [{"Period": {"Points": [{"aFRR_up": "1", "aFRR_down": "0"}]}}]}}
+    monkeypatch.setattr(
+        "euroflex_bess_lab.data.connectors.common.requests.request",
+        lambda **kwargs: DummyResponse(status_code=200, json_payload=malformed),
+    )
+    connector = TenneTFrequencyRestorationReserveActivationsConnector(api_key="dummy-token")
+    with pytest.raises(ConnectorSchemaError, match="missing required fields"):
+        connector.fetch(start=datetime.now(tz=UTC), end=datetime.now(tz=UTC))
+
+
+def test_tennet_merit_order_connector_acceptance_environment_uses_acceptance_base_url(monkeypatch) -> None:
+    calls: list[dict[str, object]] = []
+
+    def fake_request(**kwargs):
+        calls.append(kwargs)
+        return DummyResponse(
+            status_code=200,
+            json_payload={
+                "Response": {
+                    "TimeSeries": [
+                        {
+                            "Period": {
+                                "Points": [
+                                    {
+                                        "isp": "1",
+                                        "timeInterval_start": "2025-06-20T00:00",
+                                        "timeInterval_end": "2025-06-20T00:15",
+                                        "Thresholds": [
+                                            {
+                                                "capacity_threshold": "10",
+                                                "price_up": "80.0",
+                                                "price_down": "60.0",
+                                            }
+                                        ],
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+        )
+
+    monkeypatch.setattr("euroflex_bess_lab.data.connectors.common.requests.request", fake_request)
+    monkeypatch.setenv("TENNET_API_KEY_ACCEPTANCE", "acceptance-token")
+    connector = TenneTMeritOrderListConnector(environment="acceptance")
+    payload, metadata = connector.fetch(
+        start=datetime.now(tz=UTC),
+        end=datetime.now(tz=UTC),
+        return_metadata=True,
+    )
+    assert payload["Response"]["TimeSeries"]
+    assert metadata.environment == "acceptance"
+    assert calls[0]["url"] == "https://api.acc.tennet.eu/publications/v1/merit-order-list"
+    assert calls[0]["headers"]["apikey"] == "acceptance-token"
+
+
+def test_tennet_merit_order_connector_windows_large_requests(monkeypatch) -> None:
+    calls: list[dict[str, object]] = []
+
+    def fake_request(**kwargs):
+        calls.append(kwargs)
+        return DummyResponse(
+            status_code=200,
+            json_payload={
+                "Response": {
+                    "TimeSeries": [
+                        {
+                            "Period": {
+                                "Points": [
+                                    {
+                                        "isp": "1",
+                                        "timeInterval_start": "2025-06-20T00:00",
+                                        "timeInterval_end": "2025-06-20T00:15",
+                                        "Thresholds": [
+                                            {
+                                                "capacity_threshold": "10",
+                                                "price_up": "80.0",
+                                                "price_down": "60.0",
+                                            }
+                                        ],
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+        )
+
+    monkeypatch.setattr("euroflex_bess_lab.data.connectors.common.requests.request", fake_request)
+    connector = TenneTMeritOrderListConnector(api_key="dummy-token", environment="production")
+    connector.fetch(
+        start=datetime(2025, 1, 13, 0, 0, tzinfo=UTC),
+        end=datetime(2025, 1, 14, 0, 0, tzinfo=UTC),
+    )
+    assert len(calls) == 4

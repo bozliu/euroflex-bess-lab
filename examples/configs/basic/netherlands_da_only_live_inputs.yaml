@@ -1,5 +1,5 @@
 schema_version: 4
-run_name: netherlands-portfolio-da-only
+run_name: netherlands-da-only-live-inputs
 
 market:
   id: netherlands
@@ -10,7 +10,7 @@ market:
 workflow: da_only
 
 forecast_provider:
-  name: perfect_foresight
+  name: persistence
 
 timing:
   timezone: Europe/Amsterdam
@@ -22,39 +22,25 @@ timing:
   delivery_end_date: 2025-06-17
 
 site:
-  id: netherlands-portfolio-site
-  poi_import_limit_mw: 1.6
-  poi_export_limit_mw: 1.6
+  id: netherlands-live-inputs-site
+  poi_import_limit_mw: 1.0
+  poi_export_limit_mw: 1.0
 
 assets:
   - id: nl-bess-1
     kind: battery
     battery:
-      name: nl_bess_1
+      name: demo_bess_nl_live
       power_mw: 1.0
-      energy_mwh: 2.2
+      energy_mwh: 2.0
       initial_soc_mwh: 1.0
       terminal_soc_mwh: 1.0
       soc_min_mwh: 0.2
-      soc_max_mwh: 2.0
+      soc_max_mwh: 1.9
       charge_efficiency: 0.95
       discharge_efficiency: 0.95
       connection_limit_mw: 1.0
       minimum_headroom_mwh: 0.1
-  - id: nl-bess-2
-    kind: battery
-    battery:
-      name: nl_bess_2
-      power_mw: 0.9
-      energy_mwh: 1.6
-      initial_soc_mwh: 0.75
-      terminal_soc_mwh: 0.75
-      soc_min_mwh: 0.15
-      soc_max_mwh: 1.45
-      charge_efficiency: 0.94
-      discharge_efficiency: 0.94
-      connection_limit_mw: 0.9
-      minimum_headroom_mwh: 0.05
 
 degradation:
   mode: throughput_linear
@@ -62,10 +48,12 @@ degradation:
 
 data:
   day_ahead:
-    actual_path: ../../../../examples/data/netherlands_day_ahead_prices.csv
+    actual_path: ../../data/live/netherlands_day_ahead.parquet
+  imbalance:
+    actual_path: ../../data/live/netherlands_imbalance.parquet
 
 artifacts:
-  root_dir: ../../../../artifacts/examples
+  root_dir: ../../../artifacts/examples
   save_inputs: true
   save_plots: true
   save_forecast_snapshots: true

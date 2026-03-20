@@ -6,12 +6,18 @@
 
 - `configs/canonical/belgium_full_stack.yaml`
   Belgium canonical path: portfolio + `schedule_revision` + `base_workflow: da_plus_afrr`
+- `configs/canonical/netherlands_full_stack.yaml`
+  Netherlands promoted stable full-stack path: portfolio + `schedule_revision` + `base_workflow: da_plus_afrr`
 - `configs/reserve/belgium_da_plus_afrr_base.yaml`
   Smaller Belgium single-asset reserve baseline
+- `configs/reserve/netherlands_da_plus_afrr_base.yaml`
+  Smaller Netherlands single-asset reserve baseline
 - `configs/custom/belgium_full_stack_custom_python.yaml`
   Trusted local `custom_python` integration example
 - `configs/basic/netherlands_da_only_base.yaml`
   Secondary-surface Netherlands energy-only example
+- `configs/basic/netherlands_da_only_live_inputs.yaml`
+  Netherlands live-input connector example for ENTSO-E + TenneT parquet handoff
 
 ## Batch example
 

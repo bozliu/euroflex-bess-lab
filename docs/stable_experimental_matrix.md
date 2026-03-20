@@ -15,6 +15,7 @@
 - Belgium `da_plus_afrr`
 - Netherlands `da_only`
 - Netherlands `da_plus_fcr`
+- Netherlands `da_plus_afrr`
 - Belgium and Netherlands `schedule_revision` where the underlying base workflow is honestly supported by the adapter
 
 ## Integration points
@@ -27,7 +28,6 @@
 
 ## Unsupported
 
-- Netherlands `da_plus_afrr`
 - live submission / EMS control
 - continuous intraday execution
 

@@ -1,6 +1,6 @@
 PYTHON ?= python
 
-.PHONY: lint typecheck test notebooks docs package schemas smoke-canonical perf-check demo-gif clean sanitize-runtime
+.PHONY: lint typecheck test notebooks docs package schemas smoke-canonical perf-check demo-gif tennet-hero-gif hero-gifs clean sanitize-runtime
 
 lint:
 	ruff check .
@@ -35,13 +35,20 @@ perf-check:
 demo-gif:
 	$(PYTHON) scripts/render_demo_gif.py
 
+tennet-hero-gif:
+	$(PYTHON) scripts/render_tennet_hero_gif.py
+
+hero-gifs: tennet-hero-gif demo-gif
+
 sanitize-runtime:
 	find . -name ".DS_Store" -type f -delete
 	rm -rf tmp
+	rm -rf .ci-artifacts
 	find artifacts -mindepth 1 ! -name ".gitkeep" -exec rm -rf {} +
 
 clean:
 	rm -rf .pytest_cache .ruff_cache .mypy_cache htmlcov build dist site
+	rm -rf .ci-artifacts
 	find . -name "__pycache__" -type d -prune -exec rm -rf {} +
 	find . -name ".DS_Store" -type f -delete
 	rm -rf src/*.egg-info tmp

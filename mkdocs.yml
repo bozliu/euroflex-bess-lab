@@ -29,6 +29,7 @@ nav:
   - Release notes: release_notes.md
   - BYO-ML forecast provider: byo_ml_forecast_provider.md
   - Export profiles: export_profiles.md
+  - Using TenneT live inputs: using_tennet_live_inputs.md
   - Migration v3 to v4: migration_v3_to_v4.md
   - Architecture: architecture.md
   - Config schema: config_schema.md

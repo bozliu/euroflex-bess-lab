@@ -1,0 +1,19 @@
+{
+  "table": "gb_reserve_auctions",
+  "title": "NESO EAC day-ahead clearing prices and volumes for Quick, Slow and Balancing Reserve per window.",
+  "source": "NESO data portal (api.neso.energy, CKAN)",
+  "dataset_ids": [
+    "eac-auction-results"
+  ],
+  "licence": "NESO Open Data Licence v1.0",
+  "licence_url": "https://www.neso.energy/data-portal/neso-open-licence",
+  "attribution": "Supported by National Energy SO Open Data",
+  "time_column": "delivery_start_utc",
+  "redistributed": true,
+  "path": "gb/reserve_auctions.parquet",
+  "fixture_of": "gb/reserve_auctions.parquet",
+  "coverage_start_utc": "2025-06-02T23:00:00Z",
+  "coverage_end_utc": "2025-06-15T00:00:00Z",
+  "rows": 1156,
+  "generated_by": "scripts/research/gb_make_fixtures.py"
+}

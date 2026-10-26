@@ -1,0 +1,19 @@
+{
+  "table": "gb_frequency",
+  "title": "GB system frequency at 15-second resolution (BMRS FREQ) as deviation from 50 Hz in mHz.",
+  "source": "Elexon BMRS Insights Solution API (data.elexon.co.uk)",
+  "dataset_ids": [
+    "FREQ"
+  ],
+  "licence": "Elexon BMRS open data licence",
+  "licence_url": "https://www.elexon.co.uk/bsc/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+  "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2025",
+  "time_column": "timestamp_utc",
+  "redistributed": true,
+  "path": "gb/frequency_15s_2025.parquet",
+  "fixture_of": "gb/frequency_15s_2025.parquet",
+  "coverage_start_utc": "2025-06-10T00:00:00Z",
+  "coverage_end_utc": "2025-06-11T00:00:00Z",
+  "rows": 5760,
+  "generated_by": "scripts/research/gb_make_fixtures.py"
+}

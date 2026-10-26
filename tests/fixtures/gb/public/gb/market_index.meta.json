@@ -1,0 +1,19 @@
+{
+  "table": "gb_market_index",
+  "title": "GB Market Index Data per settlement period (BMRS MID; APX/EPEX and N2EX providers).",
+  "source": "Elexon BMRS Insights Solution API (data.elexon.co.uk)",
+  "dataset_ids": [
+    "MID"
+  ],
+  "licence": "Elexon BMRS open data licence",
+  "licence_url": "https://www.elexon.co.uk/bsc/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+  "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2023-2026",
+  "time_column": "timestamp_utc",
+  "redistributed": true,
+  "path": "gb/market_index.parquet",
+  "fixture_of": "gb/market_index.parquet",
+  "coverage_start_utc": "2025-06-03T00:00:00Z",
+  "coverage_end_utc": "2025-06-14T00:00:00Z",
+  "rows": 528,
+  "generated_by": "scripts/research/gb_make_fixtures.py"
+}

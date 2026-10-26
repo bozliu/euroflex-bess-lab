@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "path": "gb/response_auctions.parquet",
+  "table": "gb_response_auctions",
+  "title": "NESO EAC day-ahead clearing prices and volumes for DC/DM/DR low and high per EFA block.",
+  "time_column": "delivery_start_utc",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T14:28:58Z",
+  "fetch_command": "euroflex data gb fetch eac  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target eac)",
+  "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+  "snapshot_end_utc": "2026-10-26T00:00:00Z",
+  "source": "NESO data portal (api.neso.energy, CKAN)",
+  "dataset_ids": [
+    "eac-auction-results"
+  ],
+  "dataset_pages": [
+    "https://www.neso.energy/data-portal/eac-auction-results"
+  ],
+  "source_url_template": "https://api.neso.energy/datastore/dump/{resource_id}",
+  "licence": "NESO Open Data Licence v1.0",
+  "licence_url": "https://www.neso.energy/data-portal/neso-open-licence",
+  "licence_terms": "Based on the Open Government Licence v3.0: copy, publish, distribute and transmit, adapt and exploit commercially and non-commercially, provided NESO is acknowledged with the statement 'Supported by National Energy SO Open Data'.",
+  "attribution": "Supported by National Energy SO Open Data",
+  "inputs": [
+    {
+      "chunk": "NESO Response-Reserve Results Summary FY2023 (Archive)",
+      "url": "https://api.neso.energy/datastore/dump/be5c6b0d-a335-4859-93f2-389585b4e9a1",
+      "retrieved_at_utc": "2026-10-26T14:28:53Z",
+      "sha256": "93c6e7dafd0d76dc9460e26f49e0e8d4e551a2b8fac628a35644c828a2946360",
+      "size_bytes": 370816,
+      "resource_id": "be5c6b0d-a335-4859-93f2-389585b4e9a1",
+      "archived": true
+    },
+    {
+      "chunk": "NESO Response-Reserve Results Summary FY2024 (Archive)",
+      "url": "https://api.neso.energy/datastore/dump/ab130833-3ce4-4361-90fb-69fa3cf30f15",
+      "retrieved_at_utc": "2026-10-26T14:28:54Z",
+      "sha256": "0a20c7cc1793e1a08352499833489b80eab7688fd1bdb2cfbbcf9f7663986628",
+      "size_bytes": 1753120,
+      "resource_id": "ab130833-3ce4-4361-90fb-69fa3cf30f15",
+      "archived": true
+    },
+    {
+      "chunk": "NESO Response-Reserve Results Summary FY2025 (Archive)",
+      "url": "https://api.neso.energy/datastore/dump/be55ee51-b79e-47da-b71e-a0f8865d9d66",
+      "retrieved_at_utc": "2026-10-26T14:28:56Z",
+      "sha256": "18e530716a7c9a89dfbfd13de18252f9feb1b6f484e8cf3e59b7677e5cf09b88",
+      "size_bytes": 4552002,
+      "resource_id": "be55ee51-b79e-47da-b71e-a0f8865d9d66",
+      "archived": true
+    },
+    {
+      "chunk": "NESO Response-Reserve Daily Results Summary",
+      "url": "https://api.neso.energy/datastore/dump/3c51a666-1c33-450e-a6eb-c9b4a0c91584",
+      "retrieved_at_utc": "2026-10-26T14:28:56Z",
+      "sha256": "7d9a498c322837a2b11709a639cc0dd6cb23b85d7e6680da21e471651129d483",
+      "size_bytes": 23660,
+      "resource_id": "3c51a666-1c33-450e-a6eb-c9b4a0c91584",
+      "archived": false
+    },
+    {
+      "chunk": "NESO Response-Reserve Results Summary",
+      "url": "https://api.neso.energy/datastore/dump/596f29ac-0387-4ba4-a6d3-95c243140707",
+      "retrieved_at_utc": "2026-10-26T14:28:58Z",
+      "sha256": "950695dde76420de1274fd569a1691ab7d442c50a6b47861ba52539ea597c46a",
+      "size_bytes": 4862697,
+      "resource_id": "596f29ac-0387-4ba4-a6d3-95c243140707",
+      "archived": false
+    }
+  ],
+  "package_show": {
+    "chunk": "package_show",
+    "url": "https://api.neso.energy/api/3/action/package_show?id=eac-auction-results",
+    "retrieved_at_utc": "2026-10-26T14:28:53Z",
+    "sha256": "c690cd5f4a8809436a7eba9a7fe624a9f3361fb69d86aec30525ad338ac0a320",
+    "size_bytes": 63185
+  },
+  "transformation_notes": [
+    "Results Summary resources (live, daily and yearly archives) of the EAC package are concatenated; deliveryStart/deliveryEnd are UTC per the NESO dataset notes; duplicates on (product, delivery start) keep the highest auctionID.",
+    "Only the dynamic response products are kept: DCL/DCH (Dynamic Containment low/high), DML/DMH (Moderation), DRL/DRH (Regulation). Low = response to low frequency (export), high = import.",
+    "efa_date/efa_block derived from delivery_start_utc (EFA day starts 23:00 Europe/London; 4-hour blocks, 3 or 5 hours on clock-change days). Prices are pay-as-clear in GBP per MW per hour of availability and can be negative."
+  ],
+  "validation": {
+    "raw_rows": 160780,
+    "duplicates_dropped": 324,
+    "unknown_products": [],
+    "response_rows": 39204,
+    "reserve_rows": 121252,
+    "efa_days": 1089,
+    "complete_efa_days": 1089,
+    "incomplete_efa_days": [],
+    "negative_price_rows": 8725,
+    "duration_hours_counts": {
+      "3.0": 18,
+      "4.0": 39168,
+      "5.0": 18
+    }
+  },
+  "coverage_start_utc": "2023-11-02T23:00:00Z",
+  "coverage_end_utc": "2026-10-26T23:00:00Z",
+  "rows": 39204,
+  "columns": [
+    {
+      "name": "delivery_start_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "delivery_end_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "efa_date",
+      "type": "large_string"
+    },
+    {
+      "name": "efa_block",
+      "type": "int8"
+    },
+    {
+      "name": "duration_hours",
+      "type": "float"
+    },
+    {
+      "name": "product",
+      "type": "large_string"
+    },
+    {
+      "name": "service",
+      "type": "large_string"
+    },
+    {
+      "name": "direction",
+      "type": "large_string"
+    },
+    {
+      "name": "clearing_price_gbp_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "cleared_volume_mw",
+      "type": "float"
+    },
+    {
+      "name": "auction_id",
+      "type": "int64"
+    }
+  ],
+  "size_bytes": 123409,
+  "sha256": "11575b8aaa3705f7739d7e5899fb45b1a8470cfa554b1da4ea2ba050731a2e54"
+}

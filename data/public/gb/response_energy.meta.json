@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "path": "gb/response_energy.parquet",
+  "table": "gb_response_energy",
+  "title": "Energy delivered per MW of contracted DC/DM/DR (low/high) per settlement period, from BMRS FREQ.",
+  "time_column": "timestamp_utc",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T14:44:49Z",
+  "fetch_command": "euroflex data gb fetch frequency  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target frequency)",
+  "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+  "snapshot_end_utc": "2026-10-26T00:00:00Z",
+  "source": "Elexon BMRS Insights Solution API (data.elexon.co.uk)",
+  "licence": "Elexon BMRS open data licence",
+  "licence_url": "https://www.elexon.co.uk/bsc/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+  "licence_terms": "Worldwide, royalty-free, perpetual, non-exclusive licence: copy, publish, distribute and transmit, adapt and exploit the BMRS Data (including commercially) provided the attribution statement is included and, where possible, a link to the licence; no implication of official status or endorsement; do not misrepresent the data. Excludes third-party rights that Elexon is not authorised to license.",
+  "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2023-2026",
+  "dataset_ids": [
+    "FREQ"
+  ],
+  "dataset_pages": [
+    "https://bmrs.elexon.co.uk/system-frequency"
+  ],
+  "derived_from": [
+    "gb/frequency_15s_{year}.parquet"
+  ],
+  "method_reference": "NESO Response Services Service Terms, Schedule 2 Table 1 and para 6.7 (delivery curves)",
+  "transformation_notes": [
+    "For each SP and product (DCL, DCH, DML, DMH, DRL, DRH): MWh delivered per MW contracted = mean over the SP's 15-second samples of the product's delivery fraction x 0.5 h (sample-and-hold).",
+    "Delivery curves: deadband +/-0.015 Hz; DC 5 % at +/-0.2 Hz and 100 % at +/-0.5 Hz; DM 5 % at +/-0.1 Hz and 100 % at +/-0.2 Hz; DR linear to 100 % at +/-0.2 Hz; linear interpolation, saturation beyond.",
+    "Low products export (frequency below 50 Hz), high products import; values are non-negative.",
+    "SPs with fewer than 60 of 120 samples are NaN. freq_* columns are per-SP statistics of the deviation from 50 Hz in mHz; share_outside_200mhz is the share of samples with |deviation| > 0.2 Hz.",
+    "15-second sampling misses sub-15-second excursions (mostly relevant for DC); this is an approximation of the 1-second performance-monitoring view."
+  ],
+  "validation": {
+    "grid": {
+      "rows": 50880,
+      "expected_rows": 50880,
+      "missing_intervals": 0,
+      "unique": true,
+      "sorted": true
+    },
+    "nan_rows": 73,
+    "mean_mwh_per_mw_per_sp": {
+      "dcl_mwh_per_mw": 0.0035216102842241526,
+      "dch_mwh_per_mw": 0.0034684522543102503,
+      "dml_mwh_per_mw": 0.018880899995565414,
+      "dmh_mwh_per_mw": 0.018014447763562202,
+      "drl_mwh_per_mw": 0.06999269872903824,
+      "drh_mwh_per_mw": 0.06918001919984818
+    }
+  },
+  "coverage_start_utc": "2023-12-01T00:00:00Z",
+  "coverage_end_utc": "2026-10-26T00:00:00Z",
+  "rows": 50880,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "settlement_date",
+      "type": "large_string"
+    },
+    {
+      "name": "settlement_period",
+      "type": "int16"
+    },
+    {
+      "name": "dcl_mwh_per_mw",
+      "type": "float"
+    },
+    {
+      "name": "dch_mwh_per_mw",
+      "type": "float"
+    },
+    {
+      "name": "dml_mwh_per_mw",
+      "type": "float"
+    },
+    {
+      "name": "dmh_mwh_per_mw",
+      "type": "float"
+    },
+    {
+      "name": "drl_mwh_per_mw",
+      "type": "float"
+    },
+    {
+      "name": "drh_mwh_per_mw",
+      "type": "float"
+    },
+    {
+      "name": "freq_mean_dev_mhz",
+      "type": "float"
+    },
+    {
+      "name": "freq_std_mhz",
+      "type": "float"
+    },
+    {
+      "name": "freq_min_dev_mhz",
+      "type": "float"
+    },
+    {
+      "name": "freq_max_dev_mhz",
+      "type": "float"
+    },
+    {
+      "name": "share_outside_200mhz",
+      "type": "float"
+    },
+    {
+      "name": "n_samples",
+      "type": "int16"
+    }
+  ],
+  "size_bytes": 1293912,
+  "sha256": "fac751d67a8ce526a45898dd4e8127e237a7fe6863ff01ee0f431b6312c8e4fb"
+}

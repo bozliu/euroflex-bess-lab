@@ -1,0 +1,19 @@
+{
+  "table": "gb_fx",
+  "title": "ECB euro foreign exchange reference rate, GBP per EUR (daily).",
+  "source": "European Central Bank data portal (data-api.ecb.europa.eu), series EXR.D.GBP.EUR.SP00.A",
+  "dataset_ids": [
+    "EXR.D.GBP.EUR.SP00.A"
+  ],
+  "licence": "ECB terms of use (free reuse with source citation)",
+  "licence_url": "https://www.ecb.europa.eu/services/disclaimer/html/index.en.html",
+  "attribution": "Source: European Central Bank (euro foreign exchange reference rates)",
+  "time_column": "timestamp_utc",
+  "redistributed": true,
+  "path": "gb/ecb_gbp_per_eur.parquet",
+  "fixture_of": "gb/ecb_gbp_per_eur.parquet",
+  "coverage_start_utc": "2025-05-24T00:00:00Z",
+  "coverage_end_utc": "2025-06-14T00:00:00Z",
+  "rows": 15,
+  "generated_by": "scripts/research/gb_make_fixtures.py"
+}

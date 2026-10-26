@@ -36,6 +36,9 @@ def test_public_examples_surface_is_curated() -> None:
         str(path.relative_to(REPO_ROOT / "examples")) for path in (REPO_ROOT / "examples" / "configs").rglob("*.yaml")
     )
     assert public_configs == [
+        "configs/basic/germany_da_only_base.yaml",
+        "configs/basic/germany_da_plus_afrr_base.yaml",
+        "configs/basic/germany_da_plus_fcr_base.yaml",
         "configs/basic/netherlands_da_only_base.yaml",
         "configs/basic/netherlands_da_only_live_inputs.yaml",
         "configs/canonical/belgium_full_stack.yaml",

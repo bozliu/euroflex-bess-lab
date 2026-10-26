@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "path": "energy_charts/da_prices_DE-LU.parquet",
+  "table": "da_prices_DE-LU",
+  "title": "German-Luxembourg day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards).",
+  "source": "Energy-Charts API (api.energy-charts.info, Fraunhofer ISE)",
+  "dataset_ids": [
+    "energy_charts_price_DE-LU"
+  ],
+  "dataset_pages": [
+    "https://api.energy-charts.info/"
+  ],
+  "source_urls": [
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-01-31&start=2023-01-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-02-28&start=2023-02-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-03-31&start=2023-03-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-04-30&start=2023-04-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-05-31&start=2023-05-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-06-30&start=2023-06-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-07-31&start=2023-07-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-08-31&start=2023-08-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-09-30&start=2023-09-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-10-31&start=2023-10-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-11-30&start=2023-11-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-12-31&start=2023-12-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2024-01-31&start=2024-01-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2024-02-29&start=2024-02-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2024-03-31&start=2024-03-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2024-04-30&start=2024-04-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2024-05-31&start=2024-05-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2024-06-30&start=2024-06-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2024-07-31&start=2024-07-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2024-08-31&start=2024-08-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2024-09-30&start=2024-09-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2024-10-31&start=2024-10-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2024-11-30&start=2024-11-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2024-12-31&start=2024-12-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2025-01-31&start=2025-01-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2025-02-28&start=2025-02-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2025-03-31&start=2025-03-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2025-04-30&start=2025-04-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2025-05-31&start=2025-05-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2025-06-30&start=2025-06-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2025-07-31&start=2025-07-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2025-08-31&start=2025-08-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2025-09-30&start=2025-09-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2025-10-31&start=2025-10-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2025-11-30&start=2025-11-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2025-12-31&start=2025-12-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2026-01-31&start=2026-01-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2026-02-28&start=2026-02-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2026-03-31&start=2026-03-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2026-04-30&start=2026-04-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2026-05-31&start=2026-05-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2026-06-30&start=2026-06-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2026-07-31&start=2026-07-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2026-08-31&start=2026-08-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2026-09-30&start=2026-09-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2026-10-31&start=2026-10-01"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "Bundesnetzagentur | SMARD.de, via Energy-Charts (Fraunhofer ISE)",
+  "upstream_licence_info": [
+    "CC BY 4.0 (creativecommons.org/licenses/by/4.0) from Bundesnetzagentur | SMARD.de"
+  ],
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:50:06Z",
+  "coverage_start_utc": "2022-12-31T23:00:00Z",
+  "coverage_end_utc": "2026-10-25T23:00:00Z",
+  "time_column": "timestamp_utc",
+  "zone": "DE-LU",
+  "transformation_notes": [
+    "timestamp_utc = start of the day-ahead product; resolution_minutes = product length inferred from the spacing of consecutive timestamps (60 until delivery day 2025-09-30, 15 from 2025-10-01 after the SDAC 15-minute MTU go-live).",
+    "Monthly API requests (local delivery days, end inclusive) are concatenated and de-duplicated on timestamp_utc; null prices are dropped. price_eur_mwh is float32."
+  ],
+  "validation": {
+    "null_prices_dropped": 0,
+    "duplicates_dropped": 0,
+    "resolution_counts": {
+      "15": 37444,
+      "60": 24095
+    },
+    "grid_15min_from_2025_10_01": {
+      "rows": 37444,
+      "unique": true,
+      "sorted": true,
+      "expected_rows": 37444,
+      "missing_intervals": 0,
+      "largest_gaps": []
+    },
+    "grid_60min_until_2025_09_30": {
+      "rows": 24095,
+      "unique": true,
+      "sorted": true,
+      "expected_rows": 24095,
+      "missing_intervals": 0,
+      "largest_gaps": []
+    }
+  },
+  "fetch_command": "euroflex data fetch day-ahead --zone DE-LU",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 61539,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "resolution_minutes",
+      "type": "int16"
+    },
+    {
+      "name": "price_eur_mwh",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 176159,
+  "sha256": "27778b1877838519038d822d9e2288e846e93c2880ab96ac731ba4d95bb84d72"
+}

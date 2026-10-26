@@ -20,6 +20,13 @@ nav:
   - Install matrix: install.md
   - Commercial positioning: commercial_positioning.md
   - Capability matrix: capability_matrix.md
+  - Real-time engine: realtime_engine.md
+  - Real-time strategies: realtime_strategies.md
+  - Real-time reserves (aFRR): realtime_reserves.md
+  - Impact and herding: impact_and_herding.md
+  - Live paper trading: live_paper_trading.md
+  - Contract valuation: valuation.md
+  - Germany (experimental): germany.md
   - Stable vs experimental: stable_experimental_matrix.md
   - Compatibility and deprecation: compatibility_and_deprecation_policy.md
   - Operator runbook: operator_runbook.md
@@ -40,6 +47,7 @@ nav:
   - Public checkpoint revision limitations: public_checkpoint_revision_limitations.md
   - Artifact contract: artifact_contract.md
   - Data provenance: data_provenance.md
+  - Public datasets: public_datasets.md
   - Assumptions and limitations: assumptions_and_limitations.md
   - Known limitations: known_limitations.md
   - Benchmark trust model: benchmark_trust_model.md

@@ -1,0 +1,57 @@
+schema_version: 4
+run_name: germany-da-only
+
+# Germany (DE-LU) day-ahead only. Real Energy-Charts prices (CC BY 4.0, Bundesnetzagentur | SMARD.de):
+# 2025-09-30 is hourly (expanded to flat quarter-hours, provenance expanded_from_60m) and feeds the
+# persistence forecast for 2025-10-01, the first 15-minute SDAC delivery day. See docs/germany.md.
+market:
+  id: germany
+
+workflow: da_only
+
+forecast_provider:
+  name: persistence
+
+timing:
+  timezone: Europe/Berlin
+  resolution_minutes: 15
+  rebalance_cadence_minutes: 15
+  execution_lock_intervals: 1
+  day_ahead_gate_closure_local: "12:00"
+  delivery_start_date: 2025-10-01
+  delivery_end_date: 2025-10-01
+
+site:
+  id: germany-demo-site
+  poi_import_limit_mw: 1.0
+  poi_export_limit_mw: 1.0
+
+assets:
+  - id: de-bess-1
+    kind: battery
+    battery:
+      name: demo_bess_de
+      power_mw: 1.0
+      energy_mwh: 2.0
+      initial_soc_mwh: 1.0
+      terminal_soc_mwh: 1.0
+      soc_min_mwh: 0.1
+      soc_max_mwh: 1.9
+      charge_efficiency: 0.95
+      discharge_efficiency: 0.95
+      connection_limit_mw: 1.0
+      minimum_headroom_mwh: 0.0
+
+degradation:
+  mode: throughput_linear
+  throughput_cost_eur_per_mwh: 4.0
+
+data:
+  day_ahead:
+    actual_path: ../../data/germany_day_ahead_prices.csv
+
+artifacts:
+  root_dir: ../../../artifacts/examples
+  save_inputs: true
+  save_plots: false
+  save_forecast_snapshots: true

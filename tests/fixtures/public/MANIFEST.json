@@ -1,0 +1,2580 @@
+{
+  "schema_version": 1,
+  "description": "Normalized public market data for euroflex-bess-lab; see README.md and LICENSES.md.",
+  "data_root": "data/public",
+  "latest_retrieval_utc": "2026-10-26T03:50:06Z",
+  "n_files": 22,
+  "n_not_redistributed": 0,
+  "total_size_bytes": 1361731,
+  "budget": {
+    "max_total_bytes": 209715200,
+    "max_file_bytes": 52428800
+  },
+  "licences": {
+    "Apache-2.0 (synthetic test data)": [
+      "germany/afrr_capacity.parquet",
+      "germany/fcr_capacity.parquet"
+    ],
+    "CC BY 4.0": [
+      "belgium/afrr_capacity_awards.parquet",
+      "belgium/energy_bid_curves_qh_2025.parquet",
+      "belgium/energy_bid_curves_qh_2026.parquet",
+      "belgium/mfrr_capacity_awards.parquet",
+      "belgium/minute_2024_legacy.parquet",
+      "belgium/minute_2025.parquet",
+      "belgium/minute_2026.parquet",
+      "belgium/new_formula_minute_2026.parquet",
+      "belgium/new_formula_qh_2026.parquet",
+      "belgium/qh_2024_legacy.parquet",
+      "belgium/qh_2025.parquet",
+      "belgium/qh_2026.parquet",
+      "belgium/res_load_qh_2025.parquet",
+      "belgium/res_load_qh_2026.parquet",
+      "belgium/si_forecast_current_qh_2025.parquet",
+      "belgium/si_forecast_current_qh_2026.parquet",
+      "belgium/si_forecast_next_qh_2025.parquet",
+      "belgium/si_forecast_next_qh_2026.parquet",
+      "energy_charts/da_prices_BE.parquet",
+      "energy_charts/da_prices_DE-LU.parquet"
+    ]
+  },
+  "files": [
+    {
+      "schema_version": 1,
+      "path": "belgium/afrr_capacity_awards.parquet",
+      "table": "belgium_afrr_capacity_awards",
+      "title": "Belgian aFRR capacity auction awards aggregated per delivery block and direction.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods125",
+        "ods207"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods125/",
+        "https://opendata.elia.be/explore/dataset/ods207/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222022-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222023-01-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222023-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222024-01-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222024-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222025-01-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:39:51Z",
+      "time_column": "delivery_start_utc",
+      "transformation_notes": [
+        "Sources: ODS125 (individual aFRR capacity bids up to 19/05/2026, one row per bid with up and down columns) and ODS207 (as of 20/05/2026, one row per bid and regulation direction). Where both cover a delivery day, ODS207 wins.",
+        "One row per delivery block (4 hours, Europe/Brussels local time, converted to UTC; 3/5 hours on DST-change days) and direction (up/down). Prices are capacity prices in EUR/MW/h (pay-as-bid).",
+        "Bids whose delivery period spans several 4-hour blocks (e.g. '0 - 24' daily bids) deliver in every block they cover, so they are counted in each covered block; awarded_mw_multi_block shows that share.",
+        "awarded_mw = sum of awarded MW; vwap_eur_per_mw_h = awarded-volume-weighted average bid price; marginal_eur_per_mw_h = highest awarded bid price; n_bids = number of bids with awarded MW > 0; offered_mw / n_offered_bids describe all offered bids (selected or not) delivering in the block; they are null where the source lists awarded bids only (ODS055, i.e. mFRR before 2026-05-20).",
+        "Gate-2 bids ('G2' suffix in capacitybiddeliveryperiod) are treated like other bids of their period."
+      ],
+      "fetch_command": "euroflex data fetch belgium-capacity-awards",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2025-06-10T02:00:00Z",
+      "coverage_end_utc": "2026-03-04T23:00:00Z",
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/afrr_capacity_awards.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 72,
+      "columns": [
+        {
+          "name": "delivery_start_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "delivery_end_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "direction",
+          "type": "large_string"
+        },
+        {
+          "name": "awarded_mw",
+          "type": "float"
+        },
+        {
+          "name": "vwap_eur_per_mw_h",
+          "type": "float"
+        },
+        {
+          "name": "marginal_eur_per_mw_h",
+          "type": "float"
+        },
+        {
+          "name": "n_bids",
+          "type": "int32"
+        },
+        {
+          "name": "awarded_mw_multi_block",
+          "type": "float"
+        },
+        {
+          "name": "offered_mw",
+          "type": "float"
+        },
+        {
+          "name": "n_offered_bids",
+          "type": "int32"
+        }
+      ],
+      "size_bytes": 8144,
+      "sha256": "c1d6c659af7b8a4262a22e883b1bbee63ca8b89a1f6c56745c77c9abfb8cda5a"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/energy_bid_curves_qh_2025.parquet",
+      "table": "belgium_energy_bid_curves",
+      "title": "Merit-order curves of available aFRR/mFRR energy bids per quarter-hour on a fixed MW grid.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods156",
+        "ods157"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods156/",
+        "https://opendata.elia.be/explore/dataset/ods157/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222025-01-01T00%3A00%3A00Z%22+and+datetime%3C%222025-02-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222025-02-01T00%3A00%3A00Z%22+and+datetime%3C%222025-03-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222025-03-01T00%3A00%3A00Z%22+and+datetime%3C%222025-04-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:41:57Z",
+      "time_column": "timestamp_utc",
+      "transformation_notes": [
+        "Built from ODS156 (incremental = direction up) and ODS157 (decremental = direction down) individual energy bids; only bids with availability == 'Available' are used. Raw bid rows are not redistributed.",
+        "Bid volumes are the increments of Elia's published cumulativevolume in its merit-order rank, so bids that add no volume (mutually exclusive alternatives, unavailable bids) are excluded.",
+        "Per quarter-hour and direction the available aFRR + mFRR (+ reserve-sharing) bids are sorted by price into an economic merit order: cheapest first for up (incremental), highest price first for down (decremental). price_eur_mwh at cum_mw = V is the price of the bid that covers the V-th MW, i.e. the marginal price needed to activate V MW. Null where the available volume is below V. Grid: 0..2000 MW in 25 MW steps.",
+        "Elia's own rank (aFRR first, then mFRR) was tested as an alternative ordering and tracks the published MIP/MDP much worse (see validation.curve_vs_published_prices for the price-sorted curve).",
+        "Approximation: real aFRR activations are continuous and priced via PICASSO cross-border marginal prices, mFRR via MARI, and Elia may skip bids (e.g. for congestion); treat the curve as a stylised local merit order for price-impact studies, not as the settlement price."
+      ],
+      "fetch_command": "euroflex data fetch belgium-bid-curves --start 2025-01-01 --end 2026-01-01",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2025-06-10T00:00:00Z",
+      "coverage_end_utc": "2025-06-12T23:45:00Z",
+      "partition_year": 2025,
+      "grid": {
+        "cum_mw_min": 0,
+        "cum_mw_max": 2000,
+        "cum_mw_step": 25
+      },
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/energy_bid_curves_qh_2025.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 46656,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "direction",
+          "type": "large_string"
+        },
+        {
+          "name": "cum_mw",
+          "type": "float"
+        },
+        {
+          "name": "price_eur_mwh",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 28098,
+      "sha256": "b5a548e792d02f71fcbfc02434baa37392213425203397ad6858bb44cacf2fab"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/energy_bid_curves_qh_2026.parquet",
+      "table": "belgium_energy_bid_curves",
+      "title": "Merit-order curves of available aFRR/mFRR energy bids per quarter-hour on a fixed MW grid.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods156",
+        "ods157"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods156/",
+        "https://opendata.elia.be/explore/dataset/ods157/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222026-02-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-02-01T00%3A00%3A00Z%22+and+datetime%3C%222026-03-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-03-01T00%3A00%3A00Z%22+and+datetime%3C%222026-04-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:47:53Z",
+      "time_column": "timestamp_utc",
+      "transformation_notes": [
+        "Built from ODS156 (incremental = direction up) and ODS157 (decremental = direction down) individual energy bids; only bids with availability == 'Available' are used. Raw bid rows are not redistributed.",
+        "Bid volumes are the increments of Elia's published cumulativevolume in its merit-order rank, so bids that add no volume (mutually exclusive alternatives, unavailable bids) are excluded.",
+        "Per quarter-hour and direction the available aFRR + mFRR (+ reserve-sharing) bids are sorted by price into an economic merit order: cheapest first for up (incremental), highest price first for down (decremental). price_eur_mwh at cum_mw = V is the price of the bid that covers the V-th MW, i.e. the marginal price needed to activate V MW. Null where the available volume is below V. Grid: 0..2000 MW in 25 MW steps.",
+        "Elia's own rank (aFRR first, then mFRR) was tested as an alternative ordering and tracks the published MIP/MDP much worse (see validation.curve_vs_published_prices for the price-sorted curve).",
+        "Approximation: real aFRR activations are continuous and priced via PICASSO cross-border marginal prices, mFRR via MARI, and Elia may skip bids (e.g. for congestion); treat the curve as a stylised local merit order for price-impact studies, not as the settlement price."
+      ],
+      "fetch_command": "euroflex data fetch belgium-bid-curves --start 2026-01-01 --end 2027-01-01",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2026-03-02T00:00:00Z",
+      "coverage_end_utc": "2026-03-04T23:45:00Z",
+      "partition_year": 2026,
+      "grid": {
+        "cum_mw_min": 0,
+        "cum_mw_max": 2000,
+        "cum_mw_step": 25
+      },
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/energy_bid_curves_qh_2026.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 46656,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "direction",
+          "type": "large_string"
+        },
+        {
+          "name": "cum_mw",
+          "type": "float"
+        },
+        {
+          "name": "price_eur_mwh",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 35777,
+      "sha256": "8979a72db39aea201dc88c16cf9f55b287acdb52dcf4e850d6dd60f5fb12ed84"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/mfrr_capacity_awards.parquet",
+      "table": "belgium_mfrr_capacity_awards",
+      "title": "Belgian mFRR capacity auction awards aggregated per delivery block and direction.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods055",
+        "ods206"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods055/",
+        "https://opendata.elia.be/explore/dataset/ods206/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods055/exports/parquet?where=delivery_date%3E%3D%222021-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222022-01-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods055/exports/parquet?where=delivery_date%3E%3D%222022-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222023-01-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods055/exports/parquet?where=delivery_date%3E%3D%222023-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222024-01-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:38:46Z",
+      "time_column": "delivery_start_utc",
+      "transformation_notes": [
+        "Sources: ODS055 (individual mFRR capacity bids up to 19/05/2026) and ODS206 (as of 20/05/2026). Only the standard mFRR product is used (mFRR Flex was discontinued on 22/05/2024; its rows are ignored). Elia procures mFRR capacity in the upward direction only. Where both cover a delivery day, ODS206 wins.",
+        "One row per delivery block (4 hours, Europe/Brussels local time, converted to UTC; 3/5 hours on DST-change days) and direction (up/down). Prices are capacity prices in EUR/MW/h (pay-as-bid).",
+        "Bids whose delivery period spans several 4-hour blocks (e.g. '0 - 24' daily bids) deliver in every block they cover, so they are counted in each covered block; awarded_mw_multi_block shows that share.",
+        "awarded_mw = sum of awarded MW; vwap_eur_per_mw_h = awarded-volume-weighted average bid price; marginal_eur_per_mw_h = highest awarded bid price; n_bids = number of bids with awarded MW > 0; offered_mw / n_offered_bids describe all offered bids (selected or not) delivering in the block; they are null where the source lists awarded bids only (ODS055, i.e. mFRR before 2026-05-20).",
+        "Gate-2 bids ('G2' suffix in capacitybiddeliveryperiod) are treated like other bids of their period."
+      ],
+      "fetch_command": "euroflex data fetch belgium-capacity-awards",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2025-06-10T02:00:00Z",
+      "coverage_end_utc": "2026-03-04T23:00:00Z",
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/mfrr_capacity_awards.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 36,
+      "columns": [
+        {
+          "name": "delivery_start_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "delivery_end_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "direction",
+          "type": "large_string"
+        },
+        {
+          "name": "awarded_mw",
+          "type": "float"
+        },
+        {
+          "name": "vwap_eur_per_mw_h",
+          "type": "float"
+        },
+        {
+          "name": "marginal_eur_per_mw_h",
+          "type": "float"
+        },
+        {
+          "name": "n_bids",
+          "type": "int32"
+        },
+        {
+          "name": "awarded_mw_multi_block",
+          "type": "float"
+        },
+        {
+          "name": "offered_mw",
+          "type": "float"
+        },
+        {
+          "name": "n_offered_bids",
+          "type": "int32"
+        }
+      ],
+      "size_bytes": 7186,
+      "sha256": "3f07b67b9fa1b12de8082ea20adc6999dbda47fda167753889521cc1b12b4b53"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/minute_2024_legacy.parquet",
+      "table": "belgium_minute_legacy",
+      "title": "Pre-MARI per-minute imbalance prices (2023-01 to 2024-05-21), legacy layout.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods046"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods046/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222024-01-01T00%3A00%3A00Z%22+and+datetime%3C%222024-02-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222024-02-01T00%3A00%3A00Z%22+and+datetime%3C%222024-03-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222024-03-01T00%3A00%3A00Z%22+and+datetime%3C%222024-04-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:42:53Z",
+      "time_column": "timestamp_utc",
+      "transformation_notes": [
+        "Pre-MARI Elia data (before the 22/05/2024 MARI local go-live), kept separate because the price formula and field set differ from the current tables. timestamp_utc = interval start (UTC).",
+        "imbalance_price_long_eur_mwh / imbalance_price_short_eur_mwh = Elia positive / negative imbalance price (applied to long / short BRPs); they are identical from 2020 on (single pricing). imbalance_price_eur_mwh (QH) and price_cum_eur_mwh (minute) repeat the long-side price for convenience.",
+        "Minute rows (ODS046) are cumulative quarter-hour-to-date estimates like ODS133; calculation_time_utc is Elia's calculation timestamp. nrv = net regulation volume.",
+        "Numeric columns float32; reindexed to a complete grid between the first and last published interval."
+      ],
+      "fetch_command": "euroflex data fetch belgium-legacy --start 2024-01-01 --end 2025-01-01",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2024-05-20T00:00:00Z",
+      "coverage_end_utc": "2024-05-20T23:59:00Z",
+      "partition_year": 2024,
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/minute_2024_legacy.parquet",
+        "windows_utc": [
+          [
+            "2024-05-20T00:00:00Z",
+            "2024-05-21T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 1440,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "qh_start_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "si_cum_mw",
+          "type": "float"
+        },
+        {
+          "name": "nrv_cum_mw",
+          "type": "float"
+        },
+        {
+          "name": "alpha_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mip_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mdp_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "strategic_reserve_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "si_vs_incremental_coordinable_bids_mw",
+          "type": "float"
+        },
+        {
+          "name": "price_cum_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "price_cum_long_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "price_cum_short_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "calculation_time_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "quality_status",
+          "type": "large_string"
+        }
+      ],
+      "size_bytes": 51232,
+      "sha256": "853f2c8e578dc845bade215f3f76785adc7d398aeeadc568727de1b9581389b8"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/minute_2025.parquet",
+      "table": "belgium_minute",
+      "title": "Per-minute imbalance price (cumulative QH-to-date), SI/ACE/volumes and price components.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods133",
+        "ods126",
+        "ods165"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods133/",
+        "https://opendata.elia.be/explore/dataset/ods126/",
+        "https://opendata.elia.be/explore/dataset/ods165/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods133/exports/parquet?where=datetime%3E%3D%222025-01-01T00%3A00%3A00Z%22+and+datetime%3C%222025-02-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods133/exports/parquet?where=datetime%3E%3D%222025-02-01T00%3A00%3A00Z%22+and+datetime%3C%222025-03-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods133/exports/parquet?where=datetime%3E%3D%222025-03-01T00%3A00%3A00Z%22+and+datetime%3C%222025-04-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:28:03Z",
+      "time_column": "timestamp_utc",
+      "transformation_notes": [
+        "timestamp_utc = start of the minute (UTC). ODS133/ODS165 label the minute at the end of which the estimate was computed: the row hh:mm includes all events of the running quarter-hour up to hh:mm:59, so it becomes usable at hh:mm+1 plus publication lag.",
+        "ODS133 columns (*_cum_*, mip/mdp/alpha/price_cum) are cumulative quarter-hour-to-date estimates; the row at minute 14 of a quarter-hour equals the final quarter-hour value (see validation.last_minute_vs_qh).",
+        "ODS126 columns (si_mw, ace_mw, *_up_mw, *_down_mw, rs_*) are instantaneous minute values.",
+        "ODS165 duplicates of ODS133 (systemimbalance, ace, marginal prices) are dropped; quality_status is ODS133's.",
+        "Rows are reindexed to a complete 1-minute grid between the first and last minute seen in any source; minutes missing upstream are null (counts in validation).",
+        "Numeric columns are float32; timestamps datetime64[ns, UTC].",
+        "ODS134 was read only to validate the last minute of each QH against the final price."
+      ],
+      "fetch_command": "euroflex data fetch belgium-minute --start 2025-01-01 --end 2026-01-01",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2025-06-10T00:00:00Z",
+      "coverage_end_utc": "2025-06-12T23:59:00Z",
+      "partition_year": 2025,
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/minute_2025.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 4320,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "qh_start_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "si_cum_mw",
+          "type": "float"
+        },
+        {
+          "name": "ace_cum_mw",
+          "type": "float"
+        },
+        {
+          "name": "alpha_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "alpha_prime_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mip_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mdp_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "price_cum_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "quality_status",
+          "type": "large_string"
+        },
+        {
+          "name": "si_mw",
+          "type": "float"
+        },
+        {
+          "name": "ace_mw",
+          "type": "float"
+        },
+        {
+          "name": "igcc_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "afrr_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "rs_import_mw",
+          "type": "float"
+        },
+        {
+          "name": "igcc_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "afrr_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "rs_export_mw",
+          "type": "float"
+        },
+        {
+          "name": "afrr_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "afrr_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_avail_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_avail_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "floor_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "cap_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "inter_tso_price_import_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "inter_tso_price_export_eur_mwh",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 234125,
+      "sha256": "bbe49b14646ef91a94648527d93c92ad59f9175040a4e8d00610b266165a0269"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/minute_2026.parquet",
+      "table": "belgium_minute",
+      "title": "Per-minute imbalance price (cumulative QH-to-date), SI/ACE/volumes and price components.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods133",
+        "ods126",
+        "ods165"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods133/",
+        "https://opendata.elia.be/explore/dataset/ods126/",
+        "https://opendata.elia.be/explore/dataset/ods165/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods133/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222026-02-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods133/exports/parquet?where=datetime%3E%3D%222026-02-01T00%3A00%3A00Z%22+and+datetime%3C%222026-03-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods133/exports/parquet?where=datetime%3E%3D%222026-03-01T00%3A00%3A00Z%22+and+datetime%3C%222026-04-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:29:44Z",
+      "time_column": "timestamp_utc",
+      "transformation_notes": [
+        "timestamp_utc = start of the minute (UTC). ODS133/ODS165 label the minute at the end of which the estimate was computed: the row hh:mm includes all events of the running quarter-hour up to hh:mm:59, so it becomes usable at hh:mm+1 plus publication lag.",
+        "ODS133 columns (*_cum_*, mip/mdp/alpha/price_cum) are cumulative quarter-hour-to-date estimates; the row at minute 14 of a quarter-hour equals the final quarter-hour value (see validation.last_minute_vs_qh).",
+        "ODS126 columns (si_mw, ace_mw, *_up_mw, *_down_mw, rs_*) are instantaneous minute values.",
+        "ODS165 duplicates of ODS133 (systemimbalance, ace, marginal prices) are dropped; quality_status is ODS133's.",
+        "Rows are reindexed to a complete 1-minute grid between the first and last minute seen in any source; minutes missing upstream are null (counts in validation).",
+        "Numeric columns are float32; timestamps datetime64[ns, UTC].",
+        "ODS134 was read only to validate the last minute of each QH against the final price."
+      ],
+      "fetch_command": "euroflex data fetch belgium-minute --start 2026-01-01 --end 2027-01-01",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2026-03-02T00:00:00Z",
+      "coverage_end_utc": "2026-03-04T23:59:00Z",
+      "partition_year": 2026,
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/minute_2026.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 4320,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "qh_start_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "si_cum_mw",
+          "type": "float"
+        },
+        {
+          "name": "ace_cum_mw",
+          "type": "float"
+        },
+        {
+          "name": "alpha_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "alpha_prime_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mip_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mdp_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "price_cum_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "quality_status",
+          "type": "large_string"
+        },
+        {
+          "name": "si_mw",
+          "type": "float"
+        },
+        {
+          "name": "ace_mw",
+          "type": "float"
+        },
+        {
+          "name": "igcc_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "afrr_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "rs_import_mw",
+          "type": "float"
+        },
+        {
+          "name": "igcc_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "afrr_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "rs_export_mw",
+          "type": "float"
+        },
+        {
+          "name": "afrr_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "afrr_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_avail_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_avail_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "floor_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "cap_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "inter_tso_price_import_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "inter_tso_price_export_eur_mwh",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 232058,
+      "sha256": "fdddc9ddd62282f36c3662c0d565c9185960b5a889f6ea4fd48c8b0210695ec6"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/new_formula_minute_2026.parquet",
+      "table": "belgium_new_formula_minute",
+      "title": "Elia simulation of the new 2026 imbalance-price formula, per minute (Jan-Jul 2026).",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods211"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods211/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods211/exports/parquet"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:13:57Z",
+      "time_column": "timestamp_utc",
+      "transformation_notes": [
+        "Elia simulation of the imbalance price under the new formula consulted for go-live on 24/11/2026 (conditional on CREG approval), computed on historical data for 2026-01..2026-07. Best-effort, non-validated data; Elia removes it from ODS211/ODS212 on 17/11/2026, this file preserves it.",
+        "Minute rows are cumulative quarter-hour-to-date estimates like ODS133: at minute 14 FRCE equals the ODS212 value and the price matches in about 95% of quarter-hours, the SI estimate differs (see validation.last_minute_vs_ods212). frce_rolling_mw / si_rolling_mw are 15-minute rolling windows that reach back past the start of the quarter-hour.",
+        "imbalance_price = main_up (SI < 0) or main_down (SI >= 0) + incentive_eur_mwh (only when FRCE exceeds the L2 target and |SI| > 250 MW); main components are volume-weighted aFRR/mFRR prices with weights weight_afrr/weight_mfrr (decomposition match rates in validation.decomposition of the QH file).",
+        "Numeric columns float32; timestamps datetime64[ns, UTC]; reindexed to a complete grid between the first and last published interval."
+      ],
+      "fetch_command": "euroflex data fetch belgium-new-formula",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2026-03-02T00:00:00Z",
+      "coverage_end_utc": "2026-03-04T23:59:00Z",
+      "simulated": true,
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/new_formula_minute_2026.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 4320,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "frce_mw",
+          "type": "float"
+        },
+        {
+          "name": "frce_rolling_mw",
+          "type": "float"
+        },
+        {
+          "name": "si_mw",
+          "type": "float"
+        },
+        {
+          "name": "si_rolling_mw",
+          "type": "float"
+        },
+        {
+          "name": "imbalance_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "main_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "main_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "incentive_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "voaa_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "afrr_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "rs_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "voaa_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "afrr_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "rs_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "weight_afrr",
+          "type": "float"
+        },
+        {
+          "name": "weight_mfrr",
+          "type": "float"
+        },
+        {
+          "name": "igcc_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "afrr_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "rs_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "igcc_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "afrr_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "rs_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "frce_l2_target_mw",
+          "type": "float"
+        },
+        {
+          "name": "quality_status",
+          "type": "large_string"
+        }
+      ],
+      "size_bytes": 258291,
+      "sha256": "a4f86510dede80aed8b0052669f33413584da574bd4f4771ae5bab86c927a470"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/new_formula_qh_2026.parquet",
+      "table": "belgium_new_formula_qh",
+      "title": "Elia simulation of the new 2026 imbalance-price formula, per quarter-hour (Jan-Jul 2026).",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods212"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods212/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods212/exports/parquet"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:13:06Z",
+      "time_column": "timestamp_utc",
+      "transformation_notes": [
+        "Elia simulation of the imbalance price under the new formula consulted for go-live on 24/11/2026 (conditional on CREG approval), computed on historical data for 2026-01..2026-07. Best-effort, non-validated data; Elia removes it from ODS211/ODS212 on 17/11/2026, this file preserves it.",
+        "imbalance_price = main_up (SI < 0) or main_down (SI >= 0) + incentive_eur_mwh (only when FRCE exceeds the L2 target and |SI| > 250 MW); main components are volume-weighted aFRR/mFRR prices with weights weight_afrr/weight_mfrr (decomposition match rates in validation.decomposition of the QH file).",
+        "Numeric columns float32; timestamps datetime64[ns, UTC]; reindexed to a complete grid between the first and last published interval."
+      ],
+      "fetch_command": "euroflex data fetch belgium-new-formula",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2026-03-02T00:00:00Z",
+      "coverage_end_utc": "2026-03-04T23:45:00Z",
+      "simulated": true,
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/new_formula_qh_2026.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 288,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "frce_mw",
+          "type": "float"
+        },
+        {
+          "name": "si_mw",
+          "type": "float"
+        },
+        {
+          "name": "imbalance_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "main_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "main_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "incentive_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "voaa_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "afrr_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "rs_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "voaa_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "afrr_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "rs_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "weight_afrr",
+          "type": "float"
+        },
+        {
+          "name": "weight_mfrr",
+          "type": "float"
+        },
+        {
+          "name": "igcc_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "afrr_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "rs_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "igcc_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "afrr_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "rs_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "frce_l2_target_mw",
+          "type": "float"
+        },
+        {
+          "name": "quality_status",
+          "type": "large_string"
+        }
+      ],
+      "size_bytes": 37985,
+      "sha256": "e923840733d80f02e3023b1527700addd76b9e7a3a5798fb84bbd60dfd111391"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/qh_2024_legacy.parquet",
+      "table": "belgium_qh_legacy",
+      "title": "Pre-MARI quarter-hour imbalance prices (before 2024-05-22), legacy layout.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods047"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods047/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods047/exports/parquet?where=datetime%3E%3D%222024-01-01T00%3A00%3A00Z%22+and+datetime%3C%222025-01-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:39:15Z",
+      "time_column": "timestamp_utc",
+      "transformation_notes": [
+        "Pre-MARI Elia data (before the 22/05/2024 MARI local go-live), kept separate because the price formula and field set differ from the current tables. timestamp_utc = interval start (UTC).",
+        "imbalance_price_long_eur_mwh / imbalance_price_short_eur_mwh = Elia positive / negative imbalance price (applied to long / short BRPs); they are identical from 2020 on (single pricing). imbalance_price_eur_mwh (QH) and price_cum_eur_mwh (minute) repeat the long-side price for convenience.",
+        "Minute rows (ODS046) are cumulative quarter-hour-to-date estimates like ODS133; calculation_time_utc is Elia's calculation timestamp. nrv = net regulation volume.",
+        "Numeric columns float32; reindexed to a complete grid between the first and last published interval."
+      ],
+      "fetch_command": "euroflex data fetch belgium-legacy --start 2024-01-01 --end 2025-01-01",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2024-05-20T00:00:00Z",
+      "coverage_end_utc": "2024-05-20T23:45:00Z",
+      "partition_year": 2024,
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/qh_2024_legacy.parquet",
+        "windows_utc": [
+          [
+            "2024-05-20T00:00:00Z",
+            "2024-05-21T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 96,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "si_mw",
+          "type": "float"
+        },
+        {
+          "name": "nrv_mw",
+          "type": "float"
+        },
+        {
+          "name": "alpha_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mip_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mdp_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "strategic_reserve_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "imbalance_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "imbalance_price_long_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "imbalance_price_short_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "quality_status",
+          "type": "large_string"
+        }
+      ],
+      "size_bytes": 10726,
+      "sha256": "742ea02ae2a0e736fbceb0cbf5359b70df5be0ca88e761afac75a2e5e12c3d7e"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/qh_2025.parquet",
+      "table": "belgium_qh",
+      "title": "Per-quarter-hour final imbalance prices, price components and volumes.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods134",
+        "ods166",
+        "ods127"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods134/",
+        "https://opendata.elia.be/explore/dataset/ods166/",
+        "https://opendata.elia.be/explore/dataset/ods127/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods134/exports/parquet?where=datetime%3E%3D%222025-01-01T00%3A00%3A00Z%22+and+datetime%3C%222026-01-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods166/exports/parquet?where=datetime%3E%3D%222025-01-01T00%3A00%3A00Z%22+and+datetime%3C%222026-01-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods127/exports/parquet?where=datetime%3E%3D%222025-01-01T00%3A00%3A00Z%22+and+datetime%3C%222026-01-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:28:55Z",
+      "time_column": "timestamp_utc",
+      "transformation_notes": [
+        "timestamp_utc = start of the quarter-hour (UTC).",
+        "ODS134 provides final prices, SI/ACE, alpha/alpha' and MIP/MDP; ODS166 price components; ODS127 volumes (ODS127 SI/ACE duplicates dropped).",
+        "Rows are reindexed to a complete 15-minute grid between the first and last quarter-hour seen in any source.",
+        "Numeric columns are float32."
+      ],
+      "fetch_command": "euroflex data fetch belgium-qh --start 2025-01-01 --end 2026-01-01",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2025-06-10T00:00:00Z",
+      "coverage_end_utc": "2025-06-12T23:45:00Z",
+      "partition_year": 2025,
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/qh_2025.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 288,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "si_mw",
+          "type": "float"
+        },
+        {
+          "name": "ace_mw",
+          "type": "float"
+        },
+        {
+          "name": "alpha_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "alpha_prime_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mip_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mdp_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "imbalance_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "quality_status",
+          "type": "large_string"
+        },
+        {
+          "name": "afrr_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "afrr_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_avail_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_avail_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "floor_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "cap_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "inter_tso_price_import_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "inter_tso_price_export_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "igcc_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "afrr_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "rs_import_mw",
+          "type": "float"
+        },
+        {
+          "name": "igcc_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "afrr_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "rs_export_mw",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 35935,
+      "sha256": "53e6a8674b7557af4c536f0743dd69e7739ba5ed643d83b6f0dc795076bcee31"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/qh_2026.parquet",
+      "table": "belgium_qh",
+      "title": "Per-quarter-hour final imbalance prices, price components and volumes.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods134",
+        "ods166",
+        "ods127"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods134/",
+        "https://opendata.elia.be/explore/dataset/ods166/",
+        "https://opendata.elia.be/explore/dataset/ods127/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods134/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222027-01-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods166/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222027-01-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods127/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222027-01-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:28:59Z",
+      "time_column": "timestamp_utc",
+      "transformation_notes": [
+        "timestamp_utc = start of the quarter-hour (UTC).",
+        "ODS134 provides final prices, SI/ACE, alpha/alpha' and MIP/MDP; ODS166 price components; ODS127 volumes (ODS127 SI/ACE duplicates dropped).",
+        "Rows are reindexed to a complete 15-minute grid between the first and last quarter-hour seen in any source.",
+        "Numeric columns are float32."
+      ],
+      "fetch_command": "euroflex data fetch belgium-qh --start 2026-01-01 --end 2027-01-01",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2026-03-02T00:00:00Z",
+      "coverage_end_utc": "2026-03-04T23:45:00Z",
+      "partition_year": 2026,
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/qh_2026.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 288,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "si_mw",
+          "type": "float"
+        },
+        {
+          "name": "ace_mw",
+          "type": "float"
+        },
+        {
+          "name": "alpha_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "alpha_prime_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mip_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mdp_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "imbalance_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "quality_status",
+          "type": "large_string"
+        },
+        {
+          "name": "afrr_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "afrr_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_avail_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_avail_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "floor_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "cap_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "inter_tso_price_import_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "inter_tso_price_export_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "igcc_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "afrr_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_up_mw",
+          "type": "float"
+        },
+        {
+          "name": "rs_import_mw",
+          "type": "float"
+        },
+        {
+          "name": "igcc_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "afrr_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_sa_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_da_down_mw",
+          "type": "float"
+        },
+        {
+          "name": "rs_export_mw",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 36442,
+      "sha256": "85b291af943a5a133516d6ffa21ce6f2ac06844c087272ca464bf1fed49bf642"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/res_load_qh_2025.parquet",
+      "table": "belgium_res_load",
+      "title": "Belgian load, wind and PV measured + forecast per quarter-hour.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods001",
+        "ods031",
+        "ods032"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods001/",
+        "https://opendata.elia.be/explore/dataset/ods031/",
+        "https://opendata.elia.be/explore/dataset/ods032/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods001/exports/parquet?where=datetime%3E%3D%222025-01-01T00%3A00%3A00Z%22+and+datetime%3C%222026-01-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods031/exports/parquet?where=datetime%3E%3D%222025-01-01T00%3A00%3A00Z%22+and+datetime%3C%222026-01-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods032/exports/parquet?where=datetime%3E%3D%222025-01-01T00%3A00%3A00Z%22+and+datetime%3C%222026-01-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:31:51Z",
+      "time_column": "timestamp_utc",
+      "transformation_notes": [
+        "timestamp_utc = start of the quarter-hour (UTC); values in MW (Elia publishes MW averages per QH).",
+        "load_* from ODS001 (total load on the Belgian grid incl. estimated losses); wind_* are sums over all ODS031 rows (offshore + onshore, Elia- and DSO-connected, all regions); pv_* are the ODS032 region 'Belgium' rows.",
+        "Forecast vintages: *_da_11h_* = day-ahead forecast published 11:00 D-1 (usable before the 12:00 CET day-ahead gate); *_da_forecast_* = day-ahead forecast published 18:00 D-1 (after the DA auction); *_week_ahead_*; *_most_recent_* = latest revision before delivery (look-ahead risk for anything but near-real-time use: its issue time is not published).",
+        "P10/P90 bands are dropped (they are not additive across regions)."
+      ],
+      "fetch_command": "euroflex data fetch belgium-res-load --start 2025-01-01 --end 2026-01-01",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2025-06-10T00:00:00Z",
+      "coverage_end_utc": "2025-06-12T23:45:00Z",
+      "partition_year": 2025,
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/res_load_qh_2025.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 288,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "load_mw",
+          "type": "float"
+        },
+        {
+          "name": "load_most_recent_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "load_da_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "load_week_ahead_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_offshore_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_onshore_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_most_recent_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_da_11h_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_da_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_week_ahead_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_monitored_capacity_mw",
+          "type": "float"
+        },
+        {
+          "name": "pv_mw",
+          "type": "float"
+        },
+        {
+          "name": "pv_most_recent_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "pv_da_11h_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "pv_da_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "pv_week_ahead_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "pv_monitored_capacity_mw",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 32491,
+      "sha256": "4634484737dd557b4b6b7e7b674cb616a01370de34ec902f0058874b4f141ddb"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/res_load_qh_2026.parquet",
+      "table": "belgium_res_load",
+      "title": "Belgian load, wind and PV measured + forecast per quarter-hour.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods001",
+        "ods031",
+        "ods032"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods001/",
+        "https://opendata.elia.be/explore/dataset/ods031/",
+        "https://opendata.elia.be/explore/dataset/ods032/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods001/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222027-01-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods031/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222027-01-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods032/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222027-01-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:32:15Z",
+      "time_column": "timestamp_utc",
+      "transformation_notes": [
+        "timestamp_utc = start of the quarter-hour (UTC); values in MW (Elia publishes MW averages per QH).",
+        "load_* from ODS001 (total load on the Belgian grid incl. estimated losses); wind_* are sums over all ODS031 rows (offshore + onshore, Elia- and DSO-connected, all regions); pv_* are the ODS032 region 'Belgium' rows.",
+        "Forecast vintages: *_da_11h_* = day-ahead forecast published 11:00 D-1 (usable before the 12:00 CET day-ahead gate); *_da_forecast_* = day-ahead forecast published 18:00 D-1 (after the DA auction); *_week_ahead_*; *_most_recent_* = latest revision before delivery (look-ahead risk for anything but near-real-time use: its issue time is not published).",
+        "P10/P90 bands are dropped (they are not additive across regions)."
+      ],
+      "fetch_command": "euroflex data fetch belgium-res-load --start 2026-01-01 --end 2027-01-01",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2026-03-02T00:00:00Z",
+      "coverage_end_utc": "2026-03-04T23:45:00Z",
+      "partition_year": 2026,
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/res_load_qh_2026.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 288,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "load_mw",
+          "type": "float"
+        },
+        {
+          "name": "load_most_recent_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "load_da_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "load_week_ahead_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_offshore_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_onshore_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_most_recent_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_da_11h_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_da_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_week_ahead_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "wind_monitored_capacity_mw",
+          "type": "float"
+        },
+        {
+          "name": "pv_mw",
+          "type": "float"
+        },
+        {
+          "name": "pv_most_recent_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "pv_da_11h_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "pv_da_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "pv_week_ahead_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "pv_monitored_capacity_mw",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 30774,
+      "sha256": "e8a5731ab44e78afbb5d9566bfad245b2069e2a47b23f784771377e8d4cac52c"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/si_forecast_current_qh_2025.parquet",
+      "table": "belgium_si_forecast_current",
+      "title": "Elia SI forecast for the current quarter-hour, issued every minute.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods136"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods136/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods136/exports/parquet?where=predictiontimeutc%3E%3D%222025-01-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222025-02-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods136/exports/parquet?where=predictiontimeutc%3E%3D%222025-02-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222025-03-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods136/exports/parquet?where=predictiontimeutc%3E%3D%222025-03-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222025-04-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:32:22Z",
+      "time_column": "prediction_time_utc",
+      "transformation_notes": [
+        "prediction_time_utc = time the forecast was made (Elia `predictiontimeutc`, one forecast per minute); target_qh_utc = start of the quarter-hour whose average SI is forecast.",
+        "ODS136 targets the running quarter-hour, ODS147 the next one. Probabilities are for the target-QH average SI falling in [-inf,-400], [-400,-200], [-200,0], [0,200], [200,400], [400,inf] MW.",
+        "prediction_quality = Elia `predictionquality` (share of input data available, in percent).",
+        "Only contract columns are kept (resolutioncode and the ODS147 plotting helper column are dropped)."
+      ],
+      "fetch_command": "euroflex data fetch belgium-si-forecast --start 2025-01-01 --end 2026-01-01",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2025-06-10T00:00:48Z",
+      "coverage_end_utc": "2025-06-12T23:59:46Z",
+      "partition_year": 2025,
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/si_forecast_current_qh_2025.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 4311,
+      "columns": [
+        {
+          "name": "prediction_time_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "target_qh_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "si_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "p_si_lt_m400",
+          "type": "float"
+        },
+        {
+          "name": "p_si_m400_m200",
+          "type": "float"
+        },
+        {
+          "name": "p_si_m200_0",
+          "type": "float"
+        },
+        {
+          "name": "p_si_0_200",
+          "type": "float"
+        },
+        {
+          "name": "p_si_200_400",
+          "type": "float"
+        },
+        {
+          "name": "p_si_gt_400",
+          "type": "float"
+        },
+        {
+          "name": "prediction_quality",
+          "type": "float"
+        },
+        {
+          "name": "quality_status",
+          "type": "large_string"
+        }
+      ],
+      "size_bytes": 87724,
+      "sha256": "a27903763b83a6ac680700d7562ac1487f4daf4b046acd301b72e9f575c03a21"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/si_forecast_current_qh_2026.parquet",
+      "table": "belgium_si_forecast_current",
+      "title": "Elia SI forecast for the current quarter-hour, issued every minute.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods136"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods136/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods136/exports/parquet?where=predictiontimeutc%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-02-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods136/exports/parquet?where=predictiontimeutc%3E%3D%222026-02-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-03-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods136/exports/parquet?where=predictiontimeutc%3E%3D%222026-03-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-04-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:34:42Z",
+      "time_column": "prediction_time_utc",
+      "transformation_notes": [
+        "prediction_time_utc = time the forecast was made (Elia `predictiontimeutc`, one forecast per minute); target_qh_utc = start of the quarter-hour whose average SI is forecast.",
+        "ODS136 targets the running quarter-hour, ODS147 the next one. Probabilities are for the target-QH average SI falling in [-inf,-400], [-400,-200], [-200,0], [0,200], [200,400], [400,inf] MW.",
+        "prediction_quality = Elia `predictionquality` (share of input data available, in percent).",
+        "Only contract columns are kept (resolutioncode and the ODS147 plotting helper column are dropped)."
+      ],
+      "fetch_command": "euroflex data fetch belgium-si-forecast --start 2026-01-01 --end 2027-01-01",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2026-03-02T00:00:00Z",
+      "coverage_end_utc": "2026-03-04T23:59:00Z",
+      "partition_year": 2026,
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/si_forecast_current_qh_2026.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 4295,
+      "columns": [
+        {
+          "name": "prediction_time_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "target_qh_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "si_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "p_si_lt_m400",
+          "type": "float"
+        },
+        {
+          "name": "p_si_m400_m200",
+          "type": "float"
+        },
+        {
+          "name": "p_si_m200_0",
+          "type": "float"
+        },
+        {
+          "name": "p_si_0_200",
+          "type": "float"
+        },
+        {
+          "name": "p_si_200_400",
+          "type": "float"
+        },
+        {
+          "name": "p_si_gt_400",
+          "type": "float"
+        },
+        {
+          "name": "prediction_quality",
+          "type": "float"
+        },
+        {
+          "name": "quality_status",
+          "type": "large_string"
+        }
+      ],
+      "size_bytes": 51076,
+      "sha256": "c0b721c767345f4f44bb422077fe7360a40db55699edeced45005acd22af2faf"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/si_forecast_next_qh_2025.parquet",
+      "table": "belgium_si_forecast_next",
+      "title": "Elia SI forecast for the next quarter-hour, issued every minute.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods147"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods147/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222025-01-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222025-02-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222025-02-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222025-03-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222025-03-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222025-04-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:34:32Z",
+      "time_column": "prediction_time_utc",
+      "transformation_notes": [
+        "prediction_time_utc = time the forecast was made (Elia `predictiontimeutc`, one forecast per minute); target_qh_utc = start of the quarter-hour whose average SI is forecast.",
+        "ODS136 targets the running quarter-hour, ODS147 the next one. Probabilities are for the target-QH average SI falling in [-inf,-400], [-400,-200], [-200,0], [0,200], [200,400], [400,inf] MW.",
+        "prediction_quality = Elia `predictionquality` (share of input data available, in percent).",
+        "Only contract columns are kept (resolutioncode and the ODS147 plotting helper column are dropped)."
+      ],
+      "fetch_command": "euroflex data fetch belgium-si-forecast --start 2025-01-01 --end 2026-01-01",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2025-06-10T00:00:48Z",
+      "coverage_end_utc": "2025-06-12T23:59:46Z",
+      "partition_year": 2025,
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/si_forecast_next_qh_2025.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 4311,
+      "columns": [
+        {
+          "name": "prediction_time_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "target_qh_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "si_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "p_si_lt_m400",
+          "type": "float"
+        },
+        {
+          "name": "p_si_m400_m200",
+          "type": "float"
+        },
+        {
+          "name": "p_si_m200_0",
+          "type": "float"
+        },
+        {
+          "name": "p_si_0_200",
+          "type": "float"
+        },
+        {
+          "name": "p_si_200_400",
+          "type": "float"
+        },
+        {
+          "name": "p_si_gt_400",
+          "type": "float"
+        },
+        {
+          "name": "prediction_quality",
+          "type": "float"
+        },
+        {
+          "name": "quality_status",
+          "type": "large_string"
+        }
+      ],
+      "size_bytes": 107967,
+      "sha256": "41644f006e8dd977571b61d85c07a5a7994ec68a67d27702909127846c75f867"
+    },
+    {
+      "schema_version": 1,
+      "path": "belgium/si_forecast_next_qh_2026.parquet",
+      "table": "belgium_si_forecast_next",
+      "title": "Elia SI forecast for the next quarter-hour, issued every minute.",
+      "source": "Elia Open Data (opendata.elia.be)",
+      "dataset_ids": [
+        "ods147"
+      ],
+      "dataset_pages": [
+        "https://opendata.elia.be/explore/dataset/ods147/"
+      ],
+      "source_urls": [
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-02-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-02-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-03-01T00%3A00%3A00Z%22",
+        "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-03-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-04-01T00%3A00%3A00Z%22"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://opendata.elia.be/pages/licence/",
+      "attribution": "Elia Transmission Belgium SA",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:36:46Z",
+      "time_column": "prediction_time_utc",
+      "transformation_notes": [
+        "prediction_time_utc = time the forecast was made (Elia `predictiontimeutc`, one forecast per minute); target_qh_utc = start of the quarter-hour whose average SI is forecast.",
+        "ODS136 targets the running quarter-hour, ODS147 the next one. Probabilities are for the target-QH average SI falling in [-inf,-400], [-400,-200], [-200,0], [0,200], [200,400], [400,inf] MW.",
+        "prediction_quality = Elia `predictionquality` (share of input data available, in percent).",
+        "Only contract columns are kept (resolutioncode and the ODS147 plotting helper column are dropped)."
+      ],
+      "fetch_command": "euroflex data fetch belgium-si-forecast --start 2026-01-01 --end 2027-01-01",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "coverage_start_utc": "2026-03-02T00:00:00Z",
+      "coverage_end_utc": "2026-03-04T23:59:00Z",
+      "partition_year": 2026,
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/belgium/si_forecast_next_qh_2026.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 4295,
+      "columns": [
+        {
+          "name": "prediction_time_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "target_qh_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "si_forecast_mw",
+          "type": "float"
+        },
+        {
+          "name": "p_si_lt_m400",
+          "type": "float"
+        },
+        {
+          "name": "p_si_m400_m200",
+          "type": "float"
+        },
+        {
+          "name": "p_si_m200_0",
+          "type": "float"
+        },
+        {
+          "name": "p_si_0_200",
+          "type": "float"
+        },
+        {
+          "name": "p_si_200_400",
+          "type": "float"
+        },
+        {
+          "name": "p_si_gt_400",
+          "type": "float"
+        },
+        {
+          "name": "prediction_quality",
+          "type": "float"
+        },
+        {
+          "name": "quality_status",
+          "type": "large_string"
+        }
+      ],
+      "size_bytes": 55826,
+      "sha256": "358a075cef21278890a500cbdabce764e5c1e9a9347d7543e1102dea09eef5c6"
+    },
+    {
+      "schema_version": 1,
+      "path": "energy_charts/da_prices_BE.parquet",
+      "table": "da_prices_BE",
+      "title": "Belgian day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards).",
+      "source": "Energy-Charts API (api.energy-charts.info, Fraunhofer ISE)",
+      "dataset_ids": [
+        "energy_charts_price_BE"
+      ],
+      "dataset_pages": [
+        "https://api.energy-charts.info/"
+      ],
+      "source_urls": [
+        "https://api.energy-charts.info/price?bzn=BE&end=2023-01-31&start=2023-01-01",
+        "https://api.energy-charts.info/price?bzn=BE&end=2023-02-28&start=2023-02-01",
+        "https://api.energy-charts.info/price?bzn=BE&end=2023-03-31&start=2023-03-01"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Bundesnetzagentur | SMARD.de, via Energy-Charts (Fraunhofer ISE)",
+      "upstream_licence_info": [
+        "CC BY 4.0 (creativecommons.org/licenses/by/4.0) from Bundesnetzagentur | SMARD.de"
+      ],
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:36:04Z",
+      "coverage_start_utc": "2025-06-10T00:00:00Z",
+      "coverage_end_utc": "2026-03-04T23:45:00Z",
+      "time_column": "timestamp_utc",
+      "zone": "BE",
+      "transformation_notes": [
+        "timestamp_utc = start of the day-ahead product; resolution_minutes = product length inferred from the spacing of consecutive timestamps (60 until delivery day 2025-09-30, 15 from 2025-10-01 after the SDAC 15-minute MTU go-live).",
+        "Monthly API requests (local delivery days, end inclusive) are concatenated and de-duplicated on timestamp_utc; null prices are dropped. price_eur_mwh is float32."
+      ],
+      "fetch_command": "euroflex data fetch day-ahead --zone BE",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/energy_charts/da_prices_BE.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 360,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "resolution_minutes",
+          "type": "int16"
+        },
+        {
+          "name": "price_eur_mwh",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 4298,
+      "sha256": "689708c139a205aa955b328988d69304c350a1a3f82949ea5e7a6853d2c02b6d"
+    },
+    {
+      "schema_version": 1,
+      "path": "energy_charts/da_prices_DE-LU.parquet",
+      "table": "da_prices_DE-LU",
+      "title": "German-Luxembourg day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards).",
+      "source": "Energy-Charts API (api.energy-charts.info, Fraunhofer ISE)",
+      "dataset_ids": [
+        "energy_charts_price_DE-LU"
+      ],
+      "dataset_pages": [
+        "https://api.energy-charts.info/"
+      ],
+      "source_urls": [
+        "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-01-31&start=2023-01-01",
+        "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-02-28&start=2023-02-01",
+        "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-03-31&start=2023-03-01"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Bundesnetzagentur | SMARD.de, via Energy-Charts (Fraunhofer ISE)",
+      "upstream_licence_info": [
+        "CC BY 4.0 (creativecommons.org/licenses/by/4.0) from Bundesnetzagentur | SMARD.de"
+      ],
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T03:50:06Z",
+      "coverage_start_utc": "2025-06-10T00:00:00Z",
+      "coverage_end_utc": "2026-03-04T23:45:00Z",
+      "time_column": "timestamp_utc",
+      "zone": "DE-LU",
+      "transformation_notes": [
+        "timestamp_utc = start of the day-ahead product; resolution_minutes = product length inferred from the spacing of consecutive timestamps (60 until delivery day 2025-09-30, 15 from 2025-10-01 after the SDAC 15-minute MTU go-live).",
+        "Monthly API requests (local delivery days, end inclusive) are concatenated and de-duplicated on timestamp_utc; null prices are dropped. price_eur_mwh is float32."
+      ],
+      "fetch_command": "euroflex data fetch day-ahead --zone DE-LU",
+      "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "fixture": {
+        "sliced_from": "data/public/energy_charts/da_prices_DE-LU.parquet",
+        "windows_utc": [
+          [
+            "2025-06-10T00:00:00Z",
+            "2025-06-13T00:00:00Z"
+          ],
+          [
+            "2026-03-02T00:00:00Z",
+            "2026-03-05T00:00:00Z"
+          ]
+        ]
+      },
+      "rows": 360,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "resolution_minutes",
+          "type": "int16"
+        },
+        {
+          "name": "price_eur_mwh",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 4295,
+      "sha256": "78821dcfacaaace1d67cf9b4d4b3b5a5ac7f9a243d01c76863fd3ad5999d63b3"
+    },
+    {
+      "schema_version": 1,
+      "path": "germany/afrr_capacity.parquet",
+      "table": "germany_afrr_capacity",
+      "title": "SYNTHETIC test fixture (random numbers in the contract layout; not regelleistung.net data)",
+      "source": "synthetic (scripts/data/make_test_fixtures.py)",
+      "dataset_ids": [],
+      "licence": "Apache-2.0 (synthetic test data)",
+      "attribution": "euroflex-bess-lab",
+      "redistributed": true,
+      "synthetic": true,
+      "time_column": "delivery_start_utc",
+      "coverage_start_utc": "2025-06-09T22:00:00Z",
+      "coverage_end_utc": "2026-03-04T23:00:00Z",
+      "rows": 72,
+      "columns": [
+        {
+          "name": "delivery_start_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "delivery_end_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "product",
+          "type": "large_string"
+        },
+        {
+          "name": "direction",
+          "type": "large_string"
+        },
+        {
+          "name": "price_eur_per_mw_h",
+          "type": "float"
+        },
+        {
+          "name": "volume_mw",
+          "type": "float"
+        },
+        {
+          "name": "marginal_price_eur_per_mw_h",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 5869,
+      "sha256": "42dbfffd0226141c1d298b160675539e71eafcdccd4873997a6073b58eddf7cf"
+    },
+    {
+      "schema_version": 1,
+      "path": "germany/fcr_capacity.parquet",
+      "table": "germany_fcr_capacity",
+      "title": "SYNTHETIC test fixture (random numbers in the contract layout; not regelleistung.net data)",
+      "source": "synthetic (scripts/data/make_test_fixtures.py)",
+      "dataset_ids": [],
+      "licence": "Apache-2.0 (synthetic test data)",
+      "attribution": "euroflex-bess-lab",
+      "redistributed": true,
+      "synthetic": true,
+      "time_column": "delivery_start_utc",
+      "coverage_start_utc": "2025-06-09T22:00:00Z",
+      "coverage_end_utc": "2026-03-04T23:00:00Z",
+      "rows": 36,
+      "columns": [
+        {
+          "name": "delivery_start_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "delivery_end_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "product",
+          "type": "large_string"
+        },
+        {
+          "name": "direction",
+          "type": "large_string"
+        },
+        {
+          "name": "price_eur_per_mw_h",
+          "type": "float"
+        },
+        {
+          "name": "volume_mw",
+          "type": "float"
+        },
+        {
+          "name": "marginal_price_eur_per_mw_h",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 5412,
+      "sha256": "92d1a660fbaac28a045997a5eb5ba7c52b4b32c945497ebfa15c269ee023384f"
+    }
+  ]
+}

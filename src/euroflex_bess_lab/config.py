@@ -10,7 +10,13 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 from .types import AssetSpec, SiteSpec
 
-MARKETS = ("belgium", "netherlands")
+MARKETS = ("belgium", "netherlands", "germany")
+GERMANY_IMBALANCE_REJECTION_MESSAGE = (
+    "Germany does not support workflow `da_plus_imbalance`: German balance responsible parties must keep their "
+    "balance group balanced in every quarter-hour (Bilanzkreistreue), so a deliberate imbalance position is not a "
+    "permitted trading strategy. The imbalance price (reBAP) is documented in docs/germany.md but never traded. "
+    "Use da_only, da_plus_fcr or da_plus_afrr instead."
+)
 BASE_WORKFLOWS = ("da_only", "da_plus_imbalance", "da_plus_fcr", "da_plus_afrr")
 WORKFLOW_FAMILIES = BASE_WORKFLOWS + ("schedule_revision",)
 FORECAST_PROVIDERS = ("perfect_foresight", "persistence", "csv", "custom_python")
@@ -32,7 +38,7 @@ BATCH_STEPS = (
 class MarketConfig(BaseModel):
     model_config = ConfigDict(validate_assignment=True)
 
-    id: Literal["belgium", "netherlands"]
+    id: Literal["belgium", "netherlands", "germany"]
     overrides: dict[str, Any] = Field(default_factory=dict)
     live_data_auth_env_var_names: list[str] = Field(default_factory=list)
 
@@ -174,8 +180,11 @@ class AfrrConfig(BaseModel):
 
     product_id: Literal["afrr_asymmetric"] = "afrr_asymmetric"
     sustain_duration_minutes: int = Field(default=15, ge=15)
-    settlement_mode: Literal["capacity_plus_activation_expected_value"] = "capacity_plus_activation_expected_value"
-    activation_mode: Literal["expected_value"] = "expected_value"
+    # capacity_only / none is the German capacity-only aFRR path (market germany only).
+    settlement_mode: Literal["capacity_plus_activation_expected_value", "capacity_only"] = (
+        "capacity_plus_activation_expected_value"
+    )
+    activation_mode: Literal["expected_value", "none"] = "expected_value"
     non_delivery_penalty_eur_per_mw: float = Field(default=0.0, ge=0.0)
     simplified_product_logic: Literal[True] = True
 
@@ -185,6 +194,12 @@ class AfrrConfig(BaseModel):
         if value % 15 != 0:
             raise ValueError("sustain_duration_minutes must be a multiple of 15")
         return value
+
+    @model_validator(mode="after")
+    def validate_settlement_activation_pair(self) -> AfrrConfig:
+        if (self.settlement_mode == "capacity_only") != (self.activation_mode == "none"):
+            raise ValueError("afrr.settlement_mode=capacity_only requires afrr.activation_mode=none (and vice versa)")
+        return self
 
 
 class RevisionRealizedInputsConfig(BaseModel):
@@ -293,6 +308,8 @@ class BacktestConfig(BaseModel):
             raise ValueError("revision configuration block is only valid when workflow is schedule_revision")
 
         execution_workflow = self.execution_workflow
+        if self.market.id == "germany" and execution_workflow == "da_plus_imbalance":
+            raise ValueError(GERMANY_IMBALANCE_REJECTION_MESSAGE)
         if self.is_revision_workflow and self.revision is not None:
             if self.revision.base_workflow == "da_plus_imbalance" and self.run_scope == "portfolio":
                 raise ValueError("schedule_revision with base_workflow=da_plus_imbalance requires a single asset")
@@ -323,19 +340,39 @@ class BacktestConfig(BaseModel):
             if self.fcr is None:
                 raise ValueError("fcr configuration block is required for da_plus_fcr")
         if execution_workflow == "da_plus_afrr":
+            capacity_only = self.afrr is not None and self.afrr.settlement_mode == "capacity_only"
+            if capacity_only and self.market.id != "germany":
+                raise ValueError(
+                    "afrr.settlement_mode=capacity_only is only supported for market germany in the current release line"
+                )
             required_inputs = {
                 "afrr_capacity_up": self.data.afrr_capacity_up,
                 "afrr_capacity_down": self.data.afrr_capacity_down,
+            }
+            activation_inputs = {
                 "afrr_activation_price_up": self.data.afrr_activation_price_up,
                 "afrr_activation_price_down": self.data.afrr_activation_price_down,
                 "afrr_activation_ratio_up": self.data.afrr_activation_ratio_up,
                 "afrr_activation_ratio_down": self.data.afrr_activation_ratio_down,
             }
+            if capacity_only:
+                configured_activation = sorted(name for name, value in activation_inputs.items() if value is not None)
+                if configured_activation:
+                    raise ValueError(
+                        "Capacity-only aFRR (afrr.settlement_mode=capacity_only) models zero activation; remove "
+                        "the activation inputs: " + ", ".join(configured_activation)
+                    )
+            else:
+                required_inputs.update(activation_inputs)
             missing_inputs = [name for name, value in required_inputs.items() if value is None]
             if missing_inputs:
-                raise ValueError(
-                    "aFRR actual inputs are required for da_plus_afrr: " + ", ".join(sorted(missing_inputs))
-                )
+                message = "aFRR actual inputs are required for da_plus_afrr: " + ", ".join(sorted(missing_inputs))
+                if self.market.id == "germany" and not capacity_only:
+                    message += (
+                        " (German aFRR is modelled capacity-only: set afrr.settlement_mode=capacity_only and "
+                        "afrr.activation_mode=none to run without activation inputs)"
+                    )
+                raise ValueError(message)
             if self.afrr is None:
                 raise ValueError("afrr configuration block is required for da_plus_afrr")
         if self.forecast_provider.name == "csv" and self.forecast_provider.day_ahead_path is None:
@@ -400,7 +437,7 @@ class BatchJobConfig(BaseModel):
 
     id: str
     config_path: Path
-    market: Literal["belgium", "netherlands"]
+    market: Literal["belgium", "netherlands", "germany"]
     workflow: Literal["da_only", "da_plus_imbalance", "da_plus_fcr", "da_plus_afrr", "schedule_revision"]
     steps: list[
         Literal[

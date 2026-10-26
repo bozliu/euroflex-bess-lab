@@ -10,6 +10,7 @@ from .base import (
     SinglePriceImbalanceSettlement,
 )
 from .belgium import BelgiumMarketAdapter
+from .germany import GermanyMarketAdapter
 from .netherlands import NetherlandsMarketAdapter
 from .registry import MarketRegistry
 
@@ -18,6 +19,7 @@ __all__ = [
     "BelgiumMarketAdapter",
     "BidConstraint",
     "DualPriceImbalanceSettlement",
+    "GermanyMarketAdapter",
     "LoadedMarketData",
     "MarketAdapter",
     "MarketRegistry",

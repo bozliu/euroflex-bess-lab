@@ -1,0 +1,93 @@
+{
+  "description": "Recorded Elia Open Data / Energy-Charts API responses used by tests/test_rt_live_*.py (no network in tests).",
+  "retrieved_at_utc": "2026-10-26T03:29:50Z",
+  "licences": {
+    "elia": "CC BY 4.0, attribution: Elia Transmission Belgium SA (https://opendata.elia.be/pages/licence/)",
+    "energy_charts": "CC BY 4.0, Bundesnetzagentur | SMARD.de via Energy-Charts (Fraunhofer ISE)"
+  },
+  "files": {
+    "ods161_records.json": {
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods161/records",
+      "params": {
+        "order_by": "datetime desc",
+        "limit": "30"
+      },
+      "rows": 30,
+      "licence": "elia"
+    },
+    "ods169_records.json": {
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods169/records",
+      "params": {
+        "order_by": "datetime desc",
+        "limit": "30"
+      },
+      "rows": 30,
+      "licence": "elia"
+    },
+    "ods175_records.json": {
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods175/records",
+      "params": {
+        "order_by": "datetime desc",
+        "limit": "30"
+      },
+      "rows": 30,
+      "licence": "elia"
+    },
+    "ods162_records.json": {
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods162/records",
+      "params": {
+        "order_by": "datetime desc",
+        "limit": "17"
+      },
+      "rows": 17,
+      "licence": "elia"
+    },
+    "ods136_records.json": {
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods136/records",
+      "params": {
+        "order_by": "predictiontimeutc desc",
+        "limit": "10"
+      },
+      "rows": 10,
+      "licence": "elia"
+    },
+    "ods147_records.json": {
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/records",
+      "params": {
+        "order_by": "predictiontimeutc desc",
+        "limit": "10"
+      },
+      "rows": 10,
+      "licence": "elia"
+    },
+    "ods211_records.json": {
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods211/records",
+      "params": {
+        "order_by": "datetime desc",
+        "limit": "10"
+      },
+      "rows": 10,
+      "licence": "elia"
+    },
+    "ods212_records.json": {
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods212/records",
+      "params": {
+        "order_by": "datetime desc",
+        "limit": "8"
+      },
+      "rows": 8,
+      "licence": "elia"
+    },
+    "energy_charts_be_2026-10-25.json": {
+      "url": "https://api.energy-charts.info/price",
+      "params": {
+        "bzn": "BE",
+        "start": "2026-10-25",
+        "end": "2026-10-25"
+      },
+      "rows": 100,
+      "note": "local delivery day with the autumn DST switch (25 hours = 100 quarter-hours)",
+      "licence": "energy_charts"
+    }
+  }
+}

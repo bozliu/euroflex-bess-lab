@@ -1,0 +1,54 @@
+{
+  "reproduction": {
+    "current": {
+      "rows": 75936,
+      "match_rate": 0.999986831015592,
+      "max_abs_error": 16.490997314453125
+    },
+    "new2026": {
+      "rows": 20352,
+      "match_rate": 1.0,
+      "max_abs_error": 0.0
+    }
+  },
+  "reconstruction_vs_elia_simulation": {
+    "n_qh": 20352,
+    "within_1_eur_share": 0.22386006289308177,
+    "within_5_eur_share": 0.45730149371069184,
+    "mae_eur_mwh": 18.263501578858577,
+    "median_abs_error_eur_mwh": 6.362171173095703,
+    "corr": 0.8303264431724342,
+    "weight_afrr_mae": 0.00441734047754819
+  },
+  "natural_experiment_price_stats": {
+    "current": {
+      "mean_eur_mwh": 95.19947052001953,
+      "std_eur_mwh": 252.8614959716797,
+      "p01_eur_mwh": -87.23259788513184,
+      "p99_eur_mwh": 383.788785095216,
+      "min_eur_mwh": -15000.0,
+      "max_eur_mwh": 2131.18310546875,
+      "negative_share": 0.08967177672955975,
+      "evening_minus_midday_eur_mwh": 84.22620391845703,
+      "mean_abs_minus_da_eur_mwh": 44.34123229980469
+    },
+    "new2026": {
+      "mean_eur_mwh": 96.66231536865234,
+      "std_eur_mwh": 122.80802917480469,
+      "p01_eur_mwh": -77.06350189208985,
+      "p99_eur_mwh": 366.8546429443362,
+      "min_eur_mwh": -6572.61328125,
+      "max_eur_mwh": 7834.33984375,
+      "negative_share": 0.06294221698113207,
+      "evening_minus_midday_eur_mwh": 51.08496856689453,
+      "mean_abs_minus_da_eur_mwh": 46.08572006225586
+    }
+  },
+  "oracle_eur_per_mw_year": {
+    "jan_jul_2026_current": 252478.7596826012,
+    "jan_jul_2026_new2026": 263563.62531514623,
+    "jan_jul_2026_day_ahead_only": 95870.07565230421,
+    "jun2024_dec2025_current": 532469.8848411244,
+    "jun2024_dec2025_new2026_reconstructed": 521495.7115634199
+  }
+}

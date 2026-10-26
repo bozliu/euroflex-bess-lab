@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "path": "belgium/energy_bid_curves_qh_2026.parquet",
+  "table": "belgium_energy_bid_curves",
+  "title": "Merit-order curves of available aFRR/mFRR energy bids per quarter-hour on a fixed MW grid.",
+  "source": "Elia Open Data (opendata.elia.be)",
+  "dataset_ids": [
+    "ods156",
+    "ods157"
+  ],
+  "dataset_pages": [
+    "https://opendata.elia.be/explore/dataset/ods156/",
+    "https://opendata.elia.be/explore/dataset/ods157/"
+  ],
+  "source_urls": [
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222026-02-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-02-01T00%3A00%3A00Z%22+and+datetime%3C%222026-03-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-03-01T00%3A00%3A00Z%22+and+datetime%3C%222026-04-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-04-01T00%3A00%3A00Z%22+and+datetime%3C%222026-05-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-05-01T00%3A00%3A00Z%22+and+datetime%3C%222026-06-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-06-01T00%3A00%3A00Z%22+and+datetime%3C%222026-07-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-07-01T00%3A00%3A00Z%22+and+datetime%3C%222026-08-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-08-01T00%3A00%3A00Z%22+and+datetime%3C%222026-09-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-09-01T00%3A00%3A00Z%22+and+datetime%3C%222026-10-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-10-01T00%3A00%3A00Z%22+and+datetime%3C%222026-11-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222026-02-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-02-01T00%3A00%3A00Z%22+and+datetime%3C%222026-03-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-03-01T00%3A00%3A00Z%22+and+datetime%3C%222026-04-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-04-01T00%3A00%3A00Z%22+and+datetime%3C%222026-05-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-05-01T00%3A00%3A00Z%22+and+datetime%3C%222026-06-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-06-01T00%3A00%3A00Z%22+and+datetime%3C%222026-07-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-07-01T00%3A00%3A00Z%22+and+datetime%3C%222026-08-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-08-01T00%3A00%3A00Z%22+and+datetime%3C%222026-09-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-09-01T00%3A00%3A00Z%22+and+datetime%3C%222026-10-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-10-01T00%3A00%3A00Z%22+and+datetime%3C%222026-11-01T00%3A00%3A00Z%22"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://opendata.elia.be/pages/licence/",
+  "attribution": "Elia Transmission Belgium SA",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:47:53Z",
+  "time_column": "timestamp_utc",
+  "transformation_notes": [
+    "Built from ODS156 (incremental = direction up) and ODS157 (decremental = direction down) individual energy bids; only bids with availability == 'Available' are used. Raw bid rows are not redistributed.",
+    "Bid volumes are the increments of Elia's published cumulativevolume in its merit-order rank, so bids that add no volume (mutually exclusive alternatives, unavailable bids) are excluded.",
+    "Per quarter-hour and direction the available aFRR + mFRR (+ reserve-sharing) bids are sorted by price into an economic merit order: cheapest first for up (incremental), highest price first for down (decremental). price_eur_mwh at cum_mw = V is the price of the bid that covers the V-th MW, i.e. the marginal price needed to activate V MW. Null where the available volume is below V. Grid: 0..2000 MW in 25 MW steps.",
+    "Elia's own rank (aFRR first, then mFRR) was tested as an alternative ordering and tracks the published MIP/MDP much worse (see validation.curve_vs_published_prices for the price-sorted curve).",
+    "Approximation: real aFRR activations are continuous and priced via PICASSO cross-border marginal prices, mFRR via MARI, and Elia may skip bids (e.g. for congestion); treat the curve as a stylised local merit order for price-impact studies, not as the settlement price."
+  ],
+  "validation": {
+    "up_rows": 2741072,
+    "up_rows_not_available": 50367,
+    "up_rows_without_volume": 58828,
+    "up_quarter_hours": 28504,
+    "down_rows": 2350155,
+    "down_rows_not_available": 24408,
+    "down_rows_without_volume": 81459,
+    "down_quarter_hours": 28504,
+    "curve_vs_published_prices": {
+      "si_threshold_mw": 100.0,
+      "up": {
+        "compared": 6818,
+        "pearson": 0.5154196497397059,
+        "spearman": 0.6720882898184352,
+        "median_abs_diff_eur_mwh": 52.5155029296875
+      },
+      "down": {
+        "compared": 6752,
+        "pearson": 0.6575773089158478,
+        "spearman": 0.7764753710926714,
+        "median_abs_diff_eur_mwh": 41.660499572753906
+      }
+    },
+    "qh_per_direction": {
+      "down": 28504,
+      "up": 28504
+    }
+  },
+  "inputs": [
+    {
+      "dataset_id": "ods156",
+      "chunk": "2026-01-01__2026-02-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222026-02-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:42:23Z",
+      "sha256": "8d2b0eed53e8f8895a8d98b3fe0b4a23dbe1265174bc8c068236edd02965617c",
+      "size_bytes": 1878170
+    },
+    {
+      "dataset_id": "ods156",
+      "chunk": "2026-02-01__2026-03-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-02-01T00%3A00%3A00Z%22+and+datetime%3C%222026-03-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:42:57Z",
+      "sha256": "34dcc0933e9a1959ff5e4279d8338d8f80f513458fc218468fe140b256c953f4",
+      "size_bytes": 1709702
+    },
+    {
+      "dataset_id": "ods156",
+      "chunk": "2026-03-01__2026-04-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-03-01T00%3A00%3A00Z%22+and+datetime%3C%222026-04-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:43:28Z",
+      "sha256": "5aefb3447f9f73d2113271be1fdf379ca727c94eadf31d7088e27fb8fb99f130",
+      "size_bytes": 1953576
+    },
+    {
+      "dataset_id": "ods156",
+      "chunk": "2026-04-01__2026-05-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-04-01T00%3A00%3A00Z%22+and+datetime%3C%222026-05-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:44:01Z",
+      "sha256": "9cbd4945e0d2657a54f1711e0e944c2c2149615c68f98aeb7d42392d40166c89",
+      "size_bytes": 2005506
+    },
+    {
+      "dataset_id": "ods156",
+      "chunk": "2026-05-01__2026-06-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-05-01T00%3A00%3A00Z%22+and+datetime%3C%222026-06-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:44:37Z",
+      "sha256": "5e40435062a71f5a88f5920d85ba8cf7963d22de360bccd5472ea2eaf3a22f92",
+      "size_bytes": 2100384
+    },
+    {
+      "dataset_id": "ods156",
+      "chunk": "2026-06-01__2026-07-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-06-01T00%3A00%3A00Z%22+and+datetime%3C%222026-07-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:45:13Z",
+      "sha256": "c8e40d6447514c03143a15614d859db075376b2335559cf17dec10f0f63d2d0a",
+      "size_bytes": 2046860
+    },
+    {
+      "dataset_id": "ods156",
+      "chunk": "2026-07-01__2026-08-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-07-01T00%3A00%3A00Z%22+and+datetime%3C%222026-08-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:45:58Z",
+      "sha256": "45e0aa46c84fbc064e0c0de48147fd12aab71966df8aa1720e663b0b0b585517",
+      "size_bytes": 2182077
+    },
+    {
+      "dataset_id": "ods156",
+      "chunk": "2026-08-01__2026-09-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-08-01T00%3A00%3A00Z%22+and+datetime%3C%222026-09-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:46:42Z",
+      "sha256": "3bba8d8f58d14d893faaf10e324a626be5a01e33582c3be818f32e1fbf248396",
+      "size_bytes": 2067326
+    },
+    {
+      "dataset_id": "ods156",
+      "chunk": "2026-09-01__2026-10-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-09-01T00%3A00%3A00Z%22+and+datetime%3C%222026-10-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:47:17Z",
+      "sha256": "8d9dadf46701c154358bcd6dacc460b3416d7694af1a666b12422b71a5d01a1c",
+      "size_bytes": 1959770
+    },
+    {
+      "dataset_id": "ods156",
+      "chunk": "2026-10-01__2026-11-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-10-01T00%3A00%3A00Z%22+and+datetime%3C%222026-11-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:47:45Z",
+      "sha256": "fc5b8b01a287c0fd2189af030313d9d408a1b3ff5b815b61a35114a436790543",
+      "size_bytes": 1579764
+    },
+    {
+      "dataset_id": "ods157",
+      "chunk": "2026-01-01__2026-02-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222026-02-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:42:46Z",
+      "sha256": "afc47ebb7d08af3fc85ff63b598172cfd5bc324dc4594d322191a759277763dd",
+      "size_bytes": 2035656
+    },
+    {
+      "dataset_id": "ods157",
+      "chunk": "2026-02-01__2026-03-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-02-01T00%3A00%3A00Z%22+and+datetime%3C%222026-03-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:43:15Z",
+      "sha256": "0d83b3a9d684d0e4a9a6aa7f8450e35fbb48fd75e075618e82c3a3a50e5b84aa",
+      "size_bytes": 1708666
+    },
+    {
+      "dataset_id": "ods157",
+      "chunk": "2026-03-01__2026-04-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-03-01T00%3A00%3A00Z%22+and+datetime%3C%222026-04-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:44:03Z",
+      "sha256": "3bb5739307dded949695b7667a47ced7993c9c47168186df158b6829aed7384a",
+      "size_bytes": 1658377
+    },
+    {
+      "dataset_id": "ods157",
+      "chunk": "2026-04-01__2026-05-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-04-01T00%3A00%3A00Z%22+and+datetime%3C%222026-05-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:44:36Z",
+      "sha256": "8df72f97637946ed314f140c00805391dee8e7df330ffdf7934432667de2121f",
+      "size_bytes": 1701331
+    },
+    {
+      "dataset_id": "ods157",
+      "chunk": "2026-05-01__2026-06-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-05-01T00%3A00%3A00Z%22+and+datetime%3C%222026-06-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:45:09Z",
+      "sha256": "701a475bb2f924a8c384c57c5e9dc333dc44a38ad6c9dff2ae99081ea6a33933",
+      "size_bytes": 1739618
+    },
+    {
+      "dataset_id": "ods157",
+      "chunk": "2026-06-01__2026-07-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-06-01T00%3A00%3A00Z%22+and+datetime%3C%222026-07-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:45:46Z",
+      "sha256": "9bfe59f9173cb39d8afdad6238ba1891b4b6e82c194a00302bf1437dac15fb7d",
+      "size_bytes": 1901213
+    },
+    {
+      "dataset_id": "ods157",
+      "chunk": "2026-07-01__2026-08-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-07-01T00%3A00%3A00Z%22+and+datetime%3C%222026-08-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:46:27Z",
+      "sha256": "98cc179a22e1b913cc1672bb45ea6272654ed3bacbb9f8074c01586a43d0e263",
+      "size_bytes": 1878417
+    },
+    {
+      "dataset_id": "ods157",
+      "chunk": "2026-08-01__2026-09-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-08-01T00%3A00%3A00Z%22+and+datetime%3C%222026-09-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:46:55Z",
+      "sha256": "5eb28a6ebec06d66994122e4c64c2816065b672325e1ceb1cc697b96ebb9fa0f",
+      "size_bytes": 1891641
+    },
+    {
+      "dataset_id": "ods157",
+      "chunk": "2026-09-01__2026-10-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-09-01T00%3A00%3A00Z%22+and+datetime%3C%222026-10-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:47:27Z",
+      "sha256": "69889d54ff93247b8a9e37efa4399beb415ecb68cc8ace169dc4ebcf64fe99f6",
+      "size_bytes": 1847944
+    },
+    {
+      "dataset_id": "ods157",
+      "chunk": "2026-10-01__2026-11-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods157/exports/parquet?where=datetime%3E%3D%222026-10-01T00%3A00%3A00Z%22+and+datetime%3C%222026-11-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:47:53Z",
+      "sha256": "adc45eb66c6aee7e506179aefc6a9484e05a23670cd5e019732a0f73ae70bd9d",
+      "size_bytes": 1557077
+    }
+  ],
+  "fetch_command": "euroflex data fetch belgium-bid-curves --start 2026-01-01 --end 2027-01-01",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "coverage_start_utc": "2026-01-01T00:00:00Z",
+  "coverage_end_utc": "2026-10-24T22:00:00Z",
+  "partition_year": 2026,
+  "grid": {
+    "cum_mw_min": 0,
+    "cum_mw_max": 2000,
+    "cum_mw_step": 25
+  },
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 4617648,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "direction",
+      "type": "large_string"
+    },
+    {
+      "name": "cum_mw",
+      "type": "float"
+    },
+    {
+      "name": "price_eur_mwh",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 3433826,
+  "sha256": "d622dc8761860bcc06cdbae85a91a1c906f27d9d7e11c46dae8bf127db2a65a8"
+}

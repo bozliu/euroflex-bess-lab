@@ -1,0 +1,70 @@
+schema_version: 4
+run_name: germany-da-fcr
+
+# Germany (DE-LU) day-ahead + symmetric FCR capacity. See docs/germany.md.
+# Day-ahead prices are real Energy-Charts data (CC BY 4.0, Bundesnetzagentur | SMARD.de): 2025-09-30 is the
+# last hourly SDAC day and is expanded to flat quarter-hours; 2025-10-01 is the first 15-minute SDAC day.
+# FCR prices are synthetic illustrative block values (regelleistung.net results are not redistributed).
+market:
+  id: germany
+
+workflow: da_plus_fcr
+
+forecast_provider:
+  name: persistence
+
+timing:
+  timezone: Europe/Berlin
+  resolution_minutes: 15
+  rebalance_cadence_minutes: 15
+  execution_lock_intervals: 1
+  day_ahead_gate_closure_local: "12:00"
+  delivery_start_date: 2025-10-01
+  delivery_end_date: 2025-10-01
+
+site:
+  id: germany-fcr-demo-site
+  poi_import_limit_mw: 1.0
+  poi_export_limit_mw: 1.0
+
+assets:
+  - id: de-bess-1
+    kind: battery
+    battery:
+      name: demo_bess_de_fcr
+      power_mw: 1.0
+      energy_mwh: 2.0
+      initial_soc_mwh: 1.0
+      terminal_soc_mwh: 1.0
+      soc_min_mwh: 0.1
+      soc_max_mwh: 1.9
+      charge_efficiency: 0.95
+      discharge_efficiency: 0.95
+      connection_limit_mw: 1.0
+      minimum_headroom_mwh: 0.0
+
+degradation:
+  mode: throughput_linear
+  throughput_cost_eur_per_mwh: 4.0
+
+data:
+  day_ahead:
+    actual_path: ../../data/germany_day_ahead_prices.csv
+  fcr_capacity:
+    actual_path: ../../data/germany_fcr_capacity_blocks.csv
+
+fcr:
+  product_id: fcr_symmetric
+  # PQ rule for limited-energy reservoirs needs 0.415 MWh per MW per direction (~25 min); the engine uses
+  # multiples of 15 minutes, so 30 minutes is the conservative engine setting.
+  sustain_duration_minutes: 30
+  settlement_mode: capacity_only
+  activation_mode: none
+  non_delivery_penalty_eur_per_mw: 0.0
+  simplified_product_logic: true
+
+artifacts:
+  root_dir: ../../../artifacts/examples
+  save_inputs: true
+  save_plots: false
+  save_forecast_snapshots: true

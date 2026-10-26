@@ -1,0 +1,82 @@
+{
+  "hypothesis": "H0: at least 4 of the 5 decision statistics of the realised W1 data fall inside their 90 % intervals",
+  "decision_statistics": [
+    "spread_mean_eur_mwh",
+    "spread_std_eur_mwh",
+    "spread_p01_eur_mwh",
+    "spread_p99_eur_mwh",
+    "negative_share"
+  ],
+  "window_w1_utc": [
+    "2026-11-24 09:00:00+00:00",
+    "2027-01-31 23:00:00+00:00"
+  ],
+  "window_days": 69,
+  "battery": {
+    "power_mw": 1.0,
+    "energy_mwh": 2.0,
+    "efficiency": 0.95,
+    "degradation_eur_per_mwh": 8.0
+  },
+  "pool": {
+    "days_simulated_jan_feb_2026": 60,
+    "days_reconstructed_nov_dec_2025": 62
+  },
+  "bootstrap": {
+    "replicates": 2000,
+    "block_days": 7,
+    "seed": 20261124
+  },
+  "intervals_90pct": {
+    "spread_mean_eur_mwh": {
+      "p05": -8.209125282196881,
+      "p50": -2.11131355498855,
+      "p95": 4.278329477122035
+    },
+    "spread_std_eur_mwh": {
+      "p05": 54.482156579557476,
+      "p50": 66.92329239809419,
+      "p95": 80.95571129630113
+    },
+    "spread_p01_eur_mwh": {
+      "p05": -181.49213409423828,
+      "p50": -140.27247474671177,
+      "p95": -115.95589262008667
+    },
+    "spread_p99_eur_mwh": {
+      "p05": 180.3430966481923,
+      "p50": 221.73739929199212,
+      "p95": 282.04748221161066
+    },
+    "negative_share": {
+      "p05": 0.024035517452541334,
+      "p50": 0.03954971535793518,
+      "p95": 0.0611627270559674
+    },
+    "mean_eur_mwh": {
+      "p05": 76.4369073101264,
+      "p50": 89.57892264092065,
+      "p95": 101.87811804043551
+    },
+    "std_eur_mwh": {
+      "p05": 60.13497349816447,
+      "p50": 73.4700325176824,
+      "p95": 87.770445519689
+    },
+    "p01_eur_mwh": {
+      "p05": -120.6368544960022,
+      "p50": -82.3096677017212,
+      "p95": -42.46330903329171
+    },
+    "p99_eur_mwh": {
+      "p05": 271.3937297363281,
+      "p50": 329.38490716068037,
+      "p95": 412.1923559061882
+    },
+    "oracle_eur_per_mw_year": {
+      "p05": 162454.48358190592,
+      "p50": 192588.64349149098,
+      "p95": 226977.7042221216
+    }
+  }
+}

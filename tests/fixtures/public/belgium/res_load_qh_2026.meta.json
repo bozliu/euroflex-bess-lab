@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "path": "belgium/res_load_qh_2026.parquet",
+  "table": "belgium_res_load",
+  "title": "Belgian load, wind and PV measured + forecast per quarter-hour.",
+  "source": "Elia Open Data (opendata.elia.be)",
+  "dataset_ids": [
+    "ods001",
+    "ods031",
+    "ods032"
+  ],
+  "dataset_pages": [
+    "https://opendata.elia.be/explore/dataset/ods001/",
+    "https://opendata.elia.be/explore/dataset/ods031/",
+    "https://opendata.elia.be/explore/dataset/ods032/"
+  ],
+  "source_urls": [
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods001/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222027-01-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods031/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222027-01-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods032/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222027-01-01T00%3A00%3A00Z%22"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://opendata.elia.be/pages/licence/",
+  "attribution": "Elia Transmission Belgium SA",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:32:15Z",
+  "time_column": "timestamp_utc",
+  "transformation_notes": [
+    "timestamp_utc = start of the quarter-hour (UTC); values in MW (Elia publishes MW averages per QH).",
+    "load_* from ODS001 (total load on the Belgian grid incl. estimated losses); wind_* are sums over all ODS031 rows (offshore + onshore, Elia- and DSO-connected, all regions); pv_* are the ODS032 region 'Belgium' rows.",
+    "Forecast vintages: *_da_11h_* = day-ahead forecast published 11:00 D-1 (usable before the 12:00 CET day-ahead gate); *_da_forecast_* = day-ahead forecast published 18:00 D-1 (after the DA auction); *_week_ahead_*; *_most_recent_* = latest revision before delivery (look-ahead risk for anything but near-real-time use: its issue time is not published).",
+    "P10/P90 bands are dropped (they are not additive across regions)."
+  ],
+  "fetch_command": "euroflex data fetch belgium-res-load --start 2026-01-01 --end 2027-01-01",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "coverage_start_utc": "2026-03-02T00:00:00Z",
+  "coverage_end_utc": "2026-03-04T23:45:00Z",
+  "partition_year": 2026,
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "fixture": {
+    "sliced_from": "data/public/belgium/res_load_qh_2026.parquet",
+    "windows_utc": [
+      [
+        "2025-06-10T00:00:00Z",
+        "2025-06-13T00:00:00Z"
+      ],
+      [
+        "2026-03-02T00:00:00Z",
+        "2026-03-05T00:00:00Z"
+      ]
+    ]
+  },
+  "rows": 288,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "load_mw",
+      "type": "float"
+    },
+    {
+      "name": "load_most_recent_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "load_da_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "load_week_ahead_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_offshore_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_onshore_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_most_recent_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_da_11h_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_da_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_week_ahead_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_monitored_capacity_mw",
+      "type": "float"
+    },
+    {
+      "name": "pv_mw",
+      "type": "float"
+    },
+    {
+      "name": "pv_most_recent_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "pv_da_11h_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "pv_da_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "pv_week_ahead_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "pv_monitored_capacity_mw",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 30774,
+  "sha256": "e8a5731ab44e78afbb5d9566bfad245b2069e2a47b23f784771377e8d4cac52c"
+}

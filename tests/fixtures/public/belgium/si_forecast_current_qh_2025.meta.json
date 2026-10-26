@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "path": "belgium/si_forecast_current_qh_2025.parquet",
+  "table": "belgium_si_forecast_current",
+  "title": "Elia SI forecast for the current quarter-hour, issued every minute.",
+  "source": "Elia Open Data (opendata.elia.be)",
+  "dataset_ids": [
+    "ods136"
+  ],
+  "dataset_pages": [
+    "https://opendata.elia.be/explore/dataset/ods136/"
+  ],
+  "source_urls": [
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods136/exports/parquet?where=predictiontimeutc%3E%3D%222025-01-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222025-02-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods136/exports/parquet?where=predictiontimeutc%3E%3D%222025-02-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222025-03-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods136/exports/parquet?where=predictiontimeutc%3E%3D%222025-03-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222025-04-01T00%3A00%3A00Z%22"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://opendata.elia.be/pages/licence/",
+  "attribution": "Elia Transmission Belgium SA",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:32:22Z",
+  "time_column": "prediction_time_utc",
+  "transformation_notes": [
+    "prediction_time_utc = time the forecast was made (Elia `predictiontimeutc`, one forecast per minute); target_qh_utc = start of the quarter-hour whose average SI is forecast.",
+    "ODS136 targets the running quarter-hour, ODS147 the next one. Probabilities are for the target-QH average SI falling in [-inf,-400], [-400,-200], [-200,0], [0,200], [200,400], [400,inf] MW.",
+    "prediction_quality = Elia `predictionquality` (share of input data available, in percent).",
+    "Only contract columns are kept (resolutioncode and the ODS147 plotting helper column are dropped)."
+  ],
+  "fetch_command": "euroflex data fetch belgium-si-forecast --start 2025-01-01 --end 2026-01-01",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "coverage_start_utc": "2025-06-10T00:00:48Z",
+  "coverage_end_utc": "2025-06-12T23:59:46Z",
+  "partition_year": 2025,
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "fixture": {
+    "sliced_from": "data/public/belgium/si_forecast_current_qh_2025.parquet",
+    "windows_utc": [
+      [
+        "2025-06-10T00:00:00Z",
+        "2025-06-13T00:00:00Z"
+      ],
+      [
+        "2026-03-02T00:00:00Z",
+        "2026-03-05T00:00:00Z"
+      ]
+    ]
+  },
+  "rows": 4311,
+  "columns": [
+    {
+      "name": "prediction_time_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "target_qh_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "si_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "p_si_lt_m400",
+      "type": "float"
+    },
+    {
+      "name": "p_si_m400_m200",
+      "type": "float"
+    },
+    {
+      "name": "p_si_m200_0",
+      "type": "float"
+    },
+    {
+      "name": "p_si_0_200",
+      "type": "float"
+    },
+    {
+      "name": "p_si_200_400",
+      "type": "float"
+    },
+    {
+      "name": "p_si_gt_400",
+      "type": "float"
+    },
+    {
+      "name": "prediction_quality",
+      "type": "float"
+    },
+    {
+      "name": "quality_status",
+      "type": "large_string"
+    }
+  ],
+  "size_bytes": 87724,
+  "sha256": "a27903763b83a6ac680700d7562ac1487f4daf4b046acd301b72e9f575c03a21"
+}

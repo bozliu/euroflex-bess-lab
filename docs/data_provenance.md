@@ -4,6 +4,26 @@ For a commercial-grade BESS benchmarking tool, data provenance is part of the tr
 
 The bundled files in `examples/data/` are frozen, normalized samples for demo, docs, CI, and benchmark reproducibility. They are intentionally small and deterministic. They are **not** live operator feeds, **not** settlement statements, and **not** a substitute for a licensed production data pipeline.
 
+## Public real-data set (`data/public`, v2)
+
+Version 2 commits a full real-data set for the real-time engine, the research scripts and the reports:
+
+- Belgian minute and quarter-hour imbalance data from 22 May 2024 (Elia ODS133/126/165 and ODS134/166/127), with
+  quarter-hour history back to 2019 and minute history back to 2023;
+- Elia's simulation of the new 2026 imbalance-price formula (ODS211/ODS212, Jan-Jul 2026), which Elia removes on
+  17 Nov 2026;
+- Elia system-imbalance forecasts (ODS136/147), aFRR and mFRR capacity awards, wind/PV/load, aggregated
+  merit-order curves;
+- Belgian and German day-ahead prices from Energy-Charts (SMARD.de / Bundesnetzagentur).
+
+Licences: Elia Open Data and Energy-Charts are CC BY 4.0 (attribution in `data/public/LICENSES.md`). German reserve
+results from regelleistung.net are fetched by `euroflex data fetch` but not redistributed: the site requires prior
+written consent for reproduction.
+
+Each parquet file has a `.meta.json` sidecar (source, dataset ids, URLs, licence, coverage, rows, sha256,
+transformation notes) and `data/public/MANIFEST.json` aggregates them. `euroflex data verify` checks every checksum;
+`scripts/data/fetch_all_public.py` rebuilds the tree from the upstream APIs. Details: [Public datasets](public_datasets.md).
+
 ## Bundled example datasets
 
 These samples may be truncated, normalized, or simplified so the public quickstart remains reproducible without API keys.

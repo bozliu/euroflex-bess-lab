@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "path": "germany/afrr_capacity.parquet",
+  "table": "germany_afrr_capacity",
+  "title": "SYNTHETIC test fixture (random numbers in the contract layout; not regelleistung.net data)",
+  "source": "synthetic (scripts/data/make_test_fixtures.py)",
+  "dataset_ids": [],
+  "licence": "Apache-2.0 (synthetic test data)",
+  "attribution": "euroflex-bess-lab",
+  "redistributed": true,
+  "synthetic": true,
+  "time_column": "delivery_start_utc",
+  "coverage_start_utc": "2025-06-09T22:00:00Z",
+  "coverage_end_utc": "2026-03-04T23:00:00Z",
+  "rows": 72,
+  "columns": [
+    {
+      "name": "delivery_start_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "delivery_end_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "product",
+      "type": "large_string"
+    },
+    {
+      "name": "direction",
+      "type": "large_string"
+    },
+    {
+      "name": "price_eur_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "volume_mw",
+      "type": "float"
+    },
+    {
+      "name": "marginal_price_eur_per_mw_h",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 5869,
+  "sha256": "42dbfffd0226141c1d298b160675539e71eafcdccd4873997a6073b58eddf7cf"
+}

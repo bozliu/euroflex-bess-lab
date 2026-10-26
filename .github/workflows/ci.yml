@@ -75,6 +75,12 @@ jobs:
         run: docker build -t euroflex-bess-lab:ci .
       - name: Docker version smoke test
         run: docker run --rm euroflex-bess-lab:ci euroflex --version
+      - name: Build live paper-trading image (deploy/Dockerfile, no push)
+        run: docker build -f deploy/Dockerfile -t euroflex-bess-lab:live-ci .
+      - name: Live image smoke test
+        run: |
+          docker run --rm --entrypoint /opt/venv/bin/euroflex euroflex-bess-lab:live-ci --version
+          docker run --rm --entrypoint /opt/venv/bin/euroflex euroflex-bess-lab:live-ci live --help
       - name: Docker canonical Belgium full-stack smoke test
         run: |
           docker run --rm euroflex-bess-lab:ci \

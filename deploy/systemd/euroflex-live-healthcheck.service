@@ -1,0 +1,15 @@
+# Optional watchdog for euroflex-live.service: restarts it when the status.json heartbeat is stale (exit 1)
+# while the unit is active. "Not started yet" (exit 3) is not a failure. Runs from euroflex-live-healthcheck.timer.
+[Unit]
+Description=Heartbeat check of the euroflex live paper-trading engine
+After=euroflex-live.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/euroflex/live.env
+ExecCondition=/bin/systemctl is-active --quiet euroflex-live.service
+# ($$ is systemd's escape for a literal $ passed to the shell.)
+ExecStart=/bin/sh -c '/opt/euroflex-bess-lab/.venv/bin/python /opt/euroflex-bess-lab/scripts/ops/healthcheck.py; rc=$$?; if [ "$$rc" -eq 1 ]; then /bin/systemctl restart euroflex-live.service; fi; [ "$$rc" -eq 0 ] || [ "$$rc" -eq 3 ]'
+NoNewPrivileges=yes
+ProtectHome=yes
+PrivateTmp=yes

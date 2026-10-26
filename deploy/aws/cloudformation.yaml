@@ -1,0 +1,318 @@
+# Minimal stack for the live paper-trading engine on ECS Fargate with its run directory on encrypted EFS.
+# Paper only: the engine never submits an order or bid to any market; it makes read-only HTTPS GETs to
+# opendata.elia.be and api.energy-charts.info. Template only: no account ids, bring your own image and VPC.
+#
+#   aws cloudformation deploy --template-file deploy/aws/cloudformation.yaml --stack-name euroflex-live \
+#     --capabilities CAPABILITY_IAM --parameter-overrides ImageUri=<your image> VpcId=<vpc> \
+#     SubnetA=<subnet> SubnetB=<subnet>
+#
+# One task at a time (MaximumPercent 100, MinimumHealthyPercent 0): a run directory has exactly one writer.
+# Forecast strategies (forecast-mpc, prism) need the models baked into the image (deploy/Dockerfile target
+# `with-models`).
+AWSTemplateFormatVersion: "2010-09-09"
+Description: euroflex-bess-lab live paper trading (shadow mode) on ECS Fargate with EFS state
+
+Parameters:
+  ImageUri:
+    Type: String
+    Description: Container image built from deploy/Dockerfile and pushed to your registry
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+  SubnetA:
+    Type: AWS::EC2::Subnet::Id
+    Description: Subnet for the task and an EFS mount target (needs outbound HTTPS)
+  SubnetB:
+    Type: AWS::EC2::Subnet::Id
+    Description: Second subnet (another availability zone) for an EFS mount target
+  AssignPublicIp:
+    Type: String
+    Default: DISABLED
+    AllowedValues: [ENABLED, DISABLED]
+    Description: ENABLED for public subnets without a NAT gateway
+  Strategy:
+    Type: String
+    Default: threshold
+    AllowedValues: [threshold, threshold-si, idle, forecast-mpc, prism, scales-l, rl-dqn]
+  PowerMw:
+    Type: String
+    Default: "1"
+  EnergyMwh:
+    Type: String
+    Default: "2"
+  Mechanism:
+    Type: String
+    Default: auto
+    AllowedValues: [auto, current, new2026]
+  TaskCpu:
+    Type: String
+    Default: "512"
+    AllowedValues: ["256", "512", "1024", "2048"]
+  TaskMemory:
+    Type: String
+    Default: "2048"
+    AllowedValues: ["1024", "2048", "3072", "4096"]
+  CpuArchitecture:
+    Type: String
+    Default: X86_64
+    AllowedValues: [X86_64, ARM64]
+  LogRetentionDays:
+    Type: Number
+    Default: 30
+    AllowedValues: [7, 14, 30, 60, 90, 180, 365]
+
+Resources:
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Sub: /euroflex/${AWS::StackName}/live
+      RetentionInDays:
+        Ref: LogRetentionDays
+
+  Cluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName:
+        Fn::Sub: ${AWS::StackName}
+
+  TaskSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: euroflex live task - no ingress; outbound for Elia/Energy-Charts HTTPS, ECR, logs, EFS
+      VpcId:
+        Ref: VpcId
+      SecurityGroupEgress:
+        - IpProtocol: "-1"
+          CidrIp: 0.0.0.0/0
+
+  EfsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: euroflex EFS - NFS from the live task only
+      VpcId:
+        Ref: VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 2049
+          ToPort: 2049
+          SourceSecurityGroupId:
+            Ref: TaskSecurityGroup
+
+  FileSystem:
+    Type: AWS::EFS::FileSystem
+    Properties:
+      Encrypted: true
+      PerformanceMode: generalPurpose
+      ThroughputMode: elastic
+      BackupPolicy:
+        Status: ENABLED
+      FileSystemTags:
+        - Key: Name
+          Value:
+            Fn::Sub: ${AWS::StackName}-state
+
+  MountTargetA:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId:
+        Ref: FileSystem
+      SubnetId:
+        Ref: SubnetA
+      SecurityGroups:
+        - Ref: EfsSecurityGroup
+
+  MountTargetB:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId:
+        Ref: FileSystem
+      SubnetId:
+        Ref: SubnetB
+      SecurityGroups:
+        - Ref: EfsSecurityGroup
+
+  AccessPoint:
+    Type: AWS::EFS::AccessPoint
+    Properties:
+      FileSystemId:
+        Ref: FileSystem
+      PosixUser:
+        Uid: "10001"
+        Gid: "10001"
+      RootDirectory:
+        Path: /euroflex
+        CreationInfo:
+          OwnerUid: "10001"
+          OwnerGid: "10001"
+          Permissions: "0750"
+
+  ExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - Fn::Sub: arn:${AWS::Partition}:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+
+  TaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: efs-state-access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - elasticfilesystem:ClientMount
+                  - elasticfilesystem:ClientWrite
+                Resource:
+                  Fn::GetAtt: [FileSystem, Arn]
+                Condition:
+                  StringEquals:
+                    elasticfilesystem:AccessPointArn:
+                      Fn::GetAtt: [AccessPoint, Arn]
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family:
+        Fn::Sub: ${AWS::StackName}-live
+      RequiresCompatibilities: [FARGATE]
+      NetworkMode: awsvpc
+      Cpu:
+        Ref: TaskCpu
+      Memory:
+        Ref: TaskMemory
+      RuntimePlatform:
+        OperatingSystemFamily: LINUX
+        CpuArchitecture:
+          Ref: CpuArchitecture
+      ExecutionRoleArn:
+        Fn::GetAtt: [ExecutionRole, Arn]
+      TaskRoleArn:
+        Fn::GetAtt: [TaskRole, Arn]
+      ContainerDefinitions:
+        - Name: live
+          Image:
+            Ref: ImageUri
+          Essential: true
+          User: "10001:10001"
+          ReadonlyRootFilesystem: true
+          StopTimeout: 60
+          Environment:
+            - Name: EUROFLEX_RUN_DIR
+              Value: /data/run
+            - Name: EUROFLEX_MODELS_DIR
+              Value: /models
+            - Name: EUROFLEX_STRATEGY
+              Value:
+                Ref: Strategy
+            - Name: EUROFLEX_POWER_MW
+              Value:
+                Ref: PowerMw
+            - Name: EUROFLEX_ENERGY_MWH
+              Value:
+                Ref: EnergyMwh
+            - Name: EUROFLEX_MECHANISM
+              Value:
+                Ref: Mechanism
+            - Name: EUROFLEX_EXECUTION
+              Value: paper
+            - Name: EUROFLEX_PUBLIC_HISTORY
+              Value: "0"
+            - Name: TZ
+              Value: UTC
+          MountPoints:
+            - SourceVolume: state
+              ContainerPath: /data
+              ReadOnly: false
+            - SourceVolume: tmp
+              ContainerPath: /tmp
+              ReadOnly: false
+          HealthCheck:
+            Command: ["CMD", "/opt/venv/bin/python", "/app/scripts/ops/healthcheck.py", "--quiet"]
+            Interval: 60
+            Timeout: 10
+            Retries: 3
+            StartPeriod: 300
+          LinuxParameters:
+            InitProcessEnabled: true
+            Capabilities:
+              Drop: [ALL]
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: live
+      Volumes:
+        - Name: state
+          EFSVolumeConfiguration:
+            FilesystemId:
+              Ref: FileSystem
+            TransitEncryption: ENABLED
+            AuthorizationConfig:
+              AccessPointId:
+                Ref: AccessPoint
+              IAM: ENABLED
+        - Name: tmp
+
+  Service:
+    Type: AWS::ECS::Service
+    DependsOn: [MountTargetA, MountTargetB]
+    Properties:
+      Cluster:
+        Ref: Cluster
+      TaskDefinition:
+        Ref: TaskDefinition
+      LaunchType: FARGATE
+      PlatformVersion: LATEST
+      DesiredCount: 1
+      EnableExecuteCommand: false
+      DeploymentConfiguration:
+        MaximumPercent: 100
+        MinimumHealthyPercent: 0
+        DeploymentCircuitBreaker:
+          Enable: true
+          Rollback: true
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp:
+            Ref: AssignPublicIp
+          Subnets:
+            - Ref: SubnetA
+            - Ref: SubnetB
+          SecurityGroups:
+            - Ref: TaskSecurityGroup
+
+Outputs:
+  ClusterName:
+    Value:
+      Ref: Cluster
+  ServiceName:
+    Value:
+      Fn::GetAtt: [Service, Name]
+  FileSystemId:
+    Value:
+      Ref: FileSystem
+  AccessPointId:
+    Value:
+      Ref: AccessPoint
+  LogGroupName:
+    Value:
+      Ref: LogGroup

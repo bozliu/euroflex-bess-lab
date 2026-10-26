@@ -1,0 +1,15 @@
+# kubectl apply -k deploy/k8s   (the optional reconcile CronJob is applied separately, see its header)
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: euroflex
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - pvc.yaml
+  - deployment.yaml
+  - networkpolicy.yaml
+images:
+  # Point this at the registry you push your own build of deploy/Dockerfile to.
+  - name: euroflex-bess-lab
+    newName: euroflex-bess-lab
+    newTag: live

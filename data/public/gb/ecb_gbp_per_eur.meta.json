@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "path": "gb/ecb_gbp_per_eur.parquet",
+  "table": "gb_fx",
+  "title": "ECB euro foreign exchange reference rate, GBP per EUR (daily).",
+  "time_column": "timestamp_utc",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T14:28:52Z",
+  "fetch_command": "euroflex data gb fetch fx  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target fx)",
+  "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+  "snapshot_end_utc": "2026-10-26T00:00:00Z",
+  "source": "European Central Bank data portal (data-api.ecb.europa.eu), series EXR.D.GBP.EUR.SP00.A",
+  "dataset_ids": [
+    "EXR.D.GBP.EUR.SP00.A"
+  ],
+  "dataset_pages": [
+    "https://data.ecb.europa.eu/data/datasets/EXR/EXR.D.GBP.EUR.SP00.A"
+  ],
+  "source_urls": [
+    "https://data-api.ecb.europa.eu/service/data/EXR/D.GBP.EUR.SP00.A?format=csvdata&startPeriod=2023-12-01"
+  ],
+  "licence": "ECB terms of use (free reuse with source citation)",
+  "licence_url": "https://www.ecb.europa.eu/services/disclaimer/html/index.en.html",
+  "licence_terms": "Free use of information obtained from the ECB website provided it appears accurately and the ECB is cited as the source; modifications (here: as-of join of daily rates onto delivery dates) must be stated.",
+  "attribution": "Source: European Central Bank (euro foreign exchange reference rates)",
+  "transformation_notes": [
+    "timestamp_utc = reference date 00:00 UTC (rates are set around 16:00 CET on TARGET business days).",
+    "gbp_per_eur = OBS_VALUE (pound sterling per euro). Consumers as-of join the latest rate dated on or before each delivery date (forward fill over weekends and holidays)."
+  ],
+  "validation": {
+    "rows": 738,
+    "min_gbp_per_eur": 0.82428,
+    "max_gbp_per_eur": 0.8846
+  },
+  "inputs": [
+    {
+      "chunk": "exr_d_gbp_eur",
+      "url": "https://data-api.ecb.europa.eu/service/data/EXR/D.GBP.EUR.SP00.A?format=csvdata&startPeriod=2023-12-01",
+      "retrieved_at_utc": "2026-10-26T14:28:52Z",
+      "sha256": "3f034d5ae3e4876bd973671222e8c9d5fbeef4b0617cd1a808998e2d070260f4",
+      "size_bytes": 161588
+    }
+  ],
+  "coverage_start_utc": "2023-12-01T00:00:00Z",
+  "coverage_end_utc": "2026-10-24T00:00:00Z",
+  "rows": 738,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "gbp_per_eur",
+      "type": "double"
+    }
+  ],
+  "size_bytes": 6573,
+  "sha256": "671364880989576318d98a64f7f14d2ae717319aeb46a3fa151af277ed534c26"
+}

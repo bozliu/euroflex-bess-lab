@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "path": "gb/system_prices.parquet",
+  "table": "gb_system_prices",
+  "title": "GB single imbalance (cash-out) price and net imbalance volume per settlement period (BMRS DISEBSP).",
+  "time_column": "timestamp_utc",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T14:44:46Z",
+  "fetch_command": "euroflex data gb fetch system-prices  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target system-prices)",
+  "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+  "snapshot_end_utc": "2026-10-26T00:00:00Z",
+  "source": "Elexon BMRS Insights Solution API (data.elexon.co.uk)",
+  "licence": "Elexon BMRS open data licence",
+  "licence_url": "https://www.elexon.co.uk/bsc/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+  "licence_terms": "Worldwide, royalty-free, perpetual, non-exclusive licence: copy, publish, distribute and transmit, adapt and exploit the BMRS Data (including commercially) provided the attribution statement is included and, where possible, a link to the licence; no implication of official status or endorsement; do not misrepresent the data. Excludes third-party rights that Elexon is not authorised to license.",
+  "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2023-2026",
+  "dataset_ids": [
+    "DISEBSP"
+  ],
+  "dataset_pages": [
+    "https://bmrs.elexon.co.uk/system-prices"
+  ],
+  "source_url_template": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/system-prices/{settlement_date}?format=json",
+  "transformation_notes": [
+    "timestamp_utc = start of the 30-minute settlement period (UTC, from startTime); settlement_date and settlement_period are the Europe/London settlement day and 1-based period (46/50 on clock-change days).",
+    "system_price_gbp_mwh is the single cash-out price (system sell price; equal to the system buy price since BSC P305, 5 Nov 2015 - see validation.ssp_ne_sbp_rows).",
+    "niv_mwh > 0 means the system was short (net offer acceptances); < 0 long.",
+    "Values are from the latest settlement-run message returned by the API; published_utc is its createdDateTime and publication_lag_minutes = published_utc - SP end.",
+    "Numeric columns are float32."
+  ],
+  "validation": {
+    "grid": {
+      "rows": 50880,
+      "expected_rows": 50880,
+      "missing_intervals": 0,
+      "unique": true,
+      "sorted": true
+    },
+    "ssp_ne_sbp_rows": 0,
+    "niv_positive_share": 0.4691037735849057,
+    "price_derivation_code_counts": {
+      "N": 27004,
+      "P": 23868,
+      "K": 8
+    },
+    "publication_lag_minutes_after_sp_end": {
+      "note": "createdDateTime of the latest settlement-run message. Rows still on their first publication (lag < 120 min) show the indicative publication delay; most rows were re-issued about 24 h later.",
+      "first_publication_rows": 2974,
+      "first_publication_median": 22.399999618530273,
+      "first_publication_p95": 23.0,
+      "first_publication_max": 100.5,
+      "reissued_rows_share": 0.9415487421383648
+    },
+    "failures": []
+  },
+  "inputs_summary": {
+    "n_files": 1060,
+    "total_size_bytes": 45232324,
+    "first_chunk": "2023-12-01",
+    "last_chunk": "2026-10-25",
+    "retrieved_first_utc": "2026-10-26T14:29:19Z",
+    "retrieved_last_utc": "2026-10-26T14:44:46Z",
+    "sha256_of_sorted_file_sha256": "f4fa18faae9a8e7143816c1d28eb84bf75d2a939a5105ac68370a8c869e6e26f"
+  },
+  "coverage_start_utc": "2023-12-01T00:00:00Z",
+  "coverage_end_utc": "2026-10-26T00:00:00Z",
+  "rows": 50880,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "settlement_date",
+      "type": "large_string"
+    },
+    {
+      "name": "settlement_period",
+      "type": "int16"
+    },
+    {
+      "name": "system_price_gbp_mwh",
+      "type": "float"
+    },
+    {
+      "name": "niv_mwh",
+      "type": "float"
+    },
+    {
+      "name": "system_sell_price_gbp_mwh",
+      "type": "float"
+    },
+    {
+      "name": "system_buy_price_gbp_mwh",
+      "type": "float"
+    },
+    {
+      "name": "price_derivation_code",
+      "type": "large_string"
+    },
+    {
+      "name": "reserve_scarcity_price_gbp_mwh",
+      "type": "float"
+    },
+    {
+      "name": "replacement_price_gbp_mwh",
+      "type": "float"
+    },
+    {
+      "name": "replacement_price_reference_volume_mwh",
+      "type": "float"
+    },
+    {
+      "name": "sell_price_adjustment_gbp_mwh",
+      "type": "float"
+    },
+    {
+      "name": "buy_price_adjustment_gbp_mwh",
+      "type": "float"
+    },
+    {
+      "name": "bsad_defaulted",
+      "type": "bool"
+    },
+    {
+      "name": "accepted_offer_volume_mwh",
+      "type": "float"
+    },
+    {
+      "name": "accepted_bid_volume_mwh",
+      "type": "float"
+    },
+    {
+      "name": "adjustment_sell_volume_mwh",
+      "type": "float"
+    },
+    {
+      "name": "adjustment_buy_volume_mwh",
+      "type": "float"
+    },
+    {
+      "name": "system_tagged_offer_volume_mwh",
+      "type": "float"
+    },
+    {
+      "name": "system_tagged_bid_volume_mwh",
+      "type": "float"
+    },
+    {
+      "name": "published_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "publication_lag_minutes",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 1636147,
+  "sha256": "f71189100de20b5e1f65c5d0ad79b9e305a84efe64fd17c84a77c0dbf7e9b7ab"
+}

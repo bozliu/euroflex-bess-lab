@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import shutil
 from pathlib import Path
 
@@ -9,6 +10,15 @@ import pytest
 
 def repo_root() -> Path:
     return Path(__file__).resolve().parents[1]
+
+
+def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
+    if os.environ.get("EUROFLEX_RUN_SLOW") == "1":
+        return
+    skip_slow = pytest.mark.skip(reason="needs the full data/public dataset; set EUROFLEX_RUN_SLOW=1 to run")
+    for item in items:
+        if "slow" in item.keywords:
+            item.add_marker(skip_slow)
 
 
 @pytest.fixture(autouse=True)

@@ -87,15 +87,42 @@ class PersistenceForecastProvider(ForecastProvider):
             horizon["previous_local_date"] = horizon["timestamp_local"].dt.date.map(
                 lambda value: value.fromordinal(value.toordinal() - 1)
             )
+            # DST: a 25-hour day repeats clock times (keep the first), a 23-hour day lacks some (filled below).
+            by_clock = actual[["local_date", "local_clock", "price_eur_per_mwh"]].drop_duplicates(
+                subset=["local_date", "local_clock"], keep="first"
+            )
             merged = horizon.merge(
-                actual[["local_date", "local_clock", "price_eur_per_mwh"]].rename(
+                by_clock.rename(
                     columns={"local_date": "previous_local_date", "price_eur_per_mwh": "forecast_price_eur_per_mwh"}
                 ),
                 on=["previous_local_date", "local_clock"],
                 how="left",
             )
-            if merged["forecast_price_eur_per_mwh"].isna().any():
-                raise ValueError("PersistenceForecastProvider requires a full previous local day of day-ahead actuals")
+            missing = merged["forecast_price_eur_per_mwh"].isna()
+            if missing.any():
+                # Only clock times skipped by a complete spring-forward (23-hour) previous day are filled, with the
+                # previous clock of that day; any other gap is missing data and still fails.
+                timezone = horizon["timestamp_local"].dt.tz
+                rows_per_day = actual.groupby("local_date").size()
+                previous_day_values = by_clock.sort_values(["local_date", "local_clock"])
+                filled = []
+                for row in merged.loc[missing].itertuples():
+                    day_start = pd.Timestamp(row.previous_local_date).tz_localize(timezone)
+                    day_end = (pd.Timestamp(row.previous_local_date) + pd.Timedelta(days=1)).tz_localize(timezone)
+                    day_minutes = (day_end - day_start).total_seconds() / 60.0
+                    complete_short_day = day_minutes < 24 * 60 and int(
+                        rows_per_day.get(row.previous_local_date, 0)
+                    ) == int(day_minutes // resolution_minutes)
+                    candidates = previous_day_values[
+                        (previous_day_values["local_date"] == row.previous_local_date)
+                        & (previous_day_values["local_clock"] < row.local_clock)
+                    ]
+                    if not complete_short_day or candidates.empty:
+                        raise ValueError(
+                            "PersistenceForecastProvider requires a full previous local day of day-ahead actuals"
+                        )
+                    filled.append(float(candidates["price_eur_per_mwh"].iloc[-1]))
+                merged.loc[missing, "forecast_price_eur_per_mwh"] = filled
             values = merged["forecast_price_eur_per_mwh"]
         else:
             history = actual[actual["timestamp_utc"] < decision_time_utc].copy()

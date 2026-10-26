@@ -3,8 +3,11 @@
     "AfrrConfig": {
       "properties": {
         "activation_mode": {
-          "const": "expected_value",
           "default": "expected_value",
+          "enum": [
+            "expected_value",
+            "none"
+          ],
           "title": "Activation Mode",
           "type": "string"
         },
@@ -21,8 +24,11 @@
           "type": "string"
         },
         "settlement_mode": {
-          "const": "capacity_plus_activation_expected_value",
           "default": "capacity_plus_activation_expected_value",
+          "enum": [
+            "capacity_plus_activation_expected_value",
+            "capacity_only"
+          ],
           "title": "Settlement Mode",
           "type": "string"
         },
@@ -600,7 +606,8 @@
         "id": {
           "enum": [
             "belgium",
-            "netherlands"
+            "netherlands",
+            "germany"
           ],
           "title": "Id",
           "type": "string"

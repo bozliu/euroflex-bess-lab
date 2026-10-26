@@ -31,7 +31,7 @@ class ValidateRequest(BaseModel):
 
 class BacktestRequest(BaseModel):
     config_path: str
-    market: Literal["belgium", "netherlands"]
+    market: Literal["belgium", "netherlands", "germany"]
     workflow: Literal["da_only", "da_plus_imbalance", "da_plus_fcr", "da_plus_afrr", "schedule_revision"]
     forecast_provider: Literal["perfect_foresight", "persistence", "csv", "custom_python"] | None = None
     launcher: str = "service"

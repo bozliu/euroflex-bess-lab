@@ -90,6 +90,62 @@ def public_workflow_capabilities() -> list[dict[str, Any]]:
     ]
 
 
+def experimental_workflow_capabilities() -> list[dict[str, Any]]:
+    """Germany (DE-LU) support declarations; see docs/germany.md for the market model and its limits."""
+
+    return [
+        {
+            "workflow": "da_only",
+            "market": "germany",
+            "single_asset": True,
+            "portfolio": True,
+            "tier": "experimental",
+            "notes": "DE-LU day-ahead on the 15-minute grid; hourly MTU before 2025-10-01 is expanded with provenance.",
+        },
+        {
+            "workflow": "da_plus_fcr",
+            "market": "germany",
+            "single_asset": True,
+            "portfolio": True,
+            "tier": "experimental",
+            "notes": (
+                "Symmetric FCR capacity (4-hour products, pay-as-cleared, D-1 08:00). The engine lets reserve vary "
+                "per quarter-hour; the block-constant research LP lives in scripts/research/germany_backtest.py."
+            ),
+        },
+        {
+            "workflow": "da_plus_afrr",
+            "market": "germany",
+            "single_asset": True,
+            "portfolio": True,
+            "tier": "experimental",
+            "notes": (
+                "Capacity-only asymmetric aFRR (4-hour products, pay-as-bid, benchmark = published German average "
+                "awarded price); PICASSO activation energy is not modelled."
+            ),
+        },
+        {
+            "workflow": "schedule_revision",
+            "market": "germany",
+            "single_asset": True,
+            "portfolio": True,
+            "tier": "experimental",
+            "notes": "Wrapper over da_only / da_plus_fcr / da_plus_afrr; revised energy is valued at day-ahead prices.",
+        },
+        {
+            "workflow": "da_plus_imbalance",
+            "market": "germany",
+            "single_asset": False,
+            "portfolio": False,
+            "tier": "unsupported",
+            "notes": (
+                "Rejected by design: German balance groups must be balanced every quarter-hour (Bilanzkreistreue); "
+                "reBAP is documented, not traded."
+            ),
+        },
+    ]
+
+
 def provider_capabilities() -> list[dict[str, Any]]:
     return [
         {
@@ -146,6 +202,23 @@ def render_capability_matrix_markdown() -> str:
         ]
     )
     for row in public_workflow_capabilities():
+        lines.append(
+            f"| `{row['workflow']}` | `{row['market']}` | "
+            f"{'Yes' if row['single_asset'] else 'No'} | "
+            f"{'Yes' if row['portfolio'] else 'No'} | "
+            f"{row['tier']} | {row['notes']} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Experimental market surface (Germany)",
+            "",
+            "| Workflow | Market | Single asset | Portfolio | Tier | Notes |",
+            "| --- | --- | --- | --- | --- | --- |",
+        ]
+    )
+    for row in experimental_workflow_capabilities():
         lines.append(
             f"| `{row['workflow']}` | `{row['market']}` | "
             f"{'Yes' if row['single_asset'] else 'No'} | "

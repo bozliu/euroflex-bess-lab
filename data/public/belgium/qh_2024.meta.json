@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "path": "belgium/qh_2024.parquet",
+  "table": "belgium_qh",
+  "title": "Per-quarter-hour final imbalance prices, price components and volumes.",
+  "source": "Elia Open Data (opendata.elia.be)",
+  "dataset_ids": [
+    "ods134",
+    "ods166",
+    "ods127"
+  ],
+  "dataset_pages": [
+    "https://opendata.elia.be/explore/dataset/ods134/",
+    "https://opendata.elia.be/explore/dataset/ods166/",
+    "https://opendata.elia.be/explore/dataset/ods127/"
+  ],
+  "source_urls": [
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods134/exports/parquet?where=datetime%3E%3D%222024-01-01T00%3A00%3A00Z%22+and+datetime%3C%222025-01-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods166/exports/parquet?where=datetime%3E%3D%222024-01-01T00%3A00%3A00Z%22+and+datetime%3C%222025-01-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods127/exports/parquet?where=datetime%3E%3D%222024-01-01T00%3A00%3A00Z%22+and+datetime%3C%222025-01-01T00%3A00%3A00Z%22"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://opendata.elia.be/pages/licence/",
+  "attribution": "Elia Transmission Belgium SA",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:28:47Z",
+  "time_column": "timestamp_utc",
+  "transformation_notes": [
+    "timestamp_utc = start of the quarter-hour (UTC).",
+    "ODS134 provides final prices, SI/ACE, alpha/alpha' and MIP/MDP; ODS166 price components; ODS127 volumes (ODS127 SI/ACE duplicates dropped).",
+    "Rows are reindexed to a complete 15-minute grid between the first and last quarter-hour seen in any source.",
+    "Numeric columns are float32."
+  ],
+  "validation": {
+    "ods134_rows": 21512,
+    "ods134_missing_qh": 0,
+    "ods166_rows": 21512,
+    "ods166_missing_qh": 0,
+    "ods127_rows": 21512,
+    "ods127_missing_qh": 0,
+    "grid_start_utc": "2024-05-21T22:00:00Z",
+    "grid_end_utc": "2025-01-01T00:00:00Z",
+    "grid": {
+      "rows": 21512,
+      "unique": true,
+      "sorted": true,
+      "expected_rows": 21512,
+      "missing_intervals": 0,
+      "largest_gaps": []
+    },
+    "quality_status_counts": {
+      "Validated": 21512
+    }
+  },
+  "inputs": [
+    {
+      "dataset_id": "ods134",
+      "chunk": "2024-01-01__2025-01-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods134/exports/parquet?where=datetime%3E%3D%222024-01-01T00%3A00%3A00Z%22+and+datetime%3C%222025-01-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:28:18Z",
+      "sha256": "dc16a8dc4dcb4b9263825e215402d05d981058103424582975262deb8f11d7b5",
+      "size_bytes": 864131
+    },
+    {
+      "dataset_id": "ods166",
+      "chunk": "2024-01-01__2025-01-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods166/exports/parquet?where=datetime%3E%3D%222024-01-01T00%3A00%3A00Z%22+and+datetime%3C%222025-01-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:28:31Z",
+      "sha256": "46cdf3d94a9a3379a0af41b68bbb313d818cac477dfc6420cc8d314a7329115e",
+      "size_bytes": 1064017
+    },
+    {
+      "dataset_id": "ods127",
+      "chunk": "2024-01-01__2025-01-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods127/exports/parquet?where=datetime%3E%3D%222024-01-01T00%3A00%3A00Z%22+and+datetime%3C%222025-01-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:28:47Z",
+      "sha256": "ebc7433491d58ef00211201cdabf333542c66abbc6b642bf5ce90e63439d7123",
+      "size_bytes": 912423
+    }
+  ],
+  "fetch_command": "euroflex data fetch belgium-qh --start 2024-01-01 --end 2025-01-01",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "coverage_start_utc": "2024-05-21T22:00:00Z",
+  "coverage_end_utc": "2025-01-01T00:00:00Z",
+  "partition_year": 2024,
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 21512,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "si_mw",
+      "type": "float"
+    },
+    {
+      "name": "ace_mw",
+      "type": "float"
+    },
+    {
+      "name": "alpha_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "alpha_prime_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mip_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mdp_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "imbalance_price_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "quality_status",
+      "type": "large_string"
+    },
+    {
+      "name": "afrr_price_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "afrr_price_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_sa_price_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_da_price_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_sa_price_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_da_price_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_avail_price_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_avail_price_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "floor_price_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "cap_price_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "inter_tso_price_import_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "inter_tso_price_export_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "igcc_up_mw",
+      "type": "float"
+    },
+    {
+      "name": "afrr_up_mw",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_sa_up_mw",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_da_up_mw",
+      "type": "float"
+    },
+    {
+      "name": "rs_import_mw",
+      "type": "float"
+    },
+    {
+      "name": "igcc_down_mw",
+      "type": "float"
+    },
+    {
+      "name": "afrr_down_mw",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_sa_down_mw",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_da_down_mw",
+      "type": "float"
+    },
+    {
+      "name": "rs_export_mw",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 990277,
+  "sha256": "1b1e5428c1c6dec07eed304f3143ff278f3c55ef3bd2c5c22bb3531bf19449c4"
+}

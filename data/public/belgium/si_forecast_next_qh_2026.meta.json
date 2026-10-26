@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "path": "belgium/si_forecast_next_qh_2026.parquet",
+  "table": "belgium_si_forecast_next",
+  "title": "Elia SI forecast for the next quarter-hour, issued every minute.",
+  "source": "Elia Open Data (opendata.elia.be)",
+  "dataset_ids": [
+    "ods147"
+  ],
+  "dataset_pages": [
+    "https://opendata.elia.be/explore/dataset/ods147/"
+  ],
+  "source_urls": [
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-02-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-02-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-03-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-03-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-04-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-04-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-05-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-05-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-06-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-06-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-07-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-07-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-08-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-08-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-09-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-09-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-10-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-10-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-11-01T00%3A00%3A00Z%22"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://opendata.elia.be/pages/licence/",
+  "attribution": "Elia Transmission Belgium SA",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:36:46Z",
+  "time_column": "prediction_time_utc",
+  "transformation_notes": [
+    "prediction_time_utc = time the forecast was made (Elia `predictiontimeutc`, one forecast per minute); target_qh_utc = start of the quarter-hour whose average SI is forecast.",
+    "ODS136 targets the running quarter-hour, ODS147 the next one. Probabilities are for the target-QH average SI falling in [-inf,-400], [-400,-200], [-200,0], [0,200], [200,400], [400,inf] MW.",
+    "prediction_quality = Elia `predictionquality` (share of input data available, in percent).",
+    "Only contract columns are kept (resolutioncode and the ODS147 plotting helper column are dropped)."
+  ],
+  "validation": {
+    "duplicates_or_null_keys_dropped": 0,
+    "prediction_quality_rows_converted_from_percent": 416271,
+    "prediction_minutes": {
+      "rows": 424510,
+      "unique": true,
+      "sorted": true,
+      "expected_rows": 429060,
+      "missing_intervals": 4550,
+      "largest_gaps": [
+        {
+          "after_utc": "2026-06-05T02:37:00Z",
+          "missing_intervals": 55
+        },
+        {
+          "after_utc": "2026-06-04T18:35:00Z",
+          "missing_intervals": 54
+        },
+        {
+          "after_utc": "2026-06-04T19:37:00Z",
+          "missing_intervals": 53
+        },
+        {
+          "after_utc": "2026-06-04T22:38:00Z",
+          "missing_intervals": 52
+        },
+        {
+          "after_utc": "2026-06-04T23:37:00Z",
+          "missing_intervals": 51
+        },
+        {
+          "after_utc": "2026-06-04T20:37:00Z",
+          "missing_intervals": 50
+        },
+        {
+          "after_utc": "2026-06-04T17:41:00Z",
+          "missing_intervals": 47
+        },
+        {
+          "after_utc": "2026-06-04T21:33:00Z",
+          "missing_intervals": 37
+        },
+        {
+          "after_utc": "2026-06-05T03:36:00Z",
+          "missing_intervals": 22
+        },
+        {
+          "after_utc": "2026-06-04T16:00:00Z",
+          "missing_intervals": 19
+        }
+      ]
+    },
+    "lead_minutes_range": [
+      -44.0,
+      15.0
+    ]
+  },
+  "inputs": [
+    {
+      "dataset_id": "ods147",
+      "chunk": "2026-01-01__2026-02-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-02-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:34:42Z",
+      "sha256": "4e27e5ddd0447be7aea370557e1b1ee8cea6e4f5beb150c5614c75b8a9548129",
+      "size_bytes": 1313019
+    },
+    {
+      "dataset_id": "ods147",
+      "chunk": "2026-02-01__2026-03-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-02-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-03-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:34:55Z",
+      "sha256": "cf3d9bc8cb68a970004b0ca3768d407f4b768c41a7c6fe164e9028cb45427463",
+      "size_bytes": 1114306
+    },
+    {
+      "dataset_id": "ods147",
+      "chunk": "2026-03-01__2026-04-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-03-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-04-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:35:08Z",
+      "sha256": "80eb49f556b408d0067fe246be93bf299710a4504486553acd09902d2ddbf470",
+      "size_bytes": 1295042
+    },
+    {
+      "dataset_id": "ods147",
+      "chunk": "2026-04-01__2026-05-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-04-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-05-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:35:20Z",
+      "sha256": "cb107e02d923fd59f971d9ebb1aa864e34ae83dbf8fbf6350718e71353aec619",
+      "size_bytes": 1264122
+    },
+    {
+      "dataset_id": "ods147",
+      "chunk": "2026-05-01__2026-06-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-05-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-06-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:35:33Z",
+      "sha256": "6661d404bea8323e3bade38e89a7ecd0ac35482c37b0ccdc2cdd42faf2c0cef5",
+      "size_bytes": 1305605
+    },
+    {
+      "dataset_id": "ods147",
+      "chunk": "2026-06-01__2026-07-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-06-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-07-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:35:46Z",
+      "sha256": "ca854dcebb1932a6e81de3a13af5ad6811b77501ed268da176324796e11a34af",
+      "size_bytes": 1256308
+    },
+    {
+      "dataset_id": "ods147",
+      "chunk": "2026-07-01__2026-08-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-07-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-08-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:36:00Z",
+      "sha256": "7588efdb305df2032dad4f7e8266691a4639b255c54217f3c3928ddd7a46cebd",
+      "size_bytes": 1293162
+    },
+    {
+      "dataset_id": "ods147",
+      "chunk": "2026-08-01__2026-09-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-08-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-09-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:36:14Z",
+      "sha256": "b7a50e4c90c62d4c4711edb1620ad81e42d13422f4b9f81a5abdce37ade0f76b",
+      "size_bytes": 1288137
+    },
+    {
+      "dataset_id": "ods147",
+      "chunk": "2026-09-01__2026-10-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-09-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-10-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:36:28Z",
+      "sha256": "41562079df9397ab05e87e87c0e1a50dccf46ddda3046b49ebb097f9cd88f7b8",
+      "size_bytes": 1243455
+    },
+    {
+      "dataset_id": "ods147",
+      "chunk": "2026-10-01__2026-11-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods147/exports/parquet?where=predictiontimeutc%3E%3D%222026-10-01T00%3A00%3A00Z%22+and+predictiontimeutc%3C%222026-11-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:36:46Z",
+      "sha256": "bdfcb0213921ba062fb4a3c542ca2b5b44e654a4d7f528991542a83708374f13",
+      "size_bytes": 1034539
+    }
+  ],
+  "fetch_command": "euroflex data fetch belgium-si-forecast --start 2026-01-01 --end 2027-01-01",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "coverage_start_utc": "2026-01-01T00:00:00Z",
+  "coverage_end_utc": "2026-10-25T23:00:00Z",
+  "partition_year": 2026,
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 424510,
+  "columns": [
+    {
+      "name": "prediction_time_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "target_qh_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "si_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "p_si_lt_m400",
+      "type": "float"
+    },
+    {
+      "name": "p_si_m400_m200",
+      "type": "float"
+    },
+    {
+      "name": "p_si_m200_0",
+      "type": "float"
+    },
+    {
+      "name": "p_si_0_200",
+      "type": "float"
+    },
+    {
+      "name": "p_si_200_400",
+      "type": "float"
+    },
+    {
+      "name": "p_si_gt_400",
+      "type": "float"
+    },
+    {
+      "name": "prediction_quality",
+      "type": "float"
+    },
+    {
+      "name": "quality_status",
+      "type": "large_string"
+    }
+  ],
+  "size_bytes": 3742913,
+  "sha256": "e67ea5533ab29df54173a4afd7deb1c312cd561f2a90331dcc416184bcd784aa"
+}

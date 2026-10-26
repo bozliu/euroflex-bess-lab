@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "path": "belgium/minute_2023_legacy.parquet",
+  "table": "belgium_minute_legacy",
+  "title": "Pre-MARI per-minute imbalance prices (2023-01 to 2024-05-21), legacy layout.",
+  "source": "Elia Open Data (opendata.elia.be)",
+  "dataset_ids": [
+    "ods046"
+  ],
+  "dataset_pages": [
+    "https://opendata.elia.be/explore/dataset/ods046/"
+  ],
+  "source_urls": [
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-01-01T00%3A00%3A00Z%22+and+datetime%3C%222023-02-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-02-01T00%3A00%3A00Z%22+and+datetime%3C%222023-03-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-03-01T00%3A00%3A00Z%22+and+datetime%3C%222023-04-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-04-01T00%3A00%3A00Z%22+and+datetime%3C%222023-05-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-05-01T00%3A00%3A00Z%22+and+datetime%3C%222023-06-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-06-01T00%3A00%3A00Z%22+and+datetime%3C%222023-07-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-07-01T00%3A00%3A00Z%22+and+datetime%3C%222023-08-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-08-01T00%3A00%3A00Z%22+and+datetime%3C%222023-09-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-09-01T00%3A00%3A00Z%22+and+datetime%3C%222023-10-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-10-01T00%3A00%3A00Z%22+and+datetime%3C%222023-11-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-11-01T00%3A00%3A00Z%22+and+datetime%3C%222023-12-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-12-01T00%3A00%3A00Z%22+and+datetime%3C%222024-01-01T00%3A00%3A00Z%22"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://opendata.elia.be/pages/licence/",
+  "attribution": "Elia Transmission Belgium SA",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:41:57Z",
+  "time_column": "timestamp_utc",
+  "transformation_notes": [
+    "Pre-MARI Elia data (before the 22/05/2024 MARI local go-live), kept separate because the price formula and field set differ from the current tables. timestamp_utc = interval start (UTC).",
+    "imbalance_price_long_eur_mwh / imbalance_price_short_eur_mwh = Elia positive / negative imbalance price (applied to long / short BRPs); they are identical from 2020 on (single pricing). imbalance_price_eur_mwh (QH) and price_cum_eur_mwh (minute) repeat the long-side price for convenience.",
+    "Minute rows (ODS046) are cumulative quarter-hour-to-date estimates like ODS133; calculation_time_utc is Elia's calculation timestamp. nrv = net regulation volume.",
+    "Numeric columns float32; reindexed to a complete grid between the first and last published interval."
+  ],
+  "validation": {
+    "source_rows": 525345,
+    "missing_intervals_inside_coverage": 255,
+    "dual_price_intervals": 0,
+    "grid": {
+      "rows": 525600,
+      "unique": true,
+      "sorted": true,
+      "expected_rows": 525600,
+      "missing_intervals": 0,
+      "largest_gaps": []
+    }
+  },
+  "inputs": [
+    {
+      "dataset_id": "ods046",
+      "chunk": "2023-01-01__2023-02-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-01-01T00%3A00%3A00Z%22+and+datetime%3C%222023-02-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:39:26Z",
+      "sha256": "7618ce05279f05eee7e0446f1e6a4809baa6cdee0faef8aa95e4bfb33b9e6162",
+      "size_bytes": 1629052
+    },
+    {
+      "dataset_id": "ods046",
+      "chunk": "2023-02-01__2023-03-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-02-01T00%3A00%3A00Z%22+and+datetime%3C%222023-03-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:39:50Z",
+      "sha256": "38a61f308ecc7b69274d12f8a0b14f09bf1c449b6f73d71512c56764e0ff4543",
+      "size_bytes": 1462129
+    },
+    {
+      "dataset_id": "ods046",
+      "chunk": "2023-03-01__2023-04-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-03-01T00%3A00%3A00Z%22+and+datetime%3C%222023-04-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:40:01Z",
+      "sha256": "0099b9c86a5bd9eee89bfdf16068eeb9cb15796525961868d861446d6b32d2e8",
+      "size_bytes": 1695579
+    },
+    {
+      "dataset_id": "ods046",
+      "chunk": "2023-04-01__2023-05-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-04-01T00%3A00%3A00Z%22+and+datetime%3C%222023-05-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:40:21Z",
+      "sha256": "cc8101cdda7e6d6affac68132e31b64a1abeaba34a3811653d9b50e3edf3341f",
+      "size_bytes": 1611554
+    },
+    {
+      "dataset_id": "ods046",
+      "chunk": "2023-05-01__2023-06-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-05-01T00%3A00%3A00Z%22+and+datetime%3C%222023-06-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:40:34Z",
+      "sha256": "d16db6aa39b3cd1a7850b59d708a0aeadd264c0cafa2cf455888c36a83000211",
+      "size_bytes": 1647940
+    },
+    {
+      "dataset_id": "ods046",
+      "chunk": "2023-06-01__2023-07-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-06-01T00%3A00%3A00Z%22+and+datetime%3C%222023-07-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:40:45Z",
+      "sha256": "76f3f5e9902301a7e825382f29e2ae31eb4d5e8fe2d0c9d3996e63ba43970c54",
+      "size_bytes": 1541621
+    },
+    {
+      "dataset_id": "ods046",
+      "chunk": "2023-07-01__2023-08-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-07-01T00%3A00%3A00Z%22+and+datetime%3C%222023-08-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:40:56Z",
+      "sha256": "1b4e8c6cb6013e61d008161a8088ff237601c1dab532d40387c8959e9bb499e6",
+      "size_bytes": 1667698
+    },
+    {
+      "dataset_id": "ods046",
+      "chunk": "2023-08-01__2023-09-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-08-01T00%3A00%3A00Z%22+and+datetime%3C%222023-09-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:41:11Z",
+      "sha256": "bae58c5f31167234ff3a01e5ea4027b12b4dbe697dc78954117cda9ffaf81941",
+      "size_bytes": 1636125
+    },
+    {
+      "dataset_id": "ods046",
+      "chunk": "2023-09-01__2023-10-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-09-01T00%3A00%3A00Z%22+and+datetime%3C%222023-10-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:41:24Z",
+      "sha256": "00340510cd4e04d2fe62440dc08db01bbb4f0295b731a89462ee897f803692d8",
+      "size_bytes": 1565558
+    },
+    {
+      "dataset_id": "ods046",
+      "chunk": "2023-10-01__2023-11-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-10-01T00%3A00%3A00Z%22+and+datetime%3C%222023-11-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:41:34Z",
+      "sha256": "e5a8e450faf06c76f6b1be595259d983770b5d657092ca5a1db4c537440e6d50",
+      "size_bytes": 1687438
+    },
+    {
+      "dataset_id": "ods046",
+      "chunk": "2023-11-01__2023-12-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-11-01T00%3A00%3A00Z%22+and+datetime%3C%222023-12-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:41:45Z",
+      "sha256": "bbf0f1e452fab28edd3dbc712be03782d02a0d955b83fad947b14457a61d92cb",
+      "size_bytes": 1580081
+    },
+    {
+      "dataset_id": "ods046",
+      "chunk": "2023-12-01__2024-01-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222023-12-01T00%3A00%3A00Z%22+and+datetime%3C%222024-01-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:41:57Z",
+      "sha256": "64954dd0d6c7461f90ae47c16bd689bef4b82ad4c1f6d3420bd89d503c7e9fd1",
+      "size_bytes": 1641172
+    }
+  ],
+  "fetch_command": "euroflex data fetch belgium-legacy --start 2023-01-01 --end 2024-01-01",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "coverage_start_utc": "2023-01-01T00:00:00Z",
+  "coverage_end_utc": "2024-01-01T00:00:00Z",
+  "partition_year": 2023,
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 525600,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "qh_start_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "si_cum_mw",
+      "type": "float"
+    },
+    {
+      "name": "nrv_cum_mw",
+      "type": "float"
+    },
+    {
+      "name": "alpha_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mip_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mdp_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "strategic_reserve_price_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "si_vs_incremental_coordinable_bids_mw",
+      "type": "float"
+    },
+    {
+      "name": "price_cum_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "price_cum_long_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "price_cum_short_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "calculation_time_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "quality_status",
+      "type": "large_string"
+    }
+  ],
+  "size_bytes": 8323940,
+  "sha256": "a53110dd06c52f642a4621a783d1658df84fb0895400c6446b4659518e99a783"
+}

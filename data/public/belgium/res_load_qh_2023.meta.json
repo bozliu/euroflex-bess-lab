@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "path": "belgium/res_load_qh_2023.parquet",
+  "table": "belgium_res_load",
+  "title": "Belgian load, wind and PV measured + forecast per quarter-hour.",
+  "source": "Elia Open Data (opendata.elia.be)",
+  "dataset_ids": [
+    "ods001",
+    "ods031",
+    "ods032"
+  ],
+  "dataset_pages": [
+    "https://opendata.elia.be/explore/dataset/ods001/",
+    "https://opendata.elia.be/explore/dataset/ods031/",
+    "https://opendata.elia.be/explore/dataset/ods032/"
+  ],
+  "source_urls": [
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods001/exports/parquet?where=datetime%3E%3D%222023-01-01T00%3A00%3A00Z%22+and+datetime%3C%222024-01-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods031/exports/parquet?where=datetime%3E%3D%222023-01-01T00%3A00%3A00Z%22+and+datetime%3C%222024-01-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods032/exports/parquet?where=datetime%3E%3D%222023-01-01T00%3A00%3A00Z%22+and+datetime%3C%222024-01-01T00%3A00%3A00Z%22"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://opendata.elia.be/pages/licence/",
+  "attribution": "Elia Transmission Belgium SA",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:30:32Z",
+  "time_column": "timestamp_utc",
+  "transformation_notes": [
+    "timestamp_utc = start of the quarter-hour (UTC); values in MW (Elia publishes MW averages per QH).",
+    "load_* from ODS001 (total load on the Belgian grid incl. estimated losses); wind_* are sums over all ODS031 rows (offshore + onshore, Elia- and DSO-connected, all regions); pv_* are the ODS032 region 'Belgium' rows.",
+    "Forecast vintages: *_da_11h_* = day-ahead forecast published 11:00 D-1 (usable before the 12:00 CET day-ahead gate); *_da_forecast_* = day-ahead forecast published 18:00 D-1 (after the DA auction); *_week_ahead_*; *_most_recent_* = latest revision before delivery (look-ahead risk for anything but near-real-time use: its issue time is not published).",
+    "P10/P90 bands are dropped (they are not additive across regions)."
+  ],
+  "validation": {
+    "wind_rows_per_qh": {
+      "5": 35040
+    },
+    "ods001_missing_qh": 0,
+    "ods031_missing_qh": 0,
+    "ods032_missing_qh": 0
+  },
+  "inputs": [
+    {
+      "dataset_id": "ods001",
+      "chunk": "2023-01-01__2024-01-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods001/exports/parquet?where=datetime%3E%3D%222023-01-01T00%3A00%3A00Z%22+and+datetime%3C%222024-01-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:29:55Z",
+      "sha256": "a0f46cf3aae946eac48eb01b284d59398c22ad2dbb21d5c965d7a72579a7929a",
+      "size_bytes": 2239876
+    },
+    {
+      "dataset_id": "ods031",
+      "chunk": "2023-01-01__2024-01-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods031/exports/parquet?where=datetime%3E%3D%222023-01-01T00%3A00%3A00Z%22+and+datetime%3C%222024-01-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:30:32Z",
+      "sha256": "993d545ee57baa240eb824aeb2367ff23f8045a6dcdeeb1987681346111b7bff",
+      "size_bytes": 9503047
+    },
+    {
+      "dataset_id": "ods032",
+      "chunk": "2023-01-01__2024-01-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods032/exports/parquet?where=datetime%3E%3D%222023-01-01T00%3A00%3A00Z%22+and+datetime%3C%222024-01-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:26:00Z",
+      "sha256": "19c2fa18948f30e2ae077e9d4d3acdd93a7fbbe58ee6d456d1c0b5401b412bf5",
+      "size_bytes": 26668021
+    }
+  ],
+  "fetch_command": "euroflex data fetch belgium-res-load --start 2023-01-01 --end 2024-01-01",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "coverage_start_utc": "2023-01-01T00:00:00Z",
+  "coverage_end_utc": "2024-01-01T00:00:00Z",
+  "partition_year": 2023,
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 35040,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "load_mw",
+      "type": "float"
+    },
+    {
+      "name": "load_most_recent_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "load_da_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "load_week_ahead_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_offshore_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_onshore_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_most_recent_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_da_11h_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_da_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_week_ahead_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "wind_monitored_capacity_mw",
+      "type": "float"
+    },
+    {
+      "name": "pv_mw",
+      "type": "float"
+    },
+    {
+      "name": "pv_most_recent_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "pv_da_11h_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "pv_da_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "pv_week_ahead_forecast_mw",
+      "type": "float"
+    },
+    {
+      "name": "pv_monitored_capacity_mw",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 1359831,
+  "sha256": "9150088d7913f2eb7cf0004860d9ee594a67fe79a1f2eedb01e678597897cbc7"
+}

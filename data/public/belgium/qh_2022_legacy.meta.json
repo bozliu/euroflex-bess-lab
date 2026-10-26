@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "path": "belgium/qh_2022_legacy.parquet",
+  "table": "belgium_qh_legacy",
+  "title": "Pre-MARI quarter-hour imbalance prices (before 2024-05-22), legacy layout.",
+  "source": "Elia Open Data (opendata.elia.be)",
+  "dataset_ids": [
+    "ods047"
+  ],
+  "dataset_pages": [
+    "https://opendata.elia.be/explore/dataset/ods047/"
+  ],
+  "source_urls": [
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods047/exports/parquet?where=datetime%3E%3D%222022-01-01T00%3A00%3A00Z%22+and+datetime%3C%222023-01-01T00%3A00%3A00Z%22"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://opendata.elia.be/pages/licence/",
+  "attribution": "Elia Transmission Belgium SA",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:39:06Z",
+  "time_column": "timestamp_utc",
+  "transformation_notes": [
+    "Pre-MARI Elia data (before the 22/05/2024 MARI local go-live), kept separate because the price formula and field set differ from the current tables. timestamp_utc = interval start (UTC).",
+    "imbalance_price_long_eur_mwh / imbalance_price_short_eur_mwh = Elia positive / negative imbalance price (applied to long / short BRPs); they are identical from 2020 on (single pricing). imbalance_price_eur_mwh (QH) and price_cum_eur_mwh (minute) repeat the long-side price for convenience.",
+    "Minute rows (ODS046) are cumulative quarter-hour-to-date estimates like ODS133; calculation_time_utc is Elia's calculation timestamp. nrv = net regulation volume.",
+    "Numeric columns float32; reindexed to a complete grid between the first and last published interval."
+  ],
+  "validation": {
+    "source_rows": 35040,
+    "missing_intervals_inside_coverage": 0,
+    "dual_price_intervals": 0,
+    "grid": {
+      "rows": 35040,
+      "unique": true,
+      "sorted": true,
+      "expected_rows": 35040,
+      "missing_intervals": 0,
+      "largest_gaps": []
+    }
+  },
+  "inputs": [
+    {
+      "dataset_id": "ods047",
+      "chunk": "2022-01-01__2023-01-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods047/exports/parquet?where=datetime%3E%3D%222022-01-01T00%3A00%3A00Z%22+and+datetime%3C%222023-01-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:39:06Z",
+      "sha256": "76361118ef0f237e1f2f0b5a06879ceb37de0b1b0e4afb64d10776c8f62dcac1",
+      "size_bytes": 1477645
+    }
+  ],
+  "fetch_command": "euroflex data fetch belgium-legacy --start 2022-01-01 --end 2023-01-01",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "coverage_start_utc": "2022-01-01T00:00:00Z",
+  "coverage_end_utc": "2023-01-01T00:00:00Z",
+  "partition_year": 2022,
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 35040,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "si_mw",
+      "type": "float"
+    },
+    {
+      "name": "nrv_mw",
+      "type": "float"
+    },
+    {
+      "name": "alpha_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mip_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mdp_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "strategic_reserve_price_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "imbalance_price_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "imbalance_price_long_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "imbalance_price_short_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "quality_status",
+      "type": "large_string"
+    }
+  ],
+  "size_bytes": 810571,
+  "sha256": "c8d54a2cc6439b6da2f292b3890c2d053efe622beadbcb7f54dee6c57819865c"
+}

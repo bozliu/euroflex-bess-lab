@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "path": "belgium/minute_2024_legacy.parquet",
+  "table": "belgium_minute_legacy",
+  "title": "Pre-MARI per-minute imbalance prices (2023-01 to 2024-05-21), legacy layout.",
+  "source": "Elia Open Data (opendata.elia.be)",
+  "dataset_ids": [
+    "ods046"
+  ],
+  "dataset_pages": [
+    "https://opendata.elia.be/explore/dataset/ods046/"
+  ],
+  "source_urls": [
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222024-01-01T00%3A00%3A00Z%22+and+datetime%3C%222024-02-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222024-02-01T00%3A00%3A00Z%22+and+datetime%3C%222024-03-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222024-03-01T00%3A00%3A00Z%22+and+datetime%3C%222024-04-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222024-04-01T00%3A00%3A00Z%22+and+datetime%3C%222024-05-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222024-05-01T00%3A00%3A00Z%22+and+datetime%3C%222024-06-01T00%3A00%3A00Z%22"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://opendata.elia.be/pages/licence/",
+  "attribution": "Elia Transmission Belgium SA",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:42:53Z",
+  "time_column": "timestamp_utc",
+  "transformation_notes": [
+    "Pre-MARI Elia data (before the 22/05/2024 MARI local go-live), kept separate because the price formula and field set differ from the current tables. timestamp_utc = interval start (UTC).",
+    "imbalance_price_long_eur_mwh / imbalance_price_short_eur_mwh = Elia positive / negative imbalance price (applied to long / short BRPs); they are identical from 2020 on (single pricing). imbalance_price_eur_mwh (QH) and price_cum_eur_mwh (minute) repeat the long-side price for convenience.",
+    "Minute rows (ODS046) are cumulative quarter-hour-to-date estimates like ODS133; calculation_time_utc is Elia's calculation timestamp. nrv = net regulation volume.",
+    "Numeric columns float32; reindexed to a complete grid between the first and last published interval."
+  ],
+  "validation": {
+    "source_rows": 204330,
+    "missing_intervals_inside_coverage": 30,
+    "dual_price_intervals": 0,
+    "grid": {
+      "rows": 204360,
+      "unique": true,
+      "sorted": true,
+      "expected_rows": 204360,
+      "missing_intervals": 0,
+      "largest_gaps": []
+    }
+  },
+  "inputs": [
+    {
+      "dataset_id": "ods046",
+      "chunk": "2024-01-01__2024-02-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222024-01-01T00%3A00%3A00Z%22+and+datetime%3C%222024-02-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:42:09Z",
+      "sha256": "f690e92477829b4fa330924b6d6dbee14ad03309ba8752edb6cc2ef169d8e209",
+      "size_bytes": 1654798
+    },
+    {
+      "dataset_id": "ods046",
+      "chunk": "2024-02-01__2024-03-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222024-02-01T00%3A00%3A00Z%22+and+datetime%3C%222024-03-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:42:21Z",
+      "sha256": "15ceb321b7201a83e9614b68e4b04246dc2f6a3fcfedbfaab80a689f59c5b72e",
+      "size_bytes": 1590811
+    },
+    {
+      "dataset_id": "ods046",
+      "chunk": "2024-03-01__2024-04-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222024-03-01T00%3A00%3A00Z%22+and+datetime%3C%222024-04-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:42:34Z",
+      "sha256": "ddc7a4673483c7c2952d60d86e5a15e8ecad0a11b26d972329a0b751be402227",
+      "size_bytes": 1801299
+    },
+    {
+      "dataset_id": "ods046",
+      "chunk": "2024-04-01__2024-05-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222024-04-01T00%3A00%3A00Z%22+and+datetime%3C%222024-05-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:42:45Z",
+      "sha256": "0ba21c0324f453d4f72fcb2eeb7a0e8ff781fbc9f5ab44adccb369e940281712",
+      "size_bytes": 1748563
+    },
+    {
+      "dataset_id": "ods046",
+      "chunk": "2024-05-01__2024-06-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods046/exports/parquet?where=datetime%3E%3D%222024-05-01T00%3A00%3A00Z%22+and+datetime%3C%222024-06-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:42:53Z",
+      "sha256": "a45ef8393767e9ce0641e53849e12633fa9db30b1c8181c30a6088cb0f117a85",
+      "size_bytes": 1205366
+    }
+  ],
+  "fetch_command": "euroflex data fetch belgium-legacy --start 2024-01-01 --end 2025-01-01",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "coverage_start_utc": "2024-01-01T00:00:00Z",
+  "coverage_end_utc": "2024-05-21T22:00:00Z",
+  "partition_year": 2024,
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 204360,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "qh_start_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "si_cum_mw",
+      "type": "float"
+    },
+    {
+      "name": "nrv_cum_mw",
+      "type": "float"
+    },
+    {
+      "name": "alpha_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mip_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mdp_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "strategic_reserve_price_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "si_vs_incremental_coordinable_bids_mw",
+      "type": "float"
+    },
+    {
+      "name": "price_cum_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "price_cum_long_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "price_cum_short_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "calculation_time_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "quality_status",
+      "type": "large_string"
+    }
+  ],
+  "size_bytes": 3532058,
+  "sha256": "ebd10b7512fa1ea8ea5eaa60d3b9dd397db2d2402d6d3d110ab6db62ea908b19"
+}

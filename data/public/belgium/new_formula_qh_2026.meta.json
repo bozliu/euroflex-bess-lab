@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "path": "belgium/new_formula_qh_2026.parquet",
+  "table": "belgium_new_formula_qh",
+  "title": "Elia simulation of the new 2026 imbalance-price formula, per quarter-hour (Jan-Jul 2026).",
+  "source": "Elia Open Data (opendata.elia.be)",
+  "dataset_ids": [
+    "ods212"
+  ],
+  "dataset_pages": [
+    "https://opendata.elia.be/explore/dataset/ods212/"
+  ],
+  "source_urls": [
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods212/exports/parquet"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://opendata.elia.be/pages/licence/",
+  "attribution": "Elia Transmission Belgium SA",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:13:06Z",
+  "time_column": "timestamp_utc",
+  "transformation_notes": [
+    "Elia simulation of the imbalance price under the new formula consulted for go-live on 24/11/2026 (conditional on CREG approval), computed on historical data for 2026-01..2026-07. Best-effort, non-validated data; Elia removes it from ODS211/ODS212 on 17/11/2026, this file preserves it.",
+    "imbalance_price = main_up (SI < 0) or main_down (SI >= 0); when incentive_eur_mwh is published (only when FRCE exceeds the L2 target and |SI| > 250 MW) the price is max(main_up, incentive) for a short system and min(main_down, incentive) for a long system (53 of 53 incentive quarter-hours); main components are volume-weighted aFRR/mFRR prices with weights weight_afrr/weight_mfrr (decomposition match rates in validation.decomposition of the QH file).",
+    "Numeric columns float32; timestamps datetime64[ns, UTC]; reindexed to a complete grid between the first and last published interval."
+  ],
+  "validation": {
+    "source_rows": 20352,
+    "missing_intervals_inside_coverage": 0,
+    "resolution_codes": [
+      "PT15M"
+    ],
+    "quality_status_values": [
+      "NotValidated"
+    ],
+    "grid": {
+      "rows": 20352,
+      "unique": true,
+      "sorted": true,
+      "expected_rows": 20352,
+      "missing_intervals": 0,
+      "largest_gaps": []
+    },
+    "decomposition": {
+      "price_equals_main_by_si_sign_plus_incentive": 0.9973958333333334,
+      "main_up_equals_weighted_afrr_mfrr_up": 0.9998034591194969,
+      "quarter_hours_with_incentive": 53
+    }
+  },
+  "inputs": [
+    {
+      "dataset_id": "ods212",
+      "chunk": "all",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods212/exports/parquet",
+      "retrieved_at_utc": "2026-10-26T03:13:06Z",
+      "sha256": "8771634b3e2024abaa0b78b9eb83e87bafe7865e45204efa4da4da6e54df74cc",
+      "size_bytes": 2364532
+    }
+  ],
+  "fetch_command": "euroflex data fetch belgium-new-formula",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "coverage_start_utc": "2026-01-01T00:00:00Z",
+  "coverage_end_utc": "2026-08-01T00:00:00Z",
+  "simulated": true,
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 20352,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "frce_mw",
+      "type": "float"
+    },
+    {
+      "name": "si_mw",
+      "type": "float"
+    },
+    {
+      "name": "imbalance_price_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "main_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "main_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "incentive_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "voaa_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "afrr_price_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_price_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_sa_price_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_da_price_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "rs_price_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "voaa_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "afrr_price_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_price_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_sa_price_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_da_price_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "rs_price_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "weight_afrr",
+      "type": "float"
+    },
+    {
+      "name": "weight_mfrr",
+      "type": "float"
+    },
+    {
+      "name": "igcc_up_mw",
+      "type": "float"
+    },
+    {
+      "name": "afrr_up_mw",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_sa_up_mw",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_da_up_mw",
+      "type": "float"
+    },
+    {
+      "name": "rs_up_mw",
+      "type": "float"
+    },
+    {
+      "name": "igcc_down_mw",
+      "type": "float"
+    },
+    {
+      "name": "afrr_down_mw",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_sa_down_mw",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_da_down_mw",
+      "type": "float"
+    },
+    {
+      "name": "rs_down_mw",
+      "type": "float"
+    },
+    {
+      "name": "frce_l2_target_mw",
+      "type": "float"
+    },
+    {
+      "name": "quality_status",
+      "type": "large_string"
+    }
+  ],
+  "size_bytes": 946424,
+  "sha256": "8e249eac2e03a54b2fa423968659dfdea5f4c8548c852a8ad029467266da851c"
+}

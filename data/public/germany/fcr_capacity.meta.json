@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "path": "germany/fcr_capacity.parquet",
+  "table": "germany_fcr_capacity",
+  "title": "German FCR capacity auction results (4-hour blocks).",
+  "source": "regelleistung.net (German TSOs) data center, crds API v2",
+  "dataset_ids": [
+    "regelleistung_FCR_capacity_results"
+  ],
+  "dataset_pages": [
+    "https://www.regelleistung.net/apps/datacenter/tenders/"
+  ],
+  "source_url_template": "https://www.regelleistung.net/apps/crds/api/v2/tenders/results/aggregated?deliveryDate=YYYY-MM-DD&productType=FCR&market=CAPACITY&exportFormat=xlsx",
+  "licence": "proprietary (copyright German TSOs; reproduction needs prior written consent)",
+  "licence_url": "https://www.regelleistung.net/de-de/Impressum",
+  "attribution": "50Hertz, Amprion, TenneT TSO, TransnetBW via regelleistung.net",
+  "redistributed": false,
+  "local_path": "data/raw/germany/fcr_capacity.parquet",
+  "retrieved_at_utc": "2026-10-26T03:30:51Z",
+  "coverage_start_utc": "2023-12-31T23:00:00Z",
+  "coverage_end_utc": "2026-10-25T23:00:00Z",
+  "time_column": "delivery_start_utc",
+  "transformation_notes": [
+    "FCR capacity results (D-1 auction, 4-hour blocks NEGPOS_hh_hh in Europe/Berlin local time). price_eur_per_mw_h = GERMANY_SETTLEMENTCAPACITY_PRICE_[EUR/MW] divided by the block length in hours (3 or 5 hours on DST-change days); FCR clears at a uniform price, so marginal = settlement price. volume_mw = GERMANY_DEMAND_[MW]. direction = symmetric.",
+    "fcr_capacity_by_country.parquet (local only) keeps all FCR-cooperation countries incl. BELGIUM."
+  ],
+  "validation": {
+    "days_requested": 1029,
+    "failures": [],
+    "n_failures": 0
+  },
+  "fetch_command": "euroflex data fetch germany-reserve --product fcr",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 6174,
+  "columns": [
+    {
+      "name": "delivery_start_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "delivery_end_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "product",
+      "type": "large_string"
+    },
+    {
+      "name": "direction",
+      "type": "large_string"
+    },
+    {
+      "name": "price_eur_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "volume_mw",
+      "type": "float"
+    },
+    {
+      "name": "marginal_price_eur_per_mw_h",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 44715,
+  "sha256": "cd7e8836cf873fbd8aefc42b5474b75727c6db439aece0cd3b9bb3da6e7d62ae",
+  "note": "Not redistributed (regelleistung.net terms require prior written consent for reproduction). rows/sha256 describe the locally built file at retrieval time; rebuild with the fetch command."
+}

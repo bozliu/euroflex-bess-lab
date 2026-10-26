@@ -2,6 +2,13 @@
 
 `euroflex_bess_lab` is a public-core, B2B-facing framework for European BESS benchmarking, scheduling support, revision, reconciliation, and operator handoff. The intentionally narrow GA promise stays centered on the Belgium canonical path, while the surrounding public surface is designed to be credible for enterprise evaluation and integration.
 
+## Version 2: from scheduling support to a real-time trading lab
+
+Version 2 adds the money-making layer that optimisers run in-house: minute-level implicit balancing in Belgium under
+both imbalance-price formulas, aFRR stacking, own-price impact and herding for large fleets, and contract pricing for
+tolls and floors, all evaluated on real public data with a no-look-ahead audit and a live paper-trading loop. It is a
+research and evaluation surface; it does not connect to markets.
+
 ## Who should use this
 
 - BESS asset owners and operators that need auditable schedule and revision workflows

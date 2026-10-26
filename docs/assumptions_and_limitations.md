@@ -27,8 +27,11 @@ Other surfaces may remain stable, oracle-only, or integration-only, but they are
 
 ## Explicitly out of scope
 
-- live bid submission
+- live bid submission (the v2 live loop is paper trading only)
 - EMS / SCADA control
 - continuous intraday execution and order-book simulation
-- stochastic aFRR activation physics
+- stochastic aFRR activation physics in the schedule-based workflows (the v2 real-time reserve layer uses a
+  documented pro-rata activation approximation instead)
 - automated capital allocation or investment advice
+
+The v2 real-time engine (`euroflex_bess_lab.realtime`) has its own boundary; see [Known limitations](known_limitations.md).

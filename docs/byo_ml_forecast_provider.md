@@ -22,8 +22,7 @@ Your class must define:
 
 ```python
 class MyForecaster:
-    def initialize(self, *, config, run_context) -> None:
-        ...
+    def initialize(self, *, config, run_context) -> None: ...
 
     def generate_forecast(
         self,
@@ -32,8 +31,7 @@ class MyForecaster:
         decision_time_utc,
         delivery_frame,
         visible_inputs,
-    ):
-        ...
+    ): ...
 ```
 
 Notes:

@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "path": "energy_charts/da_prices_DE-LU.parquet",
+  "table": "da_prices_DE-LU",
+  "title": "German-Luxembourg day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards).",
+  "source": "Energy-Charts API (api.energy-charts.info, Fraunhofer ISE)",
+  "dataset_ids": [
+    "energy_charts_price_DE-LU"
+  ],
+  "dataset_pages": [
+    "https://api.energy-charts.info/"
+  ],
+  "source_urls": [
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-01-31&start=2023-01-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-02-28&start=2023-02-01",
+    "https://api.energy-charts.info/price?bzn=DE-LU&end=2023-03-31&start=2023-03-01"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "Bundesnetzagentur | SMARD.de, via Energy-Charts (Fraunhofer ISE)",
+  "upstream_licence_info": [
+    "CC BY 4.0 (creativecommons.org/licenses/by/4.0) from Bundesnetzagentur | SMARD.de"
+  ],
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:50:06Z",
+  "coverage_start_utc": "2025-06-10T00:00:00Z",
+  "coverage_end_utc": "2026-03-04T23:45:00Z",
+  "time_column": "timestamp_utc",
+  "zone": "DE-LU",
+  "transformation_notes": [
+    "timestamp_utc = start of the day-ahead product; resolution_minutes = product length inferred from the spacing of consecutive timestamps (60 until delivery day 2025-09-30, 15 from 2025-10-01 after the SDAC 15-minute MTU go-live).",
+    "Monthly API requests (local delivery days, end inclusive) are concatenated and de-duplicated on timestamp_utc; null prices are dropped. price_eur_mwh is float32."
+  ],
+  "fetch_command": "euroflex data fetch day-ahead --zone DE-LU",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "fixture": {
+    "sliced_from": "data/public/energy_charts/da_prices_DE-LU.parquet",
+    "windows_utc": [
+      [
+        "2025-06-10T00:00:00Z",
+        "2025-06-13T00:00:00Z"
+      ],
+      [
+        "2026-03-02T00:00:00Z",
+        "2026-03-05T00:00:00Z"
+      ]
+    ]
+  },
+  "rows": 360,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "resolution_minutes",
+      "type": "int16"
+    },
+    {
+      "name": "price_eur_mwh",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 4295,
+  "sha256": "78821dcfacaaace1d67cf9b4d4b3b5a5ac7f9a243d01c76863fd3ad5999d63b3"
+}

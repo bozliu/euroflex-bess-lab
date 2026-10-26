@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "path": "belgium/new_formula_minute_2026.parquet",
+  "table": "belgium_new_formula_minute",
+  "title": "Elia simulation of the new 2026 imbalance-price formula, per minute (Jan-Jul 2026).",
+  "source": "Elia Open Data (opendata.elia.be)",
+  "dataset_ids": [
+    "ods211"
+  ],
+  "dataset_pages": [
+    "https://opendata.elia.be/explore/dataset/ods211/"
+  ],
+  "source_urls": [
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods211/exports/parquet"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://opendata.elia.be/pages/licence/",
+  "attribution": "Elia Transmission Belgium SA",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:13:57Z",
+  "time_column": "timestamp_utc",
+  "transformation_notes": [
+    "Elia simulation of the imbalance price under the new formula consulted for go-live on 24/11/2026 (conditional on CREG approval), computed on historical data for 2026-01..2026-07. Best-effort, non-validated data; Elia removes it from ODS211/ODS212 on 17/11/2026, this file preserves it.",
+    "Minute rows are cumulative quarter-hour-to-date estimates like ODS133: at minute 14 FRCE equals the ODS212 value and the price matches in about 95% of quarter-hours, the SI estimate differs (see validation.last_minute_vs_ods212). frce_rolling_mw / si_rolling_mw are 15-minute rolling windows that reach back past the start of the quarter-hour.",
+    "imbalance_price = main_up (SI < 0) or main_down (SI >= 0) + incentive_eur_mwh (only when FRCE exceeds the L2 target and |SI| > 250 MW); main components are volume-weighted aFRR/mFRR prices with weights weight_afrr/weight_mfrr (decomposition match rates in validation.decomposition of the QH file).",
+    "Numeric columns float32; timestamps datetime64[ns, UTC]; reindexed to a complete grid between the first and last published interval."
+  ],
+  "fetch_command": "euroflex data fetch belgium-new-formula",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "coverage_start_utc": "2026-03-02T00:00:00Z",
+  "coverage_end_utc": "2026-03-04T23:59:00Z",
+  "simulated": true,
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "fixture": {
+    "sliced_from": "data/public/belgium/new_formula_minute_2026.parquet",
+    "windows_utc": [
+      [
+        "2025-06-10T00:00:00Z",
+        "2025-06-13T00:00:00Z"
+      ],
+      [
+        "2026-03-02T00:00:00Z",
+        "2026-03-05T00:00:00Z"
+      ]
+    ]
+  },
+  "rows": 4320,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "frce_mw",
+      "type": "float"
+    },
+    {
+      "name": "frce_rolling_mw",
+      "type": "float"
+    },
+    {
+      "name": "si_mw",
+      "type": "float"
+    },
+    {
+      "name": "si_rolling_mw",
+      "type": "float"
+    },
+    {
+      "name": "imbalance_price_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "main_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "main_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "incentive_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "voaa_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "afrr_price_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_price_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_sa_price_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_da_price_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "rs_price_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "voaa_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "afrr_price_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_price_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_sa_price_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_da_price_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "rs_price_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "weight_afrr",
+      "type": "float"
+    },
+    {
+      "name": "weight_mfrr",
+      "type": "float"
+    },
+    {
+      "name": "igcc_up_mw",
+      "type": "float"
+    },
+    {
+      "name": "afrr_up_mw",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_sa_up_mw",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_da_up_mw",
+      "type": "float"
+    },
+    {
+      "name": "rs_up_mw",
+      "type": "float"
+    },
+    {
+      "name": "igcc_down_mw",
+      "type": "float"
+    },
+    {
+      "name": "afrr_down_mw",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_sa_down_mw",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_da_down_mw",
+      "type": "float"
+    },
+    {
+      "name": "rs_down_mw",
+      "type": "float"
+    },
+    {
+      "name": "frce_l2_target_mw",
+      "type": "float"
+    },
+    {
+      "name": "quality_status",
+      "type": "large_string"
+    }
+  ],
+  "size_bytes": 258291,
+  "sha256": "a4f86510dede80aed8b0052669f33413584da574bd4f4771ae5bab86c927a470"
+}

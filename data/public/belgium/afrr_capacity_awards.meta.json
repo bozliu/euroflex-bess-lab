@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "path": "belgium/afrr_capacity_awards.parquet",
+  "table": "belgium_afrr_capacity_awards",
+  "title": "Belgian aFRR capacity auction awards aggregated per delivery block and direction.",
+  "source": "Elia Open Data (opendata.elia.be)",
+  "dataset_ids": [
+    "ods125",
+    "ods207"
+  ],
+  "dataset_pages": [
+    "https://opendata.elia.be/explore/dataset/ods125/",
+    "https://opendata.elia.be/explore/dataset/ods207/"
+  ],
+  "source_urls": [
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222022-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222023-01-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222023-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222024-01-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222024-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222025-01-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222025-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222026-01-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222027-01-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods207/exports/parquet?where=deliverydate%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+deliverydate%3C%222027-01-01T00%3A00%3A00Z%22"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://opendata.elia.be/pages/licence/",
+  "attribution": "Elia Transmission Belgium SA",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:39:51Z",
+  "time_column": "delivery_start_utc",
+  "transformation_notes": [
+    "Sources: ODS125 (individual aFRR capacity bids up to 19/05/2026, one row per bid with up and down columns) and ODS207 (as of 20/05/2026, one row per bid and regulation direction). Where both cover a delivery day, ODS207 wins.",
+    "One row per delivery block (4 hours, Europe/Brussels local time, converted to UTC; 3/5 hours on DST-change days) and direction (up/down). Prices are capacity prices in EUR/MW/h (pay-as-bid).",
+    "Bids whose delivery period spans several 4-hour blocks (e.g. '0 - 24' daily bids) deliver in every block they cover, so they are counted in each covered block; awarded_mw_multi_block shows that share.",
+    "awarded_mw = sum of awarded MW; vwap_eur_per_mw_h = awarded-volume-weighted average bid price; marginal_eur_per_mw_h = highest awarded bid price; n_bids = number of bids with awarded MW > 0; offered_mw / n_offered_bids describe all offered bids (selected or not) delivering in the block; they are null where the source lists awarded bids only (ODS055, i.e. mFRR before 2026-05-20).",
+    "Gate-2 bids ('G2' suffix in capacitybiddeliveryperiod) are treated like other bids of their period."
+  ],
+  "validation": {
+    "bids_with_unparsed_period": 0,
+    "unparsed_period_values": 0,
+    "multi_block_bids": 3517992,
+    "bids": 5055579,
+    "bid_sources": {
+      "ods125": 4702592,
+      "ods207": 352987
+    },
+    "delivery_days": 1637,
+    "gate2_bids": 3364,
+    "blocks_without_awards": 0,
+    "period_values": [
+      "0 - 24",
+      "0 - 24 - G2",
+      "0 - 4",
+      "0 - 4 - G2",
+      "0-24",
+      "0-4",
+      "12 - 16",
+      "12 - 16 - G2",
+      "12-16",
+      "16 - 20",
+      "16 - 20 - G2",
+      "16-20",
+      "20 - 24",
+      "20 - 24 - G2",
+      "20-24",
+      "4 - 8",
+      "4 - 8 - G2",
+      "4-8",
+      "8 - 12",
+      "8 - 12 - G2",
+      "8-12"
+    ]
+  },
+  "inputs": [
+    {
+      "dataset_id": "ods125",
+      "chunk": "2022-01-01__2023-01-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222022-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222023-01-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:31:38Z",
+      "sha256": "b573c58f7ef6da51cfa116121b8cdbfc3eebbbee82f42ecb78b9a4c0610e0894",
+      "size_bytes": 6360569
+    },
+    {
+      "dataset_id": "ods125",
+      "chunk": "2023-01-01__2024-01-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222023-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222024-01-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:34:21Z",
+      "sha256": "77b0ba3dd1bbf218bc66376488c06db071064843534593bfb9ea002003e5fc82",
+      "size_bytes": 11357823
+    },
+    {
+      "dataset_id": "ods125",
+      "chunk": "2024-01-01__2025-01-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222024-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222025-01-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:36:44Z",
+      "sha256": "c800aa5b63efebd4ad0ae6efa7dfece33926f11b4fd1b0815da0708f57ee28ee",
+      "size_bytes": 13113177
+    },
+    {
+      "dataset_id": "ods125",
+      "chunk": "2025-01-01__2026-01-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222025-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222026-01-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:39:07Z",
+      "sha256": "0121360f30a9182d0117824adb8b06f5ef7668cb21b2a74329e09fb6e1a3c5cd",
+      "size_bytes": 12481089
+    },
+    {
+      "dataset_id": "ods125",
+      "chunk": "2026-01-01__2027-01-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222027-01-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:39:51Z",
+      "sha256": "fe5692d308b7b9518b4a8b25d505ab620b72349720e8c68f3cd7c61c4102fdd7",
+      "size_bytes": 4913115
+    },
+    {
+      "dataset_id": "ods207",
+      "chunk": "2026-01-01__2027-01-01",
+      "url": "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods207/exports/parquet?where=deliverydate%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+deliverydate%3C%222027-01-01T00%3A00%3A00Z%22",
+      "retrieved_at_utc": "2026-10-26T03:33:49Z",
+      "sha256": "62d14b9ee3afbb3458452676e611167a0fcc469417f1bafa03a3c4877da75bf5",
+      "size_bytes": 10608637
+    }
+  ],
+  "fetch_command": "euroflex data fetch belgium-capacity-awards",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "coverage_start_utc": "2022-05-03T22:00:00Z",
+  "coverage_end_utc": "2026-10-25T23:00:00Z",
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 19632,
+  "columns": [
+    {
+      "name": "delivery_start_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "delivery_end_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "direction",
+      "type": "large_string"
+    },
+    {
+      "name": "awarded_mw",
+      "type": "float"
+    },
+    {
+      "name": "vwap_eur_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "marginal_eur_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "n_bids",
+      "type": "int32"
+    },
+    {
+      "name": "awarded_mw_multi_block",
+      "type": "float"
+    },
+    {
+      "name": "offered_mw",
+      "type": "float"
+    },
+    {
+      "name": "n_offered_bids",
+      "type": "int32"
+    }
+  ],
+  "size_bytes": 211258,
+  "sha256": "aa3d5577c8e2756dbb688b3c51fbc6c759670c298350c6d2656f494d186c80ed"
+}

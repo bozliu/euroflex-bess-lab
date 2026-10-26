@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "path": "belgium/energy_bid_curves_qh_2026.parquet",
+  "table": "belgium_energy_bid_curves",
+  "title": "Merit-order curves of available aFRR/mFRR energy bids per quarter-hour on a fixed MW grid.",
+  "source": "Elia Open Data (opendata.elia.be)",
+  "dataset_ids": [
+    "ods156",
+    "ods157"
+  ],
+  "dataset_pages": [
+    "https://opendata.elia.be/explore/dataset/ods156/",
+    "https://opendata.elia.be/explore/dataset/ods157/"
+  ],
+  "source_urls": [
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-01-01T00%3A00%3A00Z%22+and+datetime%3C%222026-02-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-02-01T00%3A00%3A00Z%22+and+datetime%3C%222026-03-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods156/exports/parquet?where=datetime%3E%3D%222026-03-01T00%3A00%3A00Z%22+and+datetime%3C%222026-04-01T00%3A00%3A00Z%22"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://opendata.elia.be/pages/licence/",
+  "attribution": "Elia Transmission Belgium SA",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:47:53Z",
+  "time_column": "timestamp_utc",
+  "transformation_notes": [
+    "Built from ODS156 (incremental = direction up) and ODS157 (decremental = direction down) individual energy bids; only bids with availability == 'Available' are used. Raw bid rows are not redistributed.",
+    "Bid volumes are the increments of Elia's published cumulativevolume in its merit-order rank, so bids that add no volume (mutually exclusive alternatives, unavailable bids) are excluded.",
+    "Per quarter-hour and direction the available aFRR + mFRR (+ reserve-sharing) bids are sorted by price into an economic merit order: cheapest first for up (incremental), highest price first for down (decremental). price_eur_mwh at cum_mw = V is the price of the bid that covers the V-th MW, i.e. the marginal price needed to activate V MW. Null where the available volume is below V. Grid: 0..2000 MW in 25 MW steps.",
+    "Elia's own rank (aFRR first, then mFRR) was tested as an alternative ordering and tracks the published MIP/MDP much worse (see validation.curve_vs_published_prices for the price-sorted curve).",
+    "Approximation: real aFRR activations are continuous and priced via PICASSO cross-border marginal prices, mFRR via MARI, and Elia may skip bids (e.g. for congestion); treat the curve as a stylised local merit order for price-impact studies, not as the settlement price."
+  ],
+  "fetch_command": "euroflex data fetch belgium-bid-curves --start 2026-01-01 --end 2027-01-01",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "coverage_start_utc": "2026-03-02T00:00:00Z",
+  "coverage_end_utc": "2026-03-04T23:45:00Z",
+  "partition_year": 2026,
+  "grid": {
+    "cum_mw_min": 0,
+    "cum_mw_max": 2000,
+    "cum_mw_step": 25
+  },
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "fixture": {
+    "sliced_from": "data/public/belgium/energy_bid_curves_qh_2026.parquet",
+    "windows_utc": [
+      [
+        "2025-06-10T00:00:00Z",
+        "2025-06-13T00:00:00Z"
+      ],
+      [
+        "2026-03-02T00:00:00Z",
+        "2026-03-05T00:00:00Z"
+      ]
+    ]
+  },
+  "rows": 46656,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "direction",
+      "type": "large_string"
+    },
+    {
+      "name": "cum_mw",
+      "type": "float"
+    },
+    {
+      "name": "price_eur_mwh",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 35777,
+  "sha256": "8979a72db39aea201dc88c16cf9f55b287acdb52dcf4e850d6dd60f5fb12ed84"
+}

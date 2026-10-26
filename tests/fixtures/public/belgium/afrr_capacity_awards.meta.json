@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "path": "belgium/afrr_capacity_awards.parquet",
+  "table": "belgium_afrr_capacity_awards",
+  "title": "Belgian aFRR capacity auction awards aggregated per delivery block and direction.",
+  "source": "Elia Open Data (opendata.elia.be)",
+  "dataset_ids": [
+    "ods125",
+    "ods207"
+  ],
+  "dataset_pages": [
+    "https://opendata.elia.be/explore/dataset/ods125/",
+    "https://opendata.elia.be/explore/dataset/ods207/"
+  ],
+  "source_urls": [
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222022-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222023-01-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222023-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222024-01-01T00%3A00%3A00Z%22",
+    "https://opendata.elia.be/api/explore/v2.1/catalog/datasets/ods125/exports/parquet?where=delivery_date%3E%3D%222024-01-01T00%3A00%3A00Z%22+and+delivery_date%3C%222025-01-01T00%3A00%3A00Z%22"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://opendata.elia.be/pages/licence/",
+  "attribution": "Elia Transmission Belgium SA",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T03:39:51Z",
+  "time_column": "delivery_start_utc",
+  "transformation_notes": [
+    "Sources: ODS125 (individual aFRR capacity bids up to 19/05/2026, one row per bid with up and down columns) and ODS207 (as of 20/05/2026, one row per bid and regulation direction). Where both cover a delivery day, ODS207 wins.",
+    "One row per delivery block (4 hours, Europe/Brussels local time, converted to UTC; 3/5 hours on DST-change days) and direction (up/down). Prices are capacity prices in EUR/MW/h (pay-as-bid).",
+    "Bids whose delivery period spans several 4-hour blocks (e.g. '0 - 24' daily bids) deliver in every block they cover, so they are counted in each covered block; awarded_mw_multi_block shows that share.",
+    "awarded_mw = sum of awarded MW; vwap_eur_per_mw_h = awarded-volume-weighted average bid price; marginal_eur_per_mw_h = highest awarded bid price; n_bids = number of bids with awarded MW > 0; offered_mw / n_offered_bids describe all offered bids (selected or not) delivering in the block; they are null where the source lists awarded bids only (ODS055, i.e. mFRR before 2026-05-20).",
+    "Gate-2 bids ('G2' suffix in capacitybiddeliveryperiod) are treated like other bids of their period."
+  ],
+  "fetch_command": "euroflex data fetch belgium-capacity-awards",
+  "generated_by": "euroflex_bess_lab.public_data (scripts/data/fetch_all_public.py)",
+  "coverage_start_utc": "2025-06-10T02:00:00Z",
+  "coverage_end_utc": "2026-03-04T23:00:00Z",
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "fixture": {
+    "sliced_from": "data/public/belgium/afrr_capacity_awards.parquet",
+    "windows_utc": [
+      [
+        "2025-06-10T00:00:00Z",
+        "2025-06-13T00:00:00Z"
+      ],
+      [
+        "2026-03-02T00:00:00Z",
+        "2026-03-05T00:00:00Z"
+      ]
+    ]
+  },
+  "rows": 72,
+  "columns": [
+    {
+      "name": "delivery_start_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "delivery_end_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "direction",
+      "type": "large_string"
+    },
+    {
+      "name": "awarded_mw",
+      "type": "float"
+    },
+    {
+      "name": "vwap_eur_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "marginal_eur_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "n_bids",
+      "type": "int32"
+    },
+    {
+      "name": "awarded_mw_multi_block",
+      "type": "float"
+    },
+    {
+      "name": "offered_mw",
+      "type": "float"
+    },
+    {
+      "name": "n_offered_bids",
+      "type": "int32"
+    }
+  ],
+  "size_bytes": 8144,
+  "sha256": "c1d6c659af7b8a4262a22e883b1bbee63ca8b89a1f6c56745c77c9abfb8cda5a"
+}

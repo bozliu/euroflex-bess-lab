@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "path": "intraday/id_aep_DE-LU.parquet",
+  "table": "intraday_id_aep_DE-LU",
+  "title": "German intraday price index ID AEP (TSOs' Index Ausgleichsenergiepreis), quarter-hourly, DE-LU.",
+  "source": "netztransparenz.de (German TSOs), public CSV download of the Index Ausgleichsenergiepreis page",
+  "dataset_ids": [
+    "netztransparenz_id_aep"
+  ],
+  "dataset_pages": [
+    "https://www.netztransparenz.de/Regelenergie/Ausgleichsenergiepreis/Index-Ausgleichsenergiepreis"
+  ],
+  "source_url_template": "https://www.netztransparenz.de/DesktopModules/LotesCharts/CsvDownloadHandler.ashx?request=<base64 of JSON {LocalFrom: YYYY-MM-01, LocalTo: first day of next month (exclusive), ResultTimeZone: utc, Settings: page chart settings}>",
+  "licence": "proprietary (copyright German TSOs; reproduction needs prior written consent)",
+  "licence_url": "https://www.netztransparenz.de/de-de/Impressum",
+  "attribution": "50Hertz, Amprion, TenneT TSO, TransnetBW via netztransparenz.de (Index Ausgleichsenergiepreis)",
+  "redistributed": false,
+  "local_path": "data/raw/intraday/id_aep_DE-LU.parquet",
+  "retrieved_at_utc": "2026-10-26T14:25:42Z",
+  "coverage_start_utc": "2023-12-31T23:00:00Z",
+  "coverage_end_utc": "2026-10-25T23:00:00Z",
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "time_column": "timestamp_utc",
+  "zone": "DE-LU",
+  "transformation_notes": [
+    "timestamp_utc = start of the quarter-hour delivery product (UTC); the CSV is requested with ResultTimeZone=utc so DST days carry 92 / 100 rows without ambiguity. resolution_minutes = 15.",
+    "id_aep_eur_mwh = ID AEP in EUR/MWh: volume-weighted average price of the most recent continuous intraday exchange trades (German market area) of the quarter-hour product covering 500 MW, topped up with the hourly product when the quarter-hour product traded less; NaN where the index is not defined (< 500 MW in both).",
+    "Monthly requests (local delivery days, LocalTo exclusive) are concatenated, de-duplicated on timestamp_utc, reindexed to a complete 15-minute UTC grid (missing quarter-hours are NaN) and cut after the last complete local delivery day. Values are float32."
+  ],
+  "validation": {
+    "source_rows": 98784,
+    "undefined_values": 0,
+    "unparsed_values": 0,
+    "duplicates_dropped": 0,
+    "grid_rows": 98784,
+    "missing_quarter_hours": 0,
+    "nan_values_total": 0,
+    "rows_after_trim": 98784,
+    "nan_values_after_trim": 0,
+    "months_requested": 34,
+    "last_complete_local_day": "2026-10-25",
+    "incomplete_local_days": [],
+    "n_incomplete_local_days": 0
+  },
+  "fetch_command": "python -m euroflex_bess_lab.public_data.intraday fetch --start 2024-01-01",
+  "generated_by": "euroflex_bess_lab.public_data.intraday (python -m euroflex_bess_lab.public_data.intraday fetch)",
+  "rows": 98784,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "resolution_minutes",
+      "type": "int16"
+    },
+    {
+      "name": "id_aep_eur_mwh",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 292514,
+  "sha256": "dfb7e2d0358ebbda5d5bc4fa53bed7c2faf1287a68fa6200d848196f87d6ae74",
+  "note": "Not redistributed: the netztransparenz.de imprint requires the German TSOs' prior written consent for any reproduction of the site content. rows/sha256 describe the locally built file at retrieval time; rebuild it with the fetch command (no account needed)."
+}

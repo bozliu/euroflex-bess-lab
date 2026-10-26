@@ -78,7 +78,7 @@ def _write_temp_config(source: Path, tmp_path: Path) -> Path:
 def test_version_cli_prints_version() -> None:
     result = runner.invoke(app, ["--version"])
     assert result.exit_code == 0
-    assert "2.0.0" in result.output
+    assert "2.1.0" in result.output
 
 
 def test_backtest_cli_generic_form_produces_v4_artifacts(tmp_path: Path) -> None:

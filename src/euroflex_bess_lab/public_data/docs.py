@@ -12,6 +12,15 @@ import pandas as pd
 
 from .elia import ELIA_ATTRIBUTION, ELIA_LICENCE_URL
 from .energy_charts import ENERGY_CHARTS_ATTRIBUTION
+from .gb.sources import (
+    BMRS_ATTRIBUTION_TEMPLATE,
+    BMRS_LICENCE_URL,
+    ECB_ATTRIBUTION,
+    ECB_LICENCE_URL,
+    NESO_ATTRIBUTION,
+    NESO_LICENCE_URL,
+)
+from .nordic.docs import ENERGINET_STATEMENT, SVK_STATEMENT, render_nordic_licence_section
 from .regelleistung import REGELLEISTUNG_TERMS_URL
 
 ELIA_STATEMENT = (
@@ -24,6 +33,28 @@ ENERGY_CHARTS_STATEMENT = (
     "Day-ahead prices: Bundesnetzagentur | SMARD.de, retrieved via the Energy-Charts API of Fraunhofer ISE "
     "(https://api.energy-charts.info), licensed under CC BY 4.0; de-duplicated and annotated with the product "
     "resolution."
+)
+GB_STATEMENT = (
+    "Great Britain: "
+    + BMRS_ATTRIBUTION_TEMPLATE.format(year="2023-2026")
+    + " (Elexon BMRS open data licence: "
+    + BMRS_LICENCE_URL
+    + "). "
+    + NESO_ATTRIBUTION
+    + " (NESO Open Data Licence v1.0: "
+    + NESO_LICENCE_URL
+    + "). FX rates: "
+    + ECB_ATTRIBUTION
+    + " ("
+    + ECB_LICENCE_URL
+    + "); daily rates are joined onto delivery dates."
+)
+
+NETZTRANSPARENZ_STATEMENT = (
+    "The German intraday index ID AEP (netztransparenz.de, published by the four German TSOs) is NOT "
+    "redistributed: the site's imprint requires the TSOs' prior written consent for reproducing its content. Only "
+    "the fetch code, a manifest stub (`redistributed: false`) and derived daily backtest results are committed; "
+    "build the index locally with `euroflex data intraday fetch`."
 )
 REGELLEISTUNG_STATEMENT = (
     "German reserve auction results from regelleistung.net (50Hertz, Amprion, TenneT TSO, TransnetBW) are NOT "
@@ -185,6 +216,7 @@ def render_licenses(manifest: Mapping[str, Any]) -> str:
     elia_files = [str(e["path"]) for e in _files(manifest) if "Elia" in str(e.get("attribution", ""))]
     ec_files = [str(e["path"]) for e in _files(manifest) if str(e.get("path", "")).startswith("energy_charts/")]
     stub_files = [str(e["path"]) for e in _files(manifest) if not e.get("redistributed", True)]
+    gb_files = [str(e["path"]) for e in _files(manifest) if str(e.get("path", "")).startswith("gb/")]
 
     def bullet(items: Sequence[str]) -> str:
         return "\n".join(f"- `{item}`" for item in items) or "- (none)"
@@ -206,11 +238,23 @@ Attribution: **{ELIA_ATTRIBUTION}**. Licence: https://creativecommons.org/licens
 
 {bullet(ec_files)}
 
-## regelleistung.net — not redistributed
+## Data that is not redistributed (regelleistung.net, netztransparenz.de)
 
-{REGELLEISTUNG_STATEMENT} Manifest stubs:
+{REGELLEISTUNG_STATEMENT}
+
+{NETZTRANSPARENZ_STATEMENT}
+
+Manifest stubs:
 
 {bullet(stub_files)}
+
+{render_nordic_licence_section(manifest)}
+
+## Great Britain (Elexon BMRS, NESO, ECB)
+
+{GB_STATEMENT} Files:
+
+{bullet(gb_files)}
 
 ## Code
 
@@ -238,7 +282,15 @@ retries and a raw cache, normalizers that map upstream fields to a snake_case co
 
 {ENERGY_CHARTS_STATEMENT}
 
+{ENERGINET_STATEMENT}
+
+{SVK_STATEMENT}
+
+{GB_STATEMENT}
+
 {REGELLEISTUNG_STATEMENT}
+
+{NETZTRANSPARENZ_STATEMENT}
 
 ## Loader API
 
@@ -260,6 +312,11 @@ frames sorted by time with `datetime64[ns, UTC]` timestamps, and raise `FileNotF
 | `load_energy_bid_curves(start, end, direction=None)` | `belgium/energy_bid_curves_qh_<YYYY>.parquet` |
 | `load_germany_reserve(product, start, end)` | `germany/{{fcr,afrr}}_capacity.parquet` (local build only) |
 | `load_belgium_legacy(kind, start, end, columns=None)` | `belgium/{{qh,minute}}_<YYYY>_legacy.parquet` |
+| `load_nordic_day_ahead(zone, start, end, quarter_hourly=False)` | `nordic/da_prices_{{DK1,DK2,SE3,SE4,FI}}.parquet` |
+| `load_nordic_reserve(product, zone, start, end, auction="early", direction=None)` | `nordic/{{fcr_nordic,fcr_dk1,afrr_capacity,mfrr_capacity}}.parquet` |
+| `load_dk_imbalance(area, start, end)` | `nordic/dk_imbalance.parquet` |
+| `load_gb_system_prices(start, end)`, `load_gb_market_index(...)`, `load_gb_response_auctions(...)`, `load_gb_frequency(...)`, `load_gb_fx(...)` | `gb/*.parquet` |
+| `load_intraday_index(start, end)` (in `public_data.intraday`) | `intraday/id_aep_DE-LU.parquet` (local build only) |
 | `read_manifest()` | `MANIFEST.json` |
 
 CLI (`euroflex data ...`): `fetch <target>` (`belgium-minute`, `belgium-qh`, `belgium-new-formula`,

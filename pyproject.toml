@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "euroflex-bess-lab"
-version = "2.0.0"
+version = "2.1.0"
 description = "Real-data BESS trading lab: minute-level Belgian implicit balancing under both Elia imbalance-price formulas, aFRR stacking, fleet price impact, contract valuation, Germany, live paper trading, plus the narrow-GA scheduling and audit framework."
 readme = "README.md"
 requires-python = ">=3.12,<3.13"

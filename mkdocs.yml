@@ -25,8 +25,14 @@ nav:
   - Real-time reserves (aFRR): realtime_reserves.md
   - Impact and herding: impact_and_herding.md
   - Live paper trading: live_paper_trading.md
+  - Deployment: deployment.md
+  - Forward track record: track_record.md
   - Contract valuation: valuation.md
   - Germany (experimental): germany.md
+  - Intraday re-trading (DE-LU): intraday.md
+  - Nordic markets (DK, SE, FI): nordics.md
+  - Great Britain: great_britain.md
+  - Out-of-sample (frozen models): out_of_sample.md
   - Stable vs experimental: stable_experimental_matrix.md
   - Compatibility and deprecation: compatibility_and_deprecation_policy.md
   - Operator runbook: operator_runbook.md

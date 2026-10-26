@@ -35,11 +35,15 @@ from .data.normalization import (
 )
 from .diagnostics import append_jsonl_event
 from .exports import export_bids, export_revision, export_schedule
+from .public_data.cli import data_app
+from .realtime.cli import rt_app
+from .realtime.live.cli import live_app
 from .reconciliation import reconcile_run
 from .run_registry import RunRegistry, register_backtest_result, register_derived_artifact, registry_path_for_run_dir
 from .types import PriceSeries
 from .validation import ValidationReport, validate_config_file, validate_data_file
 from .validation import doctor as run_doctor
+from .valuation.cli import value_app
 
 app = typer.Typer(help="Forecast-aware BESS market benchmarking for European flexibility markets.")
 ingest_app = typer.Typer(help="Fetch and normalize public market data.")
@@ -657,7 +661,7 @@ def backtest(
     config_path: Path = typer.Argument(
         ..., exists=True, dir_okay=False, readable=True, help="Path to a schema v4 config."
     ),
-    market: str | None = typer.Option(None, "--market", help="Market adapter id, such as belgium or netherlands."),
+    market: str | None = typer.Option(None, "--market", help="Market adapter id: belgium, netherlands or germany."),
     workflow: str | None = typer.Option(
         None,
         "--workflow",
@@ -997,6 +1001,10 @@ def serve(
 
 
 app.add_typer(ingest_app, name="ingest")
+app.add_typer(rt_app, name="rt")
+app.add_typer(live_app, name="live")
+app.add_typer(data_app, name="data")
+app.add_typer(value_app, name="value")
 
 
 def main() -> None:

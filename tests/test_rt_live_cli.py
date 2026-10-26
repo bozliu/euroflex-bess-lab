@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pandas as pd
@@ -15,6 +16,13 @@ from euroflex_bess_lab.realtime.strategies import IdleStrategy, ThresholdStrateg
 
 START = pd.Timestamp("2026-03-02T00:00:00Z")
 runner = CliRunner()
+
+
+def _plain(text: str) -> str:
+    """CLI output without ANSI colour codes, box drawing and line wrapping (CI terminals colour typer errors)."""
+    text = re.sub(r"\x1b\[[0-9;]*[A-Za-z]", "", text)
+    text = re.sub(r"[\u2500-\u257f]", " ", text)
+    return " ".join(text.split())
 
 
 @pytest.fixture
@@ -79,7 +87,7 @@ def test_run_status_and_reconcile_commands(tmp_path: Path, offline_cli: None, mo
 
 def test_run_refuses_untradable_and_unconfigured_options(tmp_path: Path, offline_cli: None) -> None:
     oracle = runner.invoke(live_cli.live_app, ["run", "--strategy", "oracle", "--run-dir", str(tmp_path / "a")])
-    assert oracle.exit_code != 0 and "perfect-foresight" in oracle.output
+    assert oracle.exit_code != 0 and "perfect-foresight" in _plain(oracle.output)
     webhook = runner.invoke(
         live_cli.live_app,
         [
@@ -92,11 +100,11 @@ def test_run_refuses_untradable_and_unconfigured_options(tmp_path: Path, offline
             str(tmp_path / "b"),
         ],
     )
-    assert webhook.exit_code != 0 and "enable-webhook" in webhook.output
+    assert webhook.exit_code != 0 and "enable-webhook" in _plain(webhook.output)
     unknown = runner.invoke(
         live_cli.live_app, ["run", "--strategy", "does-not-exist", "--run-dir", str(tmp_path / "c")]
     )
-    assert unknown.exit_code != 0 and "available:" in unknown.output
+    assert unknown.exit_code != 0 and "available:" in _plain(unknown.output)
     assert not (tmp_path / "a").exists() and not (tmp_path / "c").exists()
 
 

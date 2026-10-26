@@ -1,0 +1,127 @@
+{
+  "schema": "euroflex-live-config/1",
+  "strategy": "threshold",
+  "strategy_class": "euroflex_bess_lab.realtime.live.strategies.MechanismSwitchingStrategy",
+  "battery": {
+    "power_mw": 1.0,
+    "energy_mwh": 2.0,
+    "charge_efficiency": 0.95,
+    "discharge_efficiency": 0.95,
+    "soc_min_frac": 0.05,
+    "soc_max_frac": 0.95,
+    "initial_soc_frac": 0.5,
+    "degradation_eur_per_mwh": 8.0,
+    "availability": 1.0
+  },
+  "config": {
+    "mechanism": "auto",
+    "publication": {
+      "minute_lag": 1,
+      "qh_final_lag_minutes": 5,
+      "da_publication_hour_local": 13
+    },
+    "go_live_utc": "2026-11-24T09:00:00Z",
+    "new_formula_grace_minutes": 30.0,
+    "history_days": 14.0,
+    "minute_history_hours": 6.0,
+    "horizon_days": 2,
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "decision_offset_s": 0.5,
+    "max_late_s": 20.0,
+    "settle_timeout_minutes": 90.0,
+    "drain_minutes": 12.0,
+    "backfill": true,
+    "fsync": true,
+    "status_every_minutes": 1,
+    "signals": [
+      "price_cum_eur_mwh",
+      "si_cum_mw",
+      "si_mw",
+      "alpha_eur_mwh",
+      "mip_eur_mwh",
+      "mdp_eur_mwh",
+      "afrr_price_up_eur_mwh",
+      "afrr_price_down_eur_mwh",
+      "elia_fc_cur_si_forecast_mw",
+      "elia_fc_next_si_forecast_mw",
+      "nf_imbalance_price_eur_mwh"
+    ],
+    "timezone": "Europe/Brussels"
+  },
+  "execution": {
+    "adapter": "paper",
+    "market_submission": false
+  },
+  "source": "EliaLiveFeeds",
+  "feeds": [
+    {
+      "name": "imbalance_price_minute",
+      "dataset_id": "ods161",
+      "table": "minute",
+      "poll_every_s": 5.0
+    },
+    {
+      "name": "system_imbalance_minute",
+      "dataset_id": "ods169",
+      "table": "minute",
+      "poll_every_s": 5.0
+    },
+    {
+      "name": "price_components_minute",
+      "dataset_id": "ods175",
+      "table": "minute",
+      "poll_every_s": 5.0
+    },
+    {
+      "name": "imbalance_price_qh",
+      "dataset_id": "ods162",
+      "table": "qh",
+      "poll_every_s": 30.0
+    },
+    {
+      "name": "si_forecast_current_qh",
+      "dataset_id": "ods136",
+      "table": "si_forecast_current",
+      "poll_every_s": 30.0
+    },
+    {
+      "name": "si_forecast_next_qh",
+      "dataset_id": "ods147",
+      "table": "si_forecast_next",
+      "poll_every_s": 30.0
+    },
+    {
+      "name": "new_formula_minute",
+      "dataset_id": "ods211",
+      "table": "nf_minute",
+      "poll_every_s": 600.0
+    },
+    {
+      "name": "new_formula_qh",
+      "dataset_id": "ods212",
+      "table": "nf_qh",
+      "poll_every_s": 600.0
+    },
+    {
+      "name": "day_ahead_be",
+      "dataset_id": "energy_charts_price_BE",
+      "table": "day_ahead",
+      "poll_every_s": 1800.0
+    }
+  ],
+  "metadata": {
+    "launcher": "cli",
+    "strategy_spec": "threshold",
+    "params": {}
+  },
+  "mode": "paper",
+  "market_submission": false,
+  "safety": "Paper trading (shadow mode) only: setpoints are logged or handed to the configured adapter; no order or bid is ever submitted to any market.",
+  "attribution": [
+    "Elia Transmission Belgium SA, Elia Open Data (CC BY 4.0)",
+    "Bundesnetzagentur | SMARD.de via Energy-Charts (CC BY 4.0)"
+  ],
+  "run_id": "live-20261026T040341Z-865916",
+  "created_at_utc": "2026-10-26T04:03:41Z"
+}

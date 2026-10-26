@@ -1,0 +1,2 @@
+{"event":"start","at_utc":"2026-10-26T04:03:41.822Z","first_minute_utc":"2026-10-26T04:04:00.000Z","window_start_utc":"2026-10-12T04:00:00.000Z","window_end_utc":"2026-10-28T23:00:00.000Z","notes":["data/public history: qh rows=1224","data/public history: si_forecast_current rows=56","data/public history: si_forecast_next rows=56","data/public history: day_ahead rows=1324"]}
+{"event":"stop","reason":"completed","at_utc":"2026-10-26T04:45:54.477Z"}

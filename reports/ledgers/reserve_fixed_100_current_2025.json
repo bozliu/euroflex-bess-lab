@@ -1,0 +1,79 @@
+{
+  "name": "reserve_fixed_100_current_2025",
+  "owner": "reserve",
+  "policy": "fixed_100",
+  "strategy": "reserve_fixed_100",
+  "implicit_strategy": "threshold",
+  "mechanism": "current",
+  "period": "2025",
+  "start_utc": "2024-12-31 23:00:00+00:00",
+  "end_utc": "2025-12-31 23:00:00+00:00",
+  "rows": 35040,
+  "battery": {
+    "power_mw": 1.0,
+    "energy_mwh": 2.0,
+    "charge_efficiency": 0.95,
+    "discharge_efficiency": 0.95,
+    "soc_min_frac": 0.05,
+    "soc_max_frac": 0.95,
+    "initial_soc_frac": 0.5,
+    "degradation_eur_per_mwh": 8.0,
+    "availability": 1.0
+  },
+  "publication": {
+    "minute_lag": 1,
+    "qh_final_lag_minutes": 5,
+    "da_publication_hour_local": 13
+  },
+  "settings": {
+    "restore_power_frac": 1.0,
+    "preposition_qh": 2,
+    "settle_on": "requested",
+    "shortfall_penalty_eur_mwh": 0.0
+  },
+  "product": {
+    "block_hours": 4,
+    "gate_closure_hour_local": 9,
+    "results_delay_minutes": 60,
+    "sustain_minutes": 15.0,
+    "timezone": "Europe/Brussels",
+    "min_bid_mw": 1.0
+  },
+  "activation_model": "pro_rata/qh/pab-da",
+  "capacity_clearing": "vwap",
+  "stack_eur_per_mw_year": {
+    "afrr_capacity": 219748.9311383344,
+    "afrr_capacity_up": 146785.75712064392,
+    "afrr_capacity_down": 72963.17401769047,
+    "afrr_energy": 116764.66884406727,
+    "afrr_energy_up": 123140.3620553566,
+    "afrr_energy_down": -6375.6932112893155,
+    "implicit_balancing": 0.0,
+    "shortfall_imbalance": -50659.91674751502,
+    "penalty": -0.0,
+    "degradation": -3796.3378469629447,
+    "total": 282057.34538792365,
+    "cycles_per_day": 0.7217921223977004,
+    "mean_up_reserved_mw": 1.0,
+    "mean_down_reserved_mw": 1.0,
+    "shortfall_mwh_per_mw_year": 336.92614176450866
+  },
+  "columns": {
+    "revenue_eur": "total revenue = afrr_capacity_eur + afrr_energy_eur + imbalance_revenue_eur - penalty_eur",
+    "pnl_eur": "revenue_eur - degradation_eur",
+    "energy_mwh": "BRP perimeter (imbalance) energy = metered - requested aFRR energy",
+    "price_eur_mwh": "single imbalance price of the mechanism",
+    "afrr_capacity_eur": "reserved MW x capacity price paid x 0.25 h",
+    "afrr_energy_eur": "requested aFRR energy x aFRR energy price (up earns, down pays)",
+    "implicit_revenue_eur": "implicit energy x imbalance price",
+    "shortfall_imbalance_eur": "undelivered aFRR energy settled at the imbalance price",
+    "penalty_eur": "activation-control penalty on undelivered energy (0 unless configured)",
+    "shortfall_mwh": "requested aFRR energy that could not be delivered (SOC or power limits)",
+    "dtype": "float columns stored as float32"
+  },
+  "approximations": [
+    "aFRR activation of the battery is approximated pro rata from Belgian activated / awarded aFRR volume",
+    "capacity remuneration uses the published awards as clearing proxy (see capacity_clearing)",
+    "before 2024-11-26 (PICASSO) aFRR energy was pay-as-bid; see activation_model"
+  ]
+}

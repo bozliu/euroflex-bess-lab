@@ -1,0 +1,41 @@
+{
+  "table": "impact_equilibrium",
+  "owner": "impact",
+  "window": [
+    "2026-01-01",
+    "2026-08-01"
+  ],
+  "n_fleets": 4,
+  "total_capacities_mw": [
+    100.0,
+    200.0,
+    400.0,
+    800.0,
+    1600.0,
+    2400.0,
+    3200.0
+  ],
+  "policies": {
+    "herding": "heterogeneous price-taking threshold fleets (lags 1/1/2/3 min, bands 0.75/0.25, 0.70/0.30, 0.80/0.20, 0.75/0.25), closed-loop running signal",
+    "herding_homogeneous": "identical price takers (lag 1, bands 0.75/0.25), closed loop",
+    "naive": "each fleet internalises its own impact only (ignores the others)",
+    "nash": "symmetric Nash equilibrium of identical fleets (damped best responses)",
+    "central": "one optimiser for the whole implicit capacity (joint profit)"
+  },
+  "battery_per_mw": {
+    "power_mw": 1.0,
+    "energy_mwh": 2.0,
+    "charge_efficiency": 0.95,
+    "discharge_efficiency": 0.95,
+    "soc_min_frac": 0.05,
+    "soc_max_frac": 0.95,
+    "initial_soc_frac": 0.5,
+    "degradation_eur_per_mwh": 8.0,
+    "availability": 1.0
+  },
+  "publication": {
+    "minute_lag": 1,
+    "qh_final_lag_minutes": 5,
+    "da_publication_hour_local": 13
+  }
+}

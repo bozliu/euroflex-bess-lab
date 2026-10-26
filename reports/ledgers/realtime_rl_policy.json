@@ -1,0 +1,212 @@
+{
+  "config": {
+    "actions": [
+      -1.0,
+      -0.5,
+      0.0,
+      0.5,
+      1.0
+    ],
+    "hidden": [
+      128,
+      128
+    ],
+    "gamma": 0.997,
+    "lr": 0.0005,
+    "batch_size": 1024,
+    "n_envs": 256,
+    "buffer_size": 1000000,
+    "learning_starts": 20000,
+    "updates_per_step": 1,
+    "target_update_every": 2000,
+    "eps_start": 1.0,
+    "eps_end": 0.05,
+    "eps_decay_updates": 100000,
+    "reward_scale": 0.05,
+    "max_minutes": 25.0,
+    "max_updates": 400000,
+    "validate_every": 10000,
+    "seed": 0,
+    "device": "auto",
+    "feature_groups": [
+      "calendar",
+      "si",
+      "volumes",
+      "product_prices",
+      "elia_forecast",
+      "day_ahead",
+      "history",
+      "current_mech"
+    ],
+    "features": [
+      "minute_in_qh",
+      "n_visible_minutes",
+      "hour_sin",
+      "hour_cos",
+      "si_cum",
+      "si_inst",
+      "si_inst_d3",
+      "si_projected",
+      "si_prev_qh",
+      "afrr_up_inst",
+      "afrr_down_inst",
+      "mfrr_up_inst",
+      "mfrr_down_inst",
+      "cur_price_cum",
+      "cur_price_prev_qh",
+      "cur_price_projected",
+      "cur_up_cum",
+      "cur_down_cum",
+      "elia_si_fc",
+      "elia_p_short",
+      "elia_next_si_fc",
+      "da_cur",
+      "hist_price_last",
+      "hist_price_mean4",
+      "hist_price_mean96",
+      "hist_price_std16"
+    ]
+  },
+  "log": {
+    "device": "mps",
+    "wall_clock_minutes": 25.00175322916669,
+    "updates": 196792,
+    "env_steps": 196870,
+    "transitions": 50398720,
+    "best_valid_daily_pnl_eur": 112.31803127924252,
+    "validation_history": [
+      {
+        "updates": 10000,
+        "minutes": 1.2344748117999795,
+        "valid_daily_pnl": 102.69478217871423
+      },
+      {
+        "updates": 20000,
+        "minutes": 2.54883197429978,
+        "valid_daily_pnl": 102.7691193391645
+      },
+      {
+        "updates": 30000,
+        "minutes": 3.9143183610998675,
+        "valid_daily_pnl": 96.00641317206671
+      },
+      {
+        "updates": 40000,
+        "minutes": 5.34096739860009,
+        "valid_daily_pnl": 92.58385804884696
+      },
+      {
+        "updates": 50000,
+        "minutes": 6.720699224999892,
+        "valid_daily_pnl": 91.61907409056184
+      },
+      {
+        "updates": 60000,
+        "minutes": 7.942410338883444,
+        "valid_daily_pnl": 97.62280316856257
+      },
+      {
+        "updates": 70000,
+        "minutes": 9.151861916666773,
+        "valid_daily_pnl": 104.989543702716
+      },
+      {
+        "updates": 80000,
+        "minutes": 10.48572573124984,
+        "valid_daily_pnl": 90.2458818238452
+      },
+      {
+        "updates": 90000,
+        "minutes": 11.725593044433237,
+        "valid_daily_pnl": 106.03494116721473
+      },
+      {
+        "updates": 100000,
+        "minutes": 13.011618003466477,
+        "valid_daily_pnl": 106.5667023196006
+      },
+      {
+        "updates": 110000,
+        "minutes": 14.135154042349798,
+        "valid_daily_pnl": 71.68641954061049
+      },
+      {
+        "updates": 120000,
+        "minutes": 15.519278734716742,
+        "valid_daily_pnl": 110.77658494268796
+      },
+      {
+        "updates": 130000,
+        "minutes": 16.92400108193348,
+        "valid_daily_pnl": 103.57594001084497
+      },
+      {
+        "updates": 140000,
+        "minutes": 18.209953148599986,
+        "valid_daily_pnl": 87.94259696035269
+      },
+      {
+        "updates": 150000,
+        "minutes": 19.46688759235015,
+        "valid_daily_pnl": 100.61148539644174
+      },
+      {
+        "updates": 160000,
+        "minutes": 20.75710510276646,
+        "valid_daily_pnl": 53.300175587298426
+      },
+      {
+        "updates": 170000,
+        "minutes": 21.933538122916556,
+        "valid_daily_pnl": 78.07510386257032
+      },
+      {
+        "updates": 180000,
+        "minutes": 23.027730142349903,
+        "valid_daily_pnl": 94.6701483825895
+      },
+      {
+        "updates": 190000,
+        "minutes": 24.206969937499768,
+        "valid_daily_pnl": 112.31803127924252
+      },
+      {
+        "updates": 196792,
+        "minutes": 25.001753077766626,
+        "valid_daily_pnl": 92.8288943589693
+      }
+    ],
+    "loss_tail": [
+      0.039922572672367096,
+      0.03074885718524456,
+      0.03406593203544617,
+      0.0444934144616127,
+      0.034393589943647385,
+      0.04741998016834259,
+      0.03528309985995293,
+      0.05084343999624252,
+      0.04187105596065521,
+      0.04305662214756012,
+      0.043745383620262146,
+      0.03470149636268616,
+      0.03156943619251251,
+      0.04831095039844513,
+      0.042533084750175476,
+      0.05058819800615311,
+      0.0409063883125782,
+      0.045354947447776794,
+      0.04592743515968323,
+      0.052613019943237305
+    ],
+    "train": [
+      "2024-06-01T00:00:00Z",
+      "2025-10-01T00:00:00Z"
+    ],
+    "validation": [
+      "2025-10-01T00:00:00Z",
+      "2026-01-01T00:00:00Z"
+    ],
+    "mechanism": "current"
+  },
+  "layers": 3
+}

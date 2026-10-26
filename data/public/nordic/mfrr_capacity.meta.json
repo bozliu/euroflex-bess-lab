@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "path": "nordic/mfrr_capacity.parquet",
+  "source": "Energinet, Energi Data Service (api.energidataservice.dk); Svenska kraftn\u00e4t, SVK Data Service (data.svk.se)",
+  "dataset_ids": [
+    "mFRRCapacityMarket",
+    "mfrr_capacity_market"
+  ],
+  "dataset_pages": [
+    "https://www.energidataservice.dk/tso-electricity/mFRRCapacityMarket",
+    "https://data.svk.se/dataset/mfrr_capacity_market"
+  ],
+  "source_urls": [
+    "https://api.energidataservice.dk/dataset/mFRRCapacityMarket?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2024-01-01T00%3A00&limit=0&sort=TimeUTC+asc&start=2023-12-01T00%3A00&timezone=UTC",
+    "https://api.energidataservice.dk/dataset/mFRRCapacityMarket?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2025-01-01T00%3A00&limit=0&sort=TimeUTC+asc&start=2024-01-01T00%3A00&timezone=UTC",
+    "https://api.energidataservice.dk/dataset/mFRRCapacityMarket?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2026-01-01T00%3A00&limit=0&sort=TimeUTC+asc&start=2025-01-01T00%3A00&timezone=UTC",
+    "https://api.energidataservice.dk/dataset/mFRRCapacityMarket?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2027-01-01T00%3A00&limit=0&sort=TimeUTC+asc&start=2026-01-01T00%3A00&timezone=UTC",
+    "https://data.svk.se/datastore/dump/0c56e30d-8fce-4c27-afc8-621c230ae34d?fields=start_time_utc%2Cbidding_zone%2Creserve_product%2Creserve_direction%2Cprice%2Cprice_unit%2Cvolume%2Cvolume_unit&filters=%7B%22bidding_zone%22%3A%22SE3%22%7D&format=csv&sort=start_time_utc",
+    "https://data.svk.se/datastore/dump/0c56e30d-8fce-4c27-afc8-621c230ae34d?fields=start_time_utc%2Cbidding_zone%2Creserve_product%2Creserve_direction%2Cprice%2Cprice_unit%2Cvolume%2Cvolume_unit&filters=%7B%22bidding_zone%22%3A%22SE4%22%7D&format=csv&sort=start_time_utc"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+  "attribution": "Source: Energinet (www.energidataservice.dk); Svenska kraftn\u00e4t (SVK Data Service, data.svk.se), produced by Svk business units",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T14:45:13Z",
+  "table": "nordic_mfrr_capacity",
+  "title": "mFRR capacity marginal prices and procured volumes per zone, direction and hour (DK1, DK2, SE3, SE4).",
+  "zones": [
+    "DK1",
+    "DK2",
+    "SE3",
+    "SE4"
+  ],
+  "time_column": "delivery_start_utc",
+  "coverage_start_utc": "2023-12-01T00:00:00Z",
+  "coverage_end_utc": "2026-10-25T23:00:00Z",
+  "transformation_notes": [
+    "DK1/DK2: Energinet daily (morning) auctions, national until 2024-11-18 and the trilateral DK-SE-FI market from 2024-11-19; extra afternoon auctions (MfrrCapacityMarketExtra) and the DK2 monthly slow-reserve auctions are not included. Columns as for aFRR (source = energinet).",
+    "SE3/SE4: SVK Data Service dataset mfrr_capacity_market (marginal price EUR/MW per hour and contracted volume); only hours with Swedish procurement are published, so missing hours mean no local procurement (source = svk, demand_mw null)."
+  ],
+  "validation": {
+    "duplicates_dropped": 0,
+    "per_zone": {
+      "DK1": {
+        "first_utc": "2023-12-01T00:00:00Z",
+        "last_utc": "2026-10-25T22:00:00Z",
+        "rows": 50878,
+        "null_prices": 0
+      },
+      "DK2": {
+        "first_utc": "2023-12-01T00:00:00Z",
+        "last_utc": "2026-10-25T22:00:00Z",
+        "rows": 50878,
+        "null_prices": 0
+      },
+      "SE3": {
+        "first_utc": "2023-12-01T00:00:00Z",
+        "last_utc": "2026-10-25T22:00:00Z",
+        "rows": 46899,
+        "null_prices": 0
+      },
+      "SE4": {
+        "first_utc": "2023-12-01T00:00:00Z",
+        "last_utc": "2026-10-25T22:00:00Z",
+        "rows": 43848,
+        "null_prices": 0
+      }
+    }
+  },
+  "fetch_command": "python scripts/research/nordic_fetch.py --tables mfrr",
+  "generated_by": "euroflex_bess_lab.public_data.nordic (scripts/research/nordic_fetch.py)",
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 192503,
+  "columns": [
+    {
+      "name": "delivery_start_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "delivery_end_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "zone",
+      "type": "large_string"
+    },
+    {
+      "name": "product",
+      "type": "large_string"
+    },
+    {
+      "name": "direction",
+      "type": "large_string"
+    },
+    {
+      "name": "price_eur_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "procured_mw",
+      "type": "float"
+    },
+    {
+      "name": "demand_mw",
+      "type": "float"
+    },
+    {
+      "name": "source",
+      "type": "large_string"
+    }
+  ],
+  "size_bytes": 418232,
+  "sha256": "35db7616576008b61d43a9e87f96ea64202fe1ea735c1c25f3419d1660362a50"
+}

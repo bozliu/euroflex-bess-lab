@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "path": "nordic/da_prices_FI.parquet",
+  "table": "nordic_da_prices_FI",
+  "title": "FI day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards).",
+  "source": "Svenska kraftn\u00e4t, SVK Data Service (data.svk.se)",
+  "dataset_ids": [
+    "market_data_day_ahead_area_prices"
+  ],
+  "dataset_pages": [
+    "https://data.svk.se/dataset/market_data_day_ahead_area_prices"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "Svenska kraftn\u00e4t (SVK Data Service, data.svk.se), produced by Svk business units",
+  "redistributed": true,
+  "zone": "FI",
+  "time_column": "timestamp_utc",
+  "transformation_notes": [
+    "timestamp_utc = start of the SDAC day-ahead product (UTC); resolution_minutes = 60 until delivery day 2025-09-30 and 15 from 2025-10-01 (SDAC 15-minute MTU go-live).",
+    "price_eur_mwh is float32; null prices dropped; duplicates on timestamp_utc dropped (last kept).",
+    "Source: SVK Data Service dataset market_data_day_ahead_area_prices (bidding_zone = FI), fetched as a filtered CSV dump. The dataset is marked 'currently not updating' (last row 2026-07-01) and has gaps (see validation); no other no-key CC BY source for Finnish day-ahead prices was found.",
+    "resolution_minutes is 60 before 2025-09-30T22:00Z and 15 afterwards (SDAC MTU).",
+    "Delivery days on which SVK's SE3/SE4 values contradict Energinet's (cross-check in the SE3/SE4 sidecars) are dropped, because the same publisher's FI values for that day cannot be verified."
+  ],
+  "fetch_command": "python scripts/research/nordic_fetch.py --tables day_ahead",
+  "coverage_start_utc": "2025-06-07T22:00:00Z",
+  "coverage_end_utc": "2025-10-27T23:00:00Z",
+  "fixture_windows_utc": [
+    [
+      "2025-06-07T22:00:00Z",
+      "2025-06-13T22:00:00Z"
+    ],
+    [
+      "2025-09-25T22:00:00Z",
+      "2025-10-03T22:00:00Z"
+    ],
+    [
+      "2025-10-22T22:00:00Z",
+      "2025-10-27T23:00:00Z"
+    ]
+  ],
+  "note": "Test fixture sliced from data/public/nordic/da_prices_FI.parquet by scripts/research/nordic_make_fixtures.py",
+  "rows": 733,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "resolution_minutes",
+      "type": "int16"
+    },
+    {
+      "name": "price_eur_mwh",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 5792,
+  "sha256": "36aebf089927f5fb62efc1a0b58bd714a2ebce223e248b138dab32d681bb91d0"
+}

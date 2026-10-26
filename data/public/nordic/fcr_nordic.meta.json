@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "path": "nordic/fcr_nordic.parquet",
+  "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+  "dataset_ids": [
+    "FcrNdDK2"
+  ],
+  "dataset_pages": [
+    "https://www.energidataservice.dk/tso-electricity/FcrNdDK2"
+  ],
+  "source_urls": [
+    "https://api.energidataservice.dk/dataset/FcrNdDK2?columns=HourUTC%2CHourDK%2CPriceArea%2CProductName%2CAuctionType%2CPurchasedVolumeLocal%2CPurchasedVolumeTotal%2CPriceTotalEUR&end=2024-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=HourUTC+asc&start=2023-12-01T00%3A00&timezone=UTC",
+    "https://api.energidataservice.dk/dataset/FcrNdDK2?columns=HourUTC%2CHourDK%2CPriceArea%2CProductName%2CAuctionType%2CPurchasedVolumeLocal%2CPurchasedVolumeTotal%2CPriceTotalEUR&end=2025-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=HourUTC+asc&start=2024-01-01T00%3A00&timezone=UTC",
+    "https://api.energidataservice.dk/dataset/FcrNdDK2?columns=HourUTC%2CHourDK%2CPriceArea%2CProductName%2CAuctionType%2CPurchasedVolumeLocal%2CPurchasedVolumeTotal%2CPriceTotalEUR&end=2026-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=HourUTC+asc&start=2025-01-01T00%3A00&timezone=UTC",
+    "https://api.energidataservice.dk/dataset/FcrNdDK2?columns=HourUTC%2CHourDK%2CPriceArea%2CProductName%2CAuctionType%2CPurchasedVolumeLocal%2CPurchasedVolumeTotal%2CPriceTotalEUR&end=2027-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=HourUTC+asc&start=2026-01-01T00%3A00&timezone=UTC"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+  "attribution": "Source: Energinet (www.energidataservice.dk)",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T14:50:00Z",
+  "table": "nordic_fcr_nordic",
+  "title": "FCR-N, FCR-D up and FCR-D down capacity prices of the joint Swedish-DK2 auctions (hourly).",
+  "zones": [
+    "DK2",
+    "SE3",
+    "SE4"
+  ],
+  "time_column": "delivery_start_utc",
+  "coverage_start_utc": "2023-12-01T00:00:00Z",
+  "coverage_end_utc": "2026-10-25T23:00:00Z",
+  "transformation_notes": [
+    "One row per delivery hour, zone (DK2, SE3, SE4), product (fcr_n symmetric, fcr_d_up, fcr_d_down) and auction (early = 'D-1 early', former D-2; late = 'D-1 late', former D-1; total = volume-weighted average of the two marginal prices, as published).",
+    "price_eur_per_mw_h = PriceTotalEUR (EUR per MW and hour). From 2024-02-01 it is the marginal (pay-as-cleared) price of each auction; before that the published value is an average price.",
+    "volume_local_mw = PurchasedVolumeLocal (procured in the zone), volume_total_mw = PurchasedVolumeTotal.",
+    "The documented DST-2024 labelling error (HourUTC 2024-10-27 01:00 and 01:01) is repaired, see validation.dst_label_rows_repaired."
+  ],
+  "validation": {
+    "dst_label_rows_repaired": 108,
+    "duplicates_dropped": 0,
+    "unknown_products_dropped": [],
+    "unknown_auction_types_dropped": [],
+    "null_prices": 240,
+    "rows_per_auction": {
+      "early": 229374,
+      "late": 229158,
+      "total": 229374
+    },
+    "zone_price_identical_share": 1.0,
+    "grid_early_auction_hourly": {
+      "rows": 25438,
+      "unique": true,
+      "sorted": true,
+      "expected_rows": 25439,
+      "missing_intervals": 1,
+      "largest_gaps": [
+        {
+          "after_utc": "2026-03-29T20:00:00Z",
+          "missing_intervals": 1
+        }
+      ]
+    }
+  },
+  "fetch_command": "python scripts/research/nordic_fetch.py --tables fcr_nordic",
+  "generated_by": "euroflex_bess_lab.public_data.nordic (scripts/research/nordic_fetch.py)",
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 686826,
+  "columns": [
+    {
+      "name": "delivery_start_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "delivery_end_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "zone",
+      "type": "large_string"
+    },
+    {
+      "name": "product",
+      "type": "large_string"
+    },
+    {
+      "name": "direction",
+      "type": "large_string"
+    },
+    {
+      "name": "auction",
+      "type": "large_string"
+    },
+    {
+      "name": "price_eur_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "volume_local_mw",
+      "type": "float"
+    },
+    {
+      "name": "volume_total_mw",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 2473014,
+  "sha256": "80c7a35039b52c3d8b50e91b4395a4818820b8252391e995fceab17836ff31d9"
+}

@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "path": "nordic/fcr_dk1.parquet",
+  "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+  "dataset_ids": [
+    "FcrDK1"
+  ],
+  "dataset_pages": [
+    "https://www.energidataservice.dk/tso-electricity/FcrDK1"
+  ],
+  "source_urls": [
+    "https://api.energidataservice.dk/dataset/FcrDK1?columns=HourUTC%2CHourDK%2CFCRdomestic_MW%2CFCRabroad_MW%2CFCRcross_EUR%2CFCRdk_EUR&end=2024-01-01T00%3A00&limit=0&sort=HourUTC+asc&start=2023-12-01T00%3A00&timezone=UTC",
+    "https://api.energidataservice.dk/dataset/FcrDK1?columns=HourUTC%2CHourDK%2CFCRdomestic_MW%2CFCRabroad_MW%2CFCRcross_EUR%2CFCRdk_EUR&end=2025-01-01T00%3A00&limit=0&sort=HourUTC+asc&start=2024-01-01T00%3A00&timezone=UTC",
+    "https://api.energidataservice.dk/dataset/FcrDK1?columns=HourUTC%2CHourDK%2CFCRdomestic_MW%2CFCRabroad_MW%2CFCRcross_EUR%2CFCRdk_EUR&end=2026-01-01T00%3A00&limit=0&sort=HourUTC+asc&start=2025-01-01T00%3A00&timezone=UTC",
+    "https://api.energidataservice.dk/dataset/FcrDK1?columns=HourUTC%2CHourDK%2CFCRdomestic_MW%2CFCRabroad_MW%2CFCRcross_EUR%2CFCRdk_EUR&end=2027-01-01T00%3A00&limit=0&sort=HourUTC+asc&start=2026-01-01T00%3A00&timezone=UTC"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+  "attribution": "Source: Energinet (www.energidataservice.dk)",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T14:51:02Z",
+  "table": "nordic_fcr_dk1",
+  "title": "DK1 FCR capacity prices and volumes (Continental Europe FCR cooperation, symmetric).",
+  "zones": [
+    "DK1"
+  ],
+  "time_column": "delivery_start_utc",
+  "coverage_start_utc": "2023-12-01T00:00:00Z",
+  "coverage_end_utc": "2026-10-25T23:00:00Z",
+  "transformation_notes": [
+    "price_eur_per_mw_h = FCRdk_EUR (Danish price, EUR per MW and hour); cross_border_price_eur_per_mw_h = FCRcross_EUR; volume_domestic_mw / volume_abroad_mw = FCRdomestic_MW / FCRabroad_MW.",
+    "Published per hour; the FCR cooperation trades 4-hour products, see validation.constant_within_4h_blocks_share."
+  ],
+  "validation": {
+    "duplicates_dropped": 0,
+    "null_prices": 0,
+    "danish_equals_cross_border_share": 0.9150839742583582,
+    "grid_hourly": {
+      "rows": 25436,
+      "unique": true,
+      "sorted": true,
+      "expected_rows": 25439,
+      "missing_intervals": 3,
+      "largest_gaps": [
+        {
+          "after_utc": "2024-10-27T00:00:00Z",
+          "missing_intervals": 1
+        },
+        {
+          "after_utc": "2025-10-26T00:00:00Z",
+          "missing_intervals": 1
+        },
+        {
+          "after_utc": "2026-10-25T00:00:00Z",
+          "missing_intervals": 1
+        }
+      ]
+    },
+    "constant_within_4h_blocks_share": 1.0
+  },
+  "fetch_command": "python scripts/research/nordic_fetch.py --tables fcr_dk1",
+  "generated_by": "euroflex_bess_lab.public_data.nordic (scripts/research/nordic_fetch.py)",
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 25436,
+  "columns": [
+    {
+      "name": "delivery_start_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "delivery_end_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "zone",
+      "type": "large_string"
+    },
+    {
+      "name": "product",
+      "type": "large_string"
+    },
+    {
+      "name": "direction",
+      "type": "large_string"
+    },
+    {
+      "name": "price_eur_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "cross_border_price_eur_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "volume_domestic_mw",
+      "type": "float"
+    },
+    {
+      "name": "volume_abroad_mw",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 71318,
+  "sha256": "804929ef3c6e57b38e517bc610f095f4f67d582bc0673f9e03660338d3d8a051"
+}

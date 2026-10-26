@@ -1,0 +1,17 @@
+# Build context allowlist for deploy/Dockerfile (BuildKit reads <Dockerfile>.dockerignore instead of the root
+# .dockerignore). Keeps data, artifacts, run directories and virtualenvs out of the build context; models/ is
+# only copied into the image by the optional `with-models` target.
+*
+!pyproject.toml
+!README.md
+!LICENSE
+!src/
+!scripts/ops/
+!scripts/research/realtime_backtest.py
+!reports/ledgers/realtime_rl_policy.npz
+!reports/ledgers/realtime_rl_policy.json
+!models/
+**/__pycache__
+**/*.pyc
+**/.DS_Store
+src/*.egg-info

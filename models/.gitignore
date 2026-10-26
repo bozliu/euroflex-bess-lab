@@ -1,0 +1,5 @@
+# Deployment models are built locally (python scripts/ops/build_models.py build --out models) and never
+# committed: they are ~54 MB of pickles, and pickles are only loaded from a directory you built yourself.
+*
+!.gitignore
+!reference_manifest.json

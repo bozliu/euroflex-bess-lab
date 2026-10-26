@@ -1,0 +1,23 @@
+# Settings read by scripts/ops/run_live.sh (see docs/deployment.md for every variable). Paper execution only.
+# A changed strategy or battery needs a new EUROFLEX_RUN_DIR: a run directory resumes exactly one run.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: euroflex-live-config
+  namespace: euroflex
+  labels:
+    app.kubernetes.io/name: euroflex-live
+    app.kubernetes.io/part-of: euroflex-bess-lab
+data:
+  EUROFLEX_RUN_DIR: /data/run
+  EUROFLEX_MODELS_DIR: /models
+  EUROFLEX_STRATEGY: threshold
+  EUROFLEX_POWER_MW: "1"
+  EUROFLEX_ENERGY_MWH: "2"
+  EUROFLEX_MECHANISM: auto
+  EUROFLEX_EXECUTION: paper
+  EUROFLEX_POLL_SECONDS: "15"
+  EUROFLEX_HISTORY_DAYS: "14"
+  EUROFLEX_PUBLIC_HISTORY: "0"
+  EUROFLEX_HEALTH_MAX_AGE_S: "180"
+  TZ: UTC

@@ -1,0 +1,55 @@
+{
+ "files": {
+  "deploy_fusion_variance.json": {
+   "sha256": "cef60017413f547a1c0b98663e75d45aabda64f911ec8861339c24d4f3357a32",
+   "size_bytes": 348
+  },
+  "deploy_manifest.json": {
+   "sha256": "8557b48dbb933c84eaa86865224cb1552dc15ed2bb6a686ec64343dbccf32ac8",
+   "size_bytes": 1709
+  },
+  "deploy_price_current.pkl": {
+   "sha256": "e299afeee002034e225258d83fc729837fd40c84581b756df6d7c1994ecafdad",
+   "size_bytes": 11526710
+  },
+  "deploy_prism_current.pkl": {
+   "sha256": "67d182fd554e5a4f3542ee5f5963cbb62a2b3dd80a6be28e745e2b663afef07d",
+   "size_bytes": 21348416
+  },
+  "deploy_prism_zero.pkl": {
+   "sha256": "3a8ae43aa4e9122ecb0388961005b2e2be836d1d641c6d405e9c8e7d59467699",
+   "size_bytes": 20710491
+  },
+  "rl_policy.json": {
+   "sha256": "fb95f73f937194e71c500e865e5387950b0f823e2129306235dcfe3e1673752e",
+   "size_bytes": 4915
+  },
+  "rl_policy.npz": {
+   "sha256": "846bc6d479dc799a1b3375c30777e932f2ede03da71cceb0fd4ed497899c2772",
+   "size_bytes": 85608
+  }
+ },
+ "fold": {
+  "test_end": "2027-11-28T22:00:00+00:00",
+  "test_start": "2026-10-24T22:00:00+00:00",
+  "train_end": "2026-10-24T22:00:00+00:00",
+  "train_start": "2026-04-24T22:00:00+00:00"
+ },
+ "forecasters": {
+  "price_current": "deploy_price_current.pkl",
+  "prism_current": "deploy_prism_current.pkl",
+  "prism_new2026": "deploy_prism_zero.pkl"
+ },
+ "missing": [],
+ "models_id": "da8a2764093e4383",
+ "schema": "euroflex-models/1",
+ "total_size_bytes": 53678197,
+ "versions": {
+  "euroflex_bess_lab": "2.0.0",
+  "numpy": "2.5.4",
+  "pandas": "3.1.0",
+  "python": "3.12.11",
+  "scikit-learn": "1.9.1",
+  "scipy": "1.18.1"
+ }
+}

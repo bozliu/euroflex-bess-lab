@@ -1,0 +1,83 @@
+# Live paper trading (shadow mode) as a long-running service. Paper only: no order or bid is ever submitted to
+# any market; setpoints are logged in the run directory.
+#
+#   docker compose -f deploy/docker-compose.live.yml up -d --build          # threshold strategy, 1 MW / 2 MWh
+#   docker compose -f deploy/docker-compose.live.yml ps                     # health from the status.json heartbeat
+#   docker compose -f deploy/docker-compose.live.yml exec live euroflex live status /data/run
+#   docker compose -f deploy/docker-compose.live.yml --profile tools run --rm build-models   # forecast strategies
+#   docker compose -f deploy/docker-compose.live.yml --profile tools run --rm reconcile
+#
+# Forecast strategies: build the models once (profile `tools`), then set EUROFLEX_STRATEGY=prism (SCALES-L) or
+# forecast-mpc. A changed strategy or battery needs a new EUROFLEX_RUN_DIR (a run directory resumes one run).
+name: euroflex-live
+
+x-hardening: &hardening
+  read_only: true
+  tmpfs:
+    - /tmp
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+
+services:
+  live:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: euroflex-bess-lab:live
+    <<: *hardening
+    restart: unless-stopped
+    environment:
+      EUROFLEX_RUN_DIR: /data/run
+      EUROFLEX_MODELS_DIR: /models
+      EUROFLEX_STRATEGY: ${EUROFLEX_STRATEGY:-threshold}
+      EUROFLEX_POWER_MW: ${EUROFLEX_POWER_MW:-1}
+      EUROFLEX_ENERGY_MWH: ${EUROFLEX_ENERGY_MWH:-2}
+      EUROFLEX_MECHANISM: ${EUROFLEX_MECHANISM:-auto}
+      EUROFLEX_EXECUTION: paper
+      EUROFLEX_POLL_SECONDS: "15"
+      EUROFLEX_HISTORY_DAYS: "14"
+      EUROFLEX_PUBLIC_HISTORY: "0"
+      TZ: UTC
+    volumes:
+      - live-run:/data
+      - live-models:/models
+    healthcheck:
+      test: ["CMD", "/opt/venv/bin/python", "/app/scripts/ops/healthcheck.py", "--quiet"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 5m
+    stop_signal: SIGTERM
+    stop_grace_period: 60s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "5"
+
+  build-models:
+    image: euroflex-bess-lab:live
+    profiles: ["tools"]
+    <<: *hardening
+    entrypoint: ["/opt/venv/bin/python", "/app/scripts/ops/build_models.py"]
+    command: ["build", "--out", "/models"]
+    environment:
+      OMP_NUM_THREADS: "3"
+    volumes:
+      - ../data/public:/app/data/public:ro
+      - live-models:/models
+
+  reconcile:
+    image: euroflex-bess-lab:live
+    profiles: ["tools"]
+    <<: *hardening
+    entrypoint: ["/opt/venv/bin/euroflex"]
+    command: ["live", "reconcile", "/data/run"]
+    volumes:
+      - live-run:/data
+
+volumes:
+  live-run: {}
+  live-models: {}

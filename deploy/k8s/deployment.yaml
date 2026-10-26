@@ -1,0 +1,98 @@
+# Live paper-trading engine (shadow mode). Paper only: no order or bid is ever submitted to any market.
+# One replica and the Recreate strategy: exactly one writer per run directory, never two pods at once.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: euroflex-live
+  namespace: euroflex
+  labels:
+    app.kubernetes.io/name: euroflex-live
+    app.kubernetes.io/part-of: euroflex-bess-lab
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: euroflex-live
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: euroflex-live
+        app.kubernetes.io/part-of: euroflex-bess-lab
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: live
+          image: euroflex-bess-lab:live
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: euroflex-live-config
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 2Gi
+          # status.json appears after the API backfill (14 days of quarter-hour prices): allow up to 10 minutes.
+          startupProbe:
+            exec:
+              command: ["/opt/venv/bin/python", "/app/scripts/ops/healthcheck.py", "--quiet"]
+            periodSeconds: 20
+            timeoutSeconds: 10
+            failureThreshold: 30
+          # Heartbeat younger than 180 s and engine state running/draining.
+          livenessProbe:
+            exec:
+              command: ["/opt/venv/bin/python", "/app/scripts/ops/healthcheck.py", "--quiet"]
+            periodSeconds: 60
+            timeoutSeconds: 10
+            failureThreshold: 3
+          # Ready once the engine has taken at least one decision with a fresh heartbeat.
+          readinessProbe:
+            exec:
+              command:
+                - /opt/venv/bin/python
+                - /app/scripts/ops/healthcheck.py
+                - --quiet
+                - --min-decisions
+                - "1"
+                - --max-age-s
+                - "120"
+            periodSeconds: 60
+            timeoutSeconds: 10
+            failureThreshold: 2
+          volumeMounts:
+            - name: run
+              mountPath: /data
+            - name: models
+              mountPath: /models
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: run
+          persistentVolumeClaim:
+            claimName: euroflex-live-run
+        - name: models
+          persistentVolumeClaim:
+            claimName: euroflex-live-models
+        - name: tmp
+          emptyDir:
+            sizeLimit: 256Mi

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Live paper trading (shadow mode) as a macOS LaunchAgent. Paper only: no order or bid is ever submitted.
+  Replace the placeholders, keep the state directory outside the checkout, then load it:
+    state="$HOME/Library/Application Support/euroflex-bess-lab"; mkdir -p "$state"
+    sed -e "s|__REPO_DIR__|$PWD|g" -e "s|__STATE_DIR__|$state|g" \
+      deploy/launchd/io.github.euroflex-bess-lab.live.plist > ~/Library/LaunchAgents/io.github.euroflex-bess-lab.live.plist
+    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/io.github.euroflex-bess-lab.live.plist
+  Stop: launchctl bootout gui/$(id -u)/io.github.euroflex-bess-lab.live
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>io.github.euroflex-bess-lab.live</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>__REPO_DIR__/scripts/ops/run_live.sh</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>__REPO_DIR__</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>__REPO_DIR__/.venv/bin:/usr/bin:/bin</string>
+    <key>EUROFLEX_PYTHON</key>
+    <string>__REPO_DIR__/.venv/bin/python</string>
+    <key>EUROFLEX_RUN_DIR</key>
+    <string>__STATE_DIR__/run</string>
+    <key>EUROFLEX_MODELS_DIR</key>
+    <string>__STATE_DIR__/models</string>
+    <key>EUROFLEX_STRATEGY</key>
+    <string>threshold</string>
+    <key>EUROFLEX_POWER_MW</key>
+    <string>1</string>
+    <key>EUROFLEX_ENERGY_MWH</key>
+    <string>2</string>
+    <key>EUROFLEX_MECHANISM</key>
+    <string>auto</string>
+    <key>EUROFLEX_EXECUTION</key>
+    <string>paper</string>
+    <key>PYTHONUNBUFFERED</key>
+    <string>1</string>
+  </dict>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>ThrottleInterval</key>
+  <integer>30</integer>
+  <key>ExitTimeOut</key>
+  <integer>60</integer>
+  <key>ProcessType</key>
+  <string>Background</string>
+  <key>StandardOutPath</key>
+  <string>__STATE_DIR__/live.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>__STATE_DIR__/live.err.log</string>
+</dict>
+</plist>

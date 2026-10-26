@@ -1,0 +1,4 @@
+local_date,strategy,mechanism,n_qh,pnl_eur,revenue_eur,degradation_eur,discharged_mwh,charged_mwh,cycles,cumulative_pnl_eur,soc_start_mwh,soc_end_mwh,price_missing_qh,qh_not_validated,minutes_missing,data_complete,data_source,models_id,computed_at_utc
+2026-10-25,forecast_mpc,current,100,126.9936,151.0235,24.0299,3.003741,3.679525,1.6687,126.9936,1.0,1.3337159818738753,0,100,120,True,forward,da8a2764093e4383,2026-10-26T14:42:46Z
+2026-10-25,scales_l,current,100,146.2878,170.3927,24.1049,3.013109,3.491158,1.6739,146.2878,1.0,1.1449063631300456,0,100,120,True,forward,da8a2764093e4383,2026-10-26T14:42:46Z
+2026-10-25,threshold,current,100,-18.8856,-16.7523,2.1333,0.266667,1.242844,0.1481,-18.8856,1.0,1.9,0,100,120,True,forward,,2026-10-26T14:42:46Z

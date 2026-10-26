@@ -1,0 +1,11 @@
+# sudo systemctl enable --now euroflex-live-healthcheck.timer   (optional; see euroflex-live-healthcheck.service)
+[Unit]
+Description=Run the euroflex live heartbeat check every 2 minutes
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=2min
+AccuracySec=10s
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,215 @@
+{
+ "schema": "euroflex-track-record/1",
+ "title": "Forward paper track record of the frozen live strategies (Belgian implicit balancing)",
+ "paper_only": true,
+ "market_submission": false,
+ "note": "Paper money: a simulation on published data. No order or bid is submitted to any market.",
+ "track_start": "2026-10-25",
+ "last_day": "2026-10-25",
+ "updated_at_utc": "2026-10-26T14:42:46Z",
+ "battery": {
+  "power_mw": 1.0,
+  "energy_mwh": 2.0,
+  "charge_efficiency": 0.95,
+  "discharge_efficiency": 0.95,
+  "soc_min_frac": 0.05,
+  "soc_max_frac": 0.95,
+  "initial_soc_frac": 0.5,
+  "degradation_eur_per_mwh": 8.0,
+  "availability": 1.0
+ },
+ "publication": {
+  "minute_lag": 1,
+  "qh_final_lag_minutes": 5,
+  "da_publication_hour_local": 13
+ },
+ "warmup_days": 28,
+ "timezone": "Europe/Brussels",
+ "settlement": {
+  "current": "Elia current imbalance-price formula, ODS134 published price (before the go-live)",
+  "new2026": "Elia new imbalance-price formula, ODS212 published price (from the go-live)",
+  "go_live_utc": "2026-11-24T09:00:00Z"
+ },
+ "models": {
+  "reference_models_id": "da8a2764093e4383",
+  "fold": {
+   "test_end": "2027-11-28T22:00:00+00:00",
+   "test_start": "2026-10-24T22:00:00+00:00",
+   "train_end": "2026-10-24T22:00:00+00:00",
+   "train_start": "2026-04-24T22:00:00+00:00"
+  },
+  "reference_manifest": "models/reference_manifest.json",
+  "build": "python scripts/ops/build_models.py build --out models"
+ },
+ "strategies": {
+  "threshold": {
+   "label": "Threshold (price bands)",
+   "description": "charge below the 25 % / discharge above the 75 % quantile of the last 14 days of final prices, read against the running quarter-hour price of the formula in force",
+   "backtest_name": "threshold_price",
+   "settles_under": [
+    "current",
+    "new2026"
+   ],
+   "needs_models": false,
+   "first_day": "2026-10-25",
+   "last_day": "2026-10-25",
+   "days": 1,
+   "pnl_eur": -18.89,
+   "eur_per_mw_year_to_date": -6622.0,
+   "mean_daily_pnl_eur": -18.89,
+   "cycles_per_day": 0.142,
+   "positive_day_share": 0.0,
+   "best_day": {
+    "local_date": "2026-10-25",
+    "pnl_eur": -18.89
+   },
+   "worst_day": {
+    "local_date": "2026-10-25",
+    "pnl_eur": -18.89
+   },
+   "max_drawdown_eur": 0.0,
+   "price_missing_qh": 0,
+   "incomplete_data_days": 0,
+   "soc_end_mwh": 1.9,
+   "models_id": null
+  },
+  "forecast_mpc": {
+   "label": "Forecast MPC (risk filter)",
+   "description": "rolling stochastic MPC on the current-formula price forecaster (30 % / 70 % quantile filter); retired at the new-formula go-live because its model prices the current formula",
+   "backtest_name": "forecast_mpc_risk",
+   "settles_under": [
+    "current"
+   ],
+   "needs_models": true,
+   "first_day": "2026-10-25",
+   "last_day": "2026-10-25",
+   "days": 1,
+   "pnl_eur": 126.99,
+   "eur_per_mw_year_to_date": 44529.0,
+   "mean_daily_pnl_eur": 126.99,
+   "cycles_per_day": 1.602,
+   "positive_day_share": 1.0,
+   "best_day": {
+    "local_date": "2026-10-25",
+    "pnl_eur": 126.99
+   },
+   "worst_day": {
+    "local_date": "2026-10-25",
+    "pnl_eur": 126.99
+   },
+   "max_drawdown_eur": 0.0,
+   "price_missing_qh": 0,
+   "incomplete_data_days": 0,
+   "soc_end_mwh": 1.3337159818738753,
+   "models_id": "da8a2764093e4383"
+  },
+  "scales_l": {
+   "label": "SCALES-L (risk filter)",
+   "description": "mechanism-aware state forecasts priced by the settlement operator, same MPC core; the zero-history new-formula forecaster fused with the live running price after the go-live",
+   "backtest_name": "prism_risk",
+   "settles_under": [
+    "current",
+    "new2026"
+   ],
+   "needs_models": true,
+   "first_day": "2026-10-25",
+   "last_day": "2026-10-25",
+   "days": 1,
+   "pnl_eur": 146.29,
+   "eur_per_mw_year_to_date": 51294.0,
+   "mean_daily_pnl_eur": 146.29,
+   "cycles_per_day": 1.607,
+   "positive_day_share": 1.0,
+   "best_day": {
+    "local_date": "2026-10-25",
+    "pnl_eur": 146.29
+   },
+   "worst_day": {
+    "local_date": "2026-10-25",
+    "pnl_eur": 146.29
+   },
+   "max_drawdown_eur": 0.0,
+   "price_missing_qh": 0,
+   "incomplete_data_days": 0,
+   "soc_end_mwh": 1.1449063631300456,
+   "models_id": "da8a2764093e4383"
+  }
+ },
+ "attribution": [
+  "Elia Transmission Belgium SA, Elia Open Data (CC BY 4.0)",
+  "Bundesnetzagentur | SMARD.de via Energy-Charts (CC BY 4.0)"
+ ],
+ "files": {
+  "daily": "daily_pnl.csv",
+  "ledger": "qh/<YYYY-MM>.csv",
+  "chart": "cumulative_pnl.png"
+ },
+ "context": {
+  "committed_data_end_utc": "2026-10-24T22:00:00Z",
+  "last_update": {
+   "ran_at_utc": "2026-10-26T14:42:46Z",
+   "appended_rows": 3,
+   "pending": null,
+   "not_run": {},
+   "errors": [],
+   "models_id": "da8a2764093e4383",
+   "models_match_reference": true,
+   "forward_inputs": [
+    {
+     "dataset_id": "energy_charts_price_BE",
+     "chunk": "2026-10",
+     "retrieved_at_utc": "2026-10-26T14:41:55Z",
+     "sha256": "0289c59233acf1e680db3fa69e4e18cb7c8e3df0acbab3b4489d26fb4f67c0ba"
+    },
+    {
+     "dataset_id": "ods126",
+     "chunk": "2026-10-01__2026-11-01",
+     "retrieved_at_utc": "2026-10-26T14:41:22Z",
+     "sha256": "cf4be24aa917f5bd2536fb4940e454dd04fec6430732f1f97e6b5b30c1735e16"
+    },
+    {
+     "dataset_id": "ods127",
+     "chunk": "2026-01-01__2027-01-01",
+     "retrieved_at_utc": "2026-10-26T14:41:40Z",
+     "sha256": "3637b1376f3771bcbb3ee6c3c9ba02c4b58b695e2cbbe5fd288ca535c3dce29a"
+    },
+    {
+     "dataset_id": "ods133",
+     "chunk": "2026-10-01__2026-11-01",
+     "retrieved_at_utc": "2026-10-26T14:41:17Z",
+     "sha256": "8c7fbedd433ac7d715ba5d1a75c8b2c6f95c7dd9b363e5dbcc89edf9c6d83304"
+    },
+    {
+     "dataset_id": "ods134",
+     "chunk": "2026-01-01__2027-01-01",
+     "retrieved_at_utc": "2026-10-26T14:41:34Z",
+     "sha256": "febb967268e0409db26ba50399b09d87bb24496f33569b0f990e4437cd4f6b13"
+    },
+    {
+     "dataset_id": "ods136",
+     "chunk": "2026-10-01__2026-11-01",
+     "retrieved_at_utc": "2026-10-26T14:41:47Z",
+     "sha256": "d8657cd295e9098aeaaa8a767e2ee5da39099f2c2619581586f54242fe4d0360"
+    },
+    {
+     "dataset_id": "ods147",
+     "chunk": "2026-10-01__2026-11-01",
+     "retrieved_at_utc": "2026-10-26T14:41:55Z",
+     "sha256": "d9bf3ec2a5e4d44ec6ad0ac65467a065d2eec5c8af463a26527be74a4143fe09"
+    },
+    {
+     "dataset_id": "ods165",
+     "chunk": "2026-10-01__2026-11-01",
+     "retrieved_at_utc": "2026-10-26T14:41:29Z",
+     "sha256": "1183550f2066209dd59e6962385bad694f7c3e0a9355dab17771311d86bfe83f"
+    },
+    {
+     "dataset_id": "ods166",
+     "chunk": "2026-01-01__2027-01-01",
+     "retrieved_at_utc": "2026-10-26T14:41:37Z",
+     "sha256": "cf8ab759770fed209850637af8f64b7e62a7e88b24d814f1a54b8c9fbe00566b"
+    }
+   ]
+  }
+ }
+}

@@ -112,6 +112,7 @@ def test_repo_tree_has_no_local_user_absolute_paths_in_text_files() -> None:
         "site",
         ".venv",
         "venv",
+        "research",  # local, never-committed research workspace (LaTeX build files record local paths)
     }
     for path in REPO_ROOT.rglob("*"):
         if not path.is_file() or any(part in ignored_dirs for part in path.parts):

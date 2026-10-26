@@ -1,0 +1,26 @@
+# The engine serves nothing: deny all ingress. Egress: DNS and HTTPS only (read-only GETs to opendata.elia.be
+# and api.energy-charts.info). Tighten the HTTPS rule to egress-proxy CIDRs if your cluster has one.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: euroflex-live
+  namespace: euroflex
+  labels:
+    app.kubernetes.io/part-of: euroflex-bess-lab
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: euroflex-bess-lab
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress: []
+  egress:
+    - ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    - ports:
+        - protocol: TCP
+          port: 443

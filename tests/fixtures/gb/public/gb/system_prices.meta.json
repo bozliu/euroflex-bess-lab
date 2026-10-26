@@ -1,0 +1,19 @@
+{
+  "table": "gb_system_prices",
+  "title": "GB single imbalance (cash-out) price and net imbalance volume per settlement period (BMRS DISEBSP).",
+  "source": "Elexon BMRS Insights Solution API (data.elexon.co.uk)",
+  "dataset_ids": [
+    "DISEBSP"
+  ],
+  "licence": "Elexon BMRS open data licence",
+  "licence_url": "https://www.elexon.co.uk/bsc/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+  "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2023-2026",
+  "time_column": "timestamp_utc",
+  "redistributed": true,
+  "path": "gb/system_prices.parquet",
+  "fixture_of": "gb/system_prices.parquet",
+  "coverage_start_utc": "2025-06-03T00:00:00Z",
+  "coverage_end_utc": "2025-06-14T00:00:00Z",
+  "rows": 528,
+  "generated_by": "scripts/research/gb_make_fixtures.py"
+}

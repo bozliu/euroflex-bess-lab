@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "path": "nordic/dk_imbalance.parquet",
+  "table": "nordic_dk_imbalance",
+  "title": "Danish (DK1, DK2) single imbalance prices and their components.",
+  "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+  "dataset_ids": [
+    "RegulatingBalancePowerdata",
+    "ImbalancePrice"
+  ],
+  "dataset_pages": [
+    "https://www.energidataservice.dk/tso-electricity/RegulatingBalancePowerdata",
+    "https://www.energidataservice.dk/tso-electricity/ImbalancePrice"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+  "attribution": "Source: Energinet (www.energidataservice.dk)",
+  "redistributed": true,
+  "zones": [
+    "DK1",
+    "DK2"
+  ],
+  "time_column": "timestamp_utc",
+  "transformation_notes": [
+    "Hourly rows (resolution_minutes = 60) from RegulatingBalancePowerdata up to the first full hour of ImbalancePrice data (validation.cutover_utc, mFRR EAM go-live on 2025-03-04); 15-minute rows from ImbalancePrice afterwards (the three transitional quarter-hours before the cutover are dropped).",
+    "Hourly era: imbalance_price_eur_mwh = ImbalancePriceEUR, balancing_power_price_up/down = BalancingPowerPriceUp/DownEUR, mfrr_up/down_activated_mwh = mFRRUp/DownActBal, imbalance_mwh.",
+    "15-minute era: imbalance_price_eur_mwh, spot_price_eur_mwh, dominating_direction (+1 up, -1 down, 0 none), satisfied_demand_mw, afrr_up/down_mwh and afrr_vwa_up/down_eur_mwh (aFRR volume-weighted averages), mfrr_marginal_up/down_eur_mwh. Energinet: before 2025-03-19 the price equals the Pricing Module price; the dominating direction is set by balancing (mFRR) demand before 2026-03-04 and by satisfied demand afterwards."
+  ],
+  "fetch_command": "python scripts/research/nordic_fetch.py --tables dk_imbalance",
+  "coverage_start_utc": "2025-06-07T22:00:00Z",
+  "coverage_end_utc": "2025-10-27T23:00:00Z",
+  "fixture_windows_utc": [
+    [
+      "2025-06-07T22:00:00Z",
+      "2025-06-13T22:00:00Z"
+    ],
+    [
+      "2025-09-25T22:00:00Z",
+      "2025-10-03T22:00:00Z"
+    ],
+    [
+      "2025-10-22T22:00:00Z",
+      "2025-10-27T23:00:00Z"
+    ]
+  ],
+  "note": "Test fixture sliced from data/public/nordic/dk_imbalance.parquet by scripts/research/nordic_make_fixtures.py",
+  "rows": 3656,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "area",
+      "type": "large_string"
+    },
+    {
+      "name": "resolution_minutes",
+      "type": "int16"
+    },
+    {
+      "name": "imbalance_price_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "balancing_power_price_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "balancing_power_price_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_up_activated_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_down_activated_mwh",
+      "type": "float"
+    },
+    {
+      "name": "imbalance_mwh",
+      "type": "float"
+    },
+    {
+      "name": "spot_price_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "dominating_direction",
+      "type": "int8"
+    },
+    {
+      "name": "satisfied_demand_mw",
+      "type": "float"
+    },
+    {
+      "name": "afrr_up_mwh",
+      "type": "float"
+    },
+    {
+      "name": "afrr_vwa_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "afrr_down_mwh",
+      "type": "float"
+    },
+    {
+      "name": "afrr_vwa_down_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_marginal_up_eur_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mfrr_marginal_down_eur_mwh",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 104013,
+  "sha256": "7e33953d2c3b2f767a6c22104df5f8d18b6c425e52c8e776e1d7ad21db6fb74c"
+}

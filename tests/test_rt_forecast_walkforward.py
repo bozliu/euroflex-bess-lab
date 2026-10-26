@@ -171,3 +171,30 @@ def test_merging_fold_fits_equals_one_walk_forward_fit() -> None:
         merge_forecasters(
             [PriceForecaster(config).fit(market, [folds[0]]), PriceForecaster(config).fit(market, [folds[0]])]
         )
+
+
+def test_direct_model_on_rebuilt_targets_is_zero_history() -> None:
+    """The ablation arm learns operator-rebuilt new-formula prices and never reads a new-formula price."""
+    from euroflex_bess_lab.realtime.forecasting import INVARIANT_GROUPS, REBUILT_PRICE_BASELINE, FeatureConfig
+    from euroflex_bess_lab.realtime.mechanisms import reconstruct_new_formula_history
+
+    with_nf = synthetic_market(days=9, seed=19, include_new_formula=True)
+    without = synthetic_market(days=9, seed=19, include_new_formula=False)
+    start = with_nf.start_utc
+    folds = single_fold(start, start + pd.Timedelta(days=6), start + pd.Timedelta(days=6), with_nf.end_utc)
+    config = PriceForecasterConfig(
+        mechanism="new2026",
+        features=FeatureConfig(groups=INVARIANT_GROUPS, history="reconstructed:new2026"),
+        baseline=REBUILT_PRICE_BASELINE,
+        target="reconstructed:new2026",
+        params=FAST,
+        stride=4,
+    )
+    a = PriceForecaster(config).fit(with_nf, folds)
+    rebuilt = reconstruct_new_formula_history(pd.DataFrame(with_nf.qh))["imbalance_price_eur_mwh"].to_numpy()
+    assert np.allclose(a.history_prices(with_nf), rebuilt, equal_nan=True)
+    assert not np.allclose(a.history_prices(with_nf), with_nf.settlement("new2026"), equal_nan=True)
+    fa = a.predict(with_nf)
+    fb = PriceForecaster(config).fit(without, folds).predict(without)
+    assert np.allclose(fa.current.mean, fb.current.mean, equal_nan=True)
+    assert np.isfinite(fa.current.mean[6 * 1440 :]).all()

@@ -1,0 +1,73 @@
+{
+  "family": "euroflex-live",
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "cpu": "512",
+  "memory": "2048",
+  "runtimePlatform": {
+    "operatingSystemFamily": "LINUX",
+    "cpuArchitecture": "X86_64"
+  },
+  "executionRoleArn": "REPLACE_WITH_TASK_EXECUTION_ROLE_ARN",
+  "taskRoleArn": "REPLACE_WITH_TASK_ROLE_ARN",
+  "containerDefinitions": [
+    {
+      "name": "live",
+      "image": "REPLACE_WITH_IMAGE_URI",
+      "essential": true,
+      "user": "10001:10001",
+      "readonlyRootFilesystem": true,
+      "environment": [
+        {"name": "EUROFLEX_RUN_DIR", "value": "/data/run"},
+        {"name": "EUROFLEX_MODELS_DIR", "value": "/models"},
+        {"name": "EUROFLEX_STRATEGY", "value": "threshold"},
+        {"name": "EUROFLEX_POWER_MW", "value": "1"},
+        {"name": "EUROFLEX_ENERGY_MWH", "value": "2"},
+        {"name": "EUROFLEX_MECHANISM", "value": "auto"},
+        {"name": "EUROFLEX_EXECUTION", "value": "paper"},
+        {"name": "EUROFLEX_POLL_SECONDS", "value": "15"},
+        {"name": "EUROFLEX_HISTORY_DAYS", "value": "14"},
+        {"name": "EUROFLEX_PUBLIC_HISTORY", "value": "0"},
+        {"name": "TZ", "value": "UTC"}
+      ],
+      "mountPoints": [
+        {"sourceVolume": "state", "containerPath": "/data", "readOnly": false},
+        {"sourceVolume": "tmp", "containerPath": "/tmp", "readOnly": false}
+      ],
+      "healthCheck": {
+        "command": ["CMD", "/opt/venv/bin/python", "/app/scripts/ops/healthcheck.py", "--quiet"],
+        "interval": 60,
+        "timeout": 10,
+        "retries": 3,
+        "startPeriod": 300
+      },
+      "stopTimeout": 60,
+      "linuxParameters": {
+        "initProcessEnabled": true,
+        "capabilities": {"drop": ["ALL"]}
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/euroflex/live",
+          "awslogs-region": "REPLACE_WITH_REGION",
+          "awslogs-stream-prefix": "live"
+        }
+      }
+    }
+  ],
+  "volumes": [
+    {
+      "name": "state",
+      "efsVolumeConfiguration": {
+        "fileSystemId": "REPLACE_WITH_EFS_FILE_SYSTEM_ID",
+        "transitEncryption": "ENABLED",
+        "authorizationConfig": {
+          "accessPointId": "REPLACE_WITH_EFS_ACCESS_POINT_ID",
+          "iam": "ENABLED"
+        }
+      }
+    },
+    {"name": "tmp"}
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "path": "nordic/da_prices_SE3.parquet",
+  "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+  "dataset_ids": [
+    "Elspotprices",
+    "DayAheadPrices"
+  ],
+  "dataset_pages": [
+    "https://www.energidataservice.dk/tso-electricity/Elspotprices",
+    "https://www.energidataservice.dk/tso-electricity/DayAheadPrices"
+  ],
+  "source_urls": [
+    "https://api.energidataservice.dk/dataset/Elspotprices?columns=HourUTC%2CPriceArea%2CSpotPriceEUR&end=2025-10-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=HourUTC+asc&start=2023-12-01T00%3A00&timezone=UTC",
+    "https://api.energidataservice.dk/dataset/DayAheadPrices?columns=TimeUTC%2CPriceArea%2CDayAheadPriceEUR&end=2026-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2025-09-30T00%3A00&timezone=UTC",
+    "https://api.energidataservice.dk/dataset/DayAheadPrices?columns=TimeUTC%2CPriceArea%2CDayAheadPriceEUR&end=2027-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2026-01-01T00%3A00&timezone=UTC"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+  "attribution": "Source: Energinet (www.energidataservice.dk)",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T14:46:25Z",
+  "table": "nordic_da_prices_SE3",
+  "title": "SE3 day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards).",
+  "zone": "SE3",
+  "time_column": "timestamp_utc",
+  "coverage_start_utc": "2023-12-01T00:00:00Z",
+  "coverage_end_utc": "2026-10-25T23:00:00Z",
+  "validation": {
+    "null_prices_dropped": 0,
+    "duplicates_dropped": 0,
+    "resolution_counts": {
+      "15": 37444,
+      "60": 16078
+    },
+    "grid_60min_until_2025_09_30": {
+      "rows": 16078,
+      "unique": true,
+      "sorted": true,
+      "expected_rows": 16078,
+      "missing_intervals": 0,
+      "largest_gaps": []
+    },
+    "grid_15min_from_2025_10_01": {
+      "rows": 37444,
+      "unique": true,
+      "sorted": true,
+      "expected_rows": 37444,
+      "missing_intervals": 0,
+      "largest_gaps": []
+    },
+    "cross_check_svk_data_service": {
+      "source_url": "https://data.svk.se/datastore/dump/cf392ef3-7345-4e98-970e-83088c185570?fields=start_time_utc%2Cbidding_zone%2Cprice%2Cprice_unit&filters=%7B%22bidding_zone%22%3A%22SE3%22%7D&format=csv&sort=start_time_utc",
+      "rows_compared": 41234,
+      "max_abs_diff_eur_mwh": 100.0,
+      "share_within_0_01_eur": 0.9994422078866955,
+      "mismatch_delivery_days": [
+        "2024-10-15"
+      ],
+      "note": "Energinet's values agree with Energy-Charts/SMARD on the mismatch days; SVK repeats some rows there."
+    }
+  },
+  "fetch_command": "python scripts/research/nordic_fetch.py --tables day_ahead",
+  "transformation_notes": [
+    "timestamp_utc = start of the SDAC day-ahead product (UTC); resolution_minutes = 60 until delivery day 2025-09-30 and 15 from 2025-10-01 (SDAC 15-minute MTU go-live).",
+    "price_eur_mwh is float32; null prices dropped; duplicates on timestamp_utc dropped (last kept).",
+    "Hourly rows come from Elspotprices (SpotPriceEUR) before 2025-09-30T22:00Z, 15-minute rows from DayAheadPrices (DayAheadPriceEUR) afterwards; requests are filtered to PriceArea in ['DK1', 'DK2', 'SE3', 'SE4'] and to the EUR columns."
+  ],
+  "generated_by": "euroflex_bess_lab.public_data.nordic (scripts/research/nordic_fetch.py)",
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 53522,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "resolution_minutes",
+      "type": "int16"
+    },
+    {
+      "name": "price_eur_mwh",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 144845,
+  "sha256": "95655cfd9420024a2a4ff4c1775f6581df688bae0fe9926a8cf25bea44974762"
+}

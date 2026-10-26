@@ -21,16 +21,16 @@
 - The public TenneT live connector contract covers settlement prices, merit-order ladders, and frequency-restoration-reserve activations. It does not yet freeze a direct public live endpoint for Dutch aFRR capacity remuneration prices.
 - Reconciliation is benchmark-grade and should not be read as an operator settlement statement.
 
-## Real-time engine boundary (v2)
+## Real-time engine scope (v2)
 
-- Strategies are price takers unless an `ImpactModel` is supplied; the impact operators rest on exact settlement
-  rules plus weakly identified volume-price curves (see `docs/impact_and_herding.md`).
-- The new 2026 formula is evaluated on Elia's best-effort simulation (Jan-Jul 2026) and, for earlier periods, on an
-  approximate reconstruction (the new aFRR price aggregates 4-second PICASSO cycles that are not in historical data).
-  Both are first-order counterfactuals: other market parties' behaviour is held fixed.
-- aFRR activation of a reserved battery is approximated pro rata from published Belgian activation; award certainty
-  and pay-as-bid effects are sensitivities, not modelled bidding.
-- Continuous intraday trading is not modelled: its order-book data is not public.
-- The live loop is paper trading only and has no market access; measured feed latencies justify a 1-minute
-  publication lag for ods161/ods169 and 2-3 minutes for ods175.
-- Contract prices depend on stated judgement calls (fleet growth path, formula weights, base period).
+- Paper trading only: the live loop produces decisions and set-points; routing them to a market needs a BRP/BSP
+  and exchange access, which plug in through the execution adapters.
+- Strategy results use published prices for a single battery unless an `ImpactModel` is supplied; fleet-scale
+  results come from the impact layer.
+- The new 2026 formula is evaluated on Elia's simulation (Jan-Jul 2026) and, for earlier periods, on a
+  reconstruction from current-design data; both hold other market parties' behaviour fixed, as Elia's own
+  simulation does.
+- aFRR activation of a reserved battery follows published Belgian activation pro rata.
+- Intraday re-trading uses public quarter-hour intraday indices; continuous order-book data is licensed by the
+  exchanges and plugs in through `FrameIntradaySource`.
+- Contract prices are model outputs under the stated scenario inputs.

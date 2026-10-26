@@ -1,0 +1,44 @@
+# Live paper trading (shadow mode) as a systemd service. Paper only: no order or bid is ever submitted.
+# Assumes a checkout in /opt/euroflex-bess-lab with a virtualenv in .venv (pip install -e '.[ml]') and a
+# system user `euroflex`. Install:
+#   sudo cp deploy/systemd/euroflex-live.service /etc/systemd/system/
+#   sudo install -D -m 0640 deploy/systemd/live.env.example /etc/euroflex/live.env
+#   sudo systemctl daemon-reload && sudo systemctl enable --now euroflex-live.service
+[Unit]
+Description=euroflex-bess-lab live paper trading (shadow mode, never submits orders)
+Documentation=https://github.com/bozliu/euroflex-bess-lab/blob/main/docs/deployment.md
+Wants=network-online.target
+After=network-online.target time-sync.target
+
+[Service]
+Type=simple
+User=euroflex
+Group=euroflex
+WorkingDirectory=/opt/euroflex-bess-lab
+EnvironmentFile=/etc/euroflex/live.env
+Environment=PATH=/opt/euroflex-bess-lab/.venv/bin:/usr/local/bin:/usr/bin:/bin
+Environment=EUROFLEX_PYTHON=/opt/euroflex-bess-lab/.venv/bin/python
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/opt/euroflex-bess-lab/scripts/ops/run_live.sh
+Restart=always
+RestartSec=30
+KillSignal=SIGTERM
+TimeoutStopSec=60
+StateDirectory=euroflex
+StateDirectoryMode=0750
+MemoryMax=2G
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=yes
+LockPersonality=yes
+ReadWritePaths=/var/lib/euroflex
+
+[Install]
+WantedBy=multi-user.target

@@ -2,10 +2,10 @@
   "schema_version": 1,
   "description": "Normalized public market data for euroflex-bess-lab; see README.md and LICENSES.md.",
   "data_root": "data/public",
-  "latest_retrieval_utc": "2026-10-26T03:50:06Z",
-  "n_files": 32,
-  "n_not_redistributed": 2,
-  "total_size_bytes": 111742136,
+  "latest_retrieval_utc": "2026-10-26T14:51:02Z",
+  "n_files": 52,
+  "n_not_redistributed": 3,
+  "total_size_bytes": 129175322,
   "budget": {
     "max_total_bytes": 209715200,
     "max_file_bytes": 52428800
@@ -43,11 +43,38 @@
       "belgium/si_forecast_next_qh_2025.parquet",
       "belgium/si_forecast_next_qh_2026.parquet",
       "energy_charts/da_prices_BE.parquet",
-      "energy_charts/da_prices_DE-LU.parquet"
+      "energy_charts/da_prices_DE-LU.parquet",
+      "nordic/afrr_capacity.parquet",
+      "nordic/da_prices_DK1.parquet",
+      "nordic/da_prices_DK2.parquet",
+      "nordic/da_prices_FI.parquet",
+      "nordic/da_prices_SE3.parquet",
+      "nordic/da_prices_SE4.parquet",
+      "nordic/dk_imbalance.parquet",
+      "nordic/fcr_dk1.parquet",
+      "nordic/fcr_nordic.parquet",
+      "nordic/mfrr_capacity.parquet"
+    ],
+    "ECB terms of use (free reuse with source citation)": [
+      "gb/ecb_gbp_per_eur.parquet"
+    ],
+    "Elexon BMRS open data licence": [
+      "gb/frequency_15s_2023.parquet",
+      "gb/frequency_15s_2024.parquet",
+      "gb/frequency_15s_2025.parquet",
+      "gb/frequency_15s_2026.parquet",
+      "gb/market_index.parquet",
+      "gb/response_energy.parquet",
+      "gb/system_prices.parquet"
+    ],
+    "NESO Open Data Licence v1.0": [
+      "gb/reserve_auctions.parquet",
+      "gb/response_auctions.parquet"
     ],
     "proprietary (copyright German TSOs; reproduction needs prior written consent)": [
       "germany/afrr_capacity.parquet",
-      "germany/fcr_capacity.parquet"
+      "germany/fcr_capacity.parquet",
+      "intraday/id_aep_DE-LU.parquet"
     ]
   },
   "files": [
@@ -6846,6 +6873,1434 @@
     },
     {
       "schema_version": 1,
+      "path": "gb/ecb_gbp_per_eur.parquet",
+      "table": "gb_fx",
+      "title": "ECB euro foreign exchange reference rate, GBP per EUR (daily).",
+      "time_column": "timestamp_utc",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:28:52Z",
+      "fetch_command": "euroflex data gb fetch fx  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target fx)",
+      "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+      "snapshot_end_utc": "2026-10-26T00:00:00Z",
+      "source": "European Central Bank data portal (data-api.ecb.europa.eu), series EXR.D.GBP.EUR.SP00.A",
+      "dataset_ids": [
+        "EXR.D.GBP.EUR.SP00.A"
+      ],
+      "dataset_pages": [
+        "https://data.ecb.europa.eu/data/datasets/EXR/EXR.D.GBP.EUR.SP00.A"
+      ],
+      "source_urls": [
+        "https://data-api.ecb.europa.eu/service/data/EXR/D.GBP.EUR.SP00.A?format=csvdata&startPeriod=2023-12-01"
+      ],
+      "licence": "ECB terms of use (free reuse with source citation)",
+      "licence_url": "https://www.ecb.europa.eu/services/disclaimer/html/index.en.html",
+      "licence_terms": "Free use of information obtained from the ECB website provided it appears accurately and the ECB is cited as the source; modifications (here: as-of join of daily rates onto delivery dates) must be stated.",
+      "attribution": "Source: European Central Bank (euro foreign exchange reference rates)",
+      "transformation_notes": [
+        "timestamp_utc = reference date 00:00 UTC (rates are set around 16:00 CET on TARGET business days).",
+        "gbp_per_eur = OBS_VALUE (pound sterling per euro). Consumers as-of join the latest rate dated on or before each delivery date (forward fill over weekends and holidays)."
+      ],
+      "validation": {
+        "rows": 738,
+        "min_gbp_per_eur": 0.82428,
+        "max_gbp_per_eur": 0.8846
+      },
+      "inputs": [
+        {
+          "chunk": "exr_d_gbp_eur",
+          "url": "https://data-api.ecb.europa.eu/service/data/EXR/D.GBP.EUR.SP00.A?format=csvdata&startPeriod=2023-12-01",
+          "retrieved_at_utc": "2026-10-26T14:28:52Z",
+          "sha256": "3f034d5ae3e4876bd973671222e8c9d5fbeef4b0617cd1a808998e2d070260f4",
+          "size_bytes": 161588
+        }
+      ],
+      "coverage_start_utc": "2023-12-01T00:00:00Z",
+      "coverage_end_utc": "2026-10-24T00:00:00Z",
+      "rows": 738,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "gbp_per_eur",
+          "type": "double"
+        }
+      ],
+      "size_bytes": 6573,
+      "sha256": "671364880989576318d98a64f7f14d2ae717319aeb46a3fa151af277ed534c26"
+    },
+    {
+      "schema_version": 1,
+      "path": "gb/frequency_15s_2023.parquet",
+      "table": "gb_frequency",
+      "title": "GB system frequency at 15-second resolution (BMRS FREQ) as deviation from 50 Hz in mHz.",
+      "time_column": "timestamp_utc",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:44:49Z",
+      "fetch_command": "euroflex data gb fetch frequency  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target frequency)",
+      "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+      "snapshot_end_utc": "2026-10-26T00:00:00Z",
+      "source": "Elexon BMRS Insights Solution API (data.elexon.co.uk)",
+      "licence": "Elexon BMRS open data licence",
+      "licence_url": "https://www.elexon.co.uk/bsc/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+      "licence_terms": "Worldwide, royalty-free, perpetual, non-exclusive licence: copy, publish, distribute and transmit, adapt and exploit the BMRS Data (including commercially) provided the attribution statement is included and, where possible, a link to the licence; no implication of official status or endorsement; do not misrepresent the data. Excludes third-party rights that Elexon is not authorised to license.",
+      "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2023",
+      "dataset_ids": [
+        "FREQ"
+      ],
+      "dataset_pages": [
+        "https://bmrs.elexon.co.uk/system-frequency"
+      ],
+      "source_url_template": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=YYYY-MM-01T00:00Z&to=<next month>T00:00Z",
+      "partition_year": 2023,
+      "transformation_notes": [
+        "timestamp_utc = measurementTime (UTC, 15-second samples). Samples outside 48-52 Hz (telemetry zeros) are dropped (validation.invalid_samples_dropped_outside_48_52_hz).",
+        "frequency_dev_mhz = round((frequency_hz - 50) * 1000) as int16 (the source has three decimals, so this is lossless); frequency_hz = 50 + frequency_dev_mhz / 1000."
+      ],
+      "validation": {
+        "rows": 177658,
+        "expected_rows_15s": 178560,
+        "missing_samples": 902,
+        "gaps_over_60s": 5,
+        "largest_gap_seconds": 135.0,
+        "invalid_samples_dropped_outside_48_52_hz": 862,
+        "min_dev_mhz": -687,
+        "max_dev_mhz": 313
+      },
+      "inputs": [
+        {
+          "chunk": "2023-12",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2023-12-01T00%3A00Z&to=2024-01-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:44:49Z",
+          "sha256": "b75501687c40d59ea7fd20b6f1622eb7be894f53da752a3cdc2101f2c5dea183",
+          "size_bytes": 11044130
+        }
+      ],
+      "coverage_start_utc": "2023-12-01T00:00:00Z",
+      "coverage_end_utc": "2024-01-01T00:00:00Z",
+      "rows": 177658,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "frequency_dev_mhz",
+          "type": "int16"
+        }
+      ],
+      "size_bytes": 207162,
+      "sha256": "56151724992ec3048d989d7064c93c39e40f306694df4a879e1d524681bb144f"
+    },
+    {
+      "schema_version": 1,
+      "path": "gb/frequency_15s_2024.parquet",
+      "table": "gb_frequency",
+      "title": "GB system frequency at 15-second resolution (BMRS FREQ) as deviation from 50 Hz in mHz.",
+      "time_column": "timestamp_utc",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:29:36Z",
+      "fetch_command": "euroflex data gb fetch frequency  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target frequency)",
+      "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+      "snapshot_end_utc": "2026-10-26T00:00:00Z",
+      "source": "Elexon BMRS Insights Solution API (data.elexon.co.uk)",
+      "licence": "Elexon BMRS open data licence",
+      "licence_url": "https://www.elexon.co.uk/bsc/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+      "licence_terms": "Worldwide, royalty-free, perpetual, non-exclusive licence: copy, publish, distribute and transmit, adapt and exploit the BMRS Data (including commercially) provided the attribution statement is included and, where possible, a link to the licence; no implication of official status or endorsement; do not misrepresent the data. Excludes third-party rights that Elexon is not authorised to license.",
+      "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2024",
+      "dataset_ids": [
+        "FREQ"
+      ],
+      "dataset_pages": [
+        "https://bmrs.elexon.co.uk/system-frequency"
+      ],
+      "source_url_template": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=YYYY-MM-01T00:00Z&to=<next month>T00:00Z",
+      "partition_year": 2024,
+      "transformation_notes": [
+        "timestamp_utc = measurementTime (UTC, 15-second samples). Samples outside 48-52 Hz (telemetry zeros) are dropped (validation.invalid_samples_dropped_outside_48_52_hz).",
+        "frequency_dev_mhz = round((frequency_hz - 50) * 1000) as int16 (the source has three decimals, so this is lossless); frequency_hz = 50 + frequency_dev_mhz / 1000."
+      ],
+      "validation": {
+        "rows": 2104664,
+        "expected_rows_15s": 2108160,
+        "missing_samples": 3496,
+        "gaps_over_60s": 9,
+        "largest_gap_seconds": 10815.0,
+        "invalid_samples_dropped_outside_48_52_hz": 8,
+        "min_dev_mhz": -396,
+        "max_dev_mhz": 322
+      },
+      "inputs": [
+        {
+          "chunk": "2024-01",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2024-01-01T00%3A00Z&to=2024-02-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:21Z",
+          "sha256": "f6cb4f3d43ca7d0ac6f7e48a51cbb811f32bb0abb7e7e4c5929993b65052e9b0",
+          "size_bytes": 11005339
+        },
+        {
+          "chunk": "2024-02",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2024-02-01T00%3A00Z&to=2024-03-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:22Z",
+          "sha256": "d3d74f524040fb1936d53bc939b870edcfbccaa15fec05780eb6be7628958996",
+          "size_bytes": 10332374
+        },
+        {
+          "chunk": "2024-03",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2024-03-01T00%3A00Z&to=2024-04-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:23Z",
+          "sha256": "0c81d7e46650d1c77e8ff69da80b2fe582f76c63c536c50aa0898eb7d74e3f84",
+          "size_bytes": 11010208
+        },
+        {
+          "chunk": "2024-04",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2024-04-01T00%3A00Z&to=2024-05-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:24Z",
+          "sha256": "ca070f3538b8779fcab73c828b7ffe287e8f45519cc0ab81c03d0c7a12ddf9c8",
+          "size_bytes": 10694235
+        },
+        {
+          "chunk": "2024-05",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2024-05-01T00%3A00Z&to=2024-06-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:25Z",
+          "sha256": "e0c7ad0596aef75b38a77634e3c44457c9397a7f91ce9300bb432b24358019ab",
+          "size_bytes": 11049340
+        },
+        {
+          "chunk": "2024-06",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2024-06-01T00%3A00Z&to=2024-07-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:26Z",
+          "sha256": "6dec667e685fe06e981aff7353be762b9aecaa1b881e0c6e13e672a55c84efdb",
+          "size_bytes": 10694462
+        },
+        {
+          "chunk": "2024-07",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2024-07-01T00%3A00Z&to=2024-08-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:27Z",
+          "sha256": "71ba2bbb4eb6e3808ba63a5136be8f3a7af8cf789e5e4f82bf7dcee8475a8da6",
+          "size_bytes": 11013167
+        },
+        {
+          "chunk": "2024-08",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2024-08-01T00%3A00Z&to=2024-09-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:28Z",
+          "sha256": "2b0e95576ca23d1f80a564f8aba4bb62c16c2a775da9b2c1c693d4a101653c8e",
+          "size_bytes": 11008797
+        },
+        {
+          "chunk": "2024-09",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2024-09-01T00%3A00Z&to=2024-10-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:29Z",
+          "sha256": "0d01b507b06130920751f4abc211657d1eb4ed975b5a4b5ce7a69ad7697034f6",
+          "size_bytes": 10694452
+        },
+        {
+          "chunk": "2024-10",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2024-10-01T00%3A00Z&to=2024-11-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:31Z",
+          "sha256": "84fc384c8f55327e2f471589a4d64fbe961f145b22c9b493d217605bb3e5d53d",
+          "size_bytes": 11050711
+        },
+        {
+          "chunk": "2024-11",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2024-11-01T00%3A00Z&to=2024-12-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:33Z",
+          "sha256": "1a0b29578fc075d500ea2e6cc4b6f3d421c1146739051af202676c3e19b94854",
+          "size_bytes": 10694157
+        },
+        {
+          "chunk": "2024-12",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2024-12-01T00%3A00Z&to=2025-01-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:36Z",
+          "sha256": "bda1d9c1b92fd2ed36d391072e40874aa557ab0fdcbc13897bf29ff0cd8e968c",
+          "size_bytes": 11007054
+        }
+      ],
+      "coverage_start_utc": "2024-01-01T00:00:00Z",
+      "coverage_end_utc": "2025-01-01T00:00:00Z",
+      "rows": 2104664,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "frequency_dev_mhz",
+          "type": "int16"
+        }
+      ],
+      "size_bytes": 2417166,
+      "sha256": "f7682480c7eb68d6e38fb1529ad7e08b3f91b97b14ab213ac8a3ff0d6605483b"
+    },
+    {
+      "schema_version": 1,
+      "path": "gb/frequency_15s_2025.parquet",
+      "table": "gb_frequency",
+      "title": "GB system frequency at 15-second resolution (BMRS FREQ) as deviation from 50 Hz in mHz.",
+      "time_column": "timestamp_utc",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:30:17Z",
+      "fetch_command": "euroflex data gb fetch frequency  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target frequency)",
+      "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+      "snapshot_end_utc": "2026-10-26T00:00:00Z",
+      "source": "Elexon BMRS Insights Solution API (data.elexon.co.uk)",
+      "licence": "Elexon BMRS open data licence",
+      "licence_url": "https://www.elexon.co.uk/bsc/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+      "licence_terms": "Worldwide, royalty-free, perpetual, non-exclusive licence: copy, publish, distribute and transmit, adapt and exploit the BMRS Data (including commercially) provided the attribution statement is included and, where possible, a link to the licence; no implication of official status or endorsement; do not misrepresent the data. Excludes third-party rights that Elexon is not authorised to license.",
+      "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2025",
+      "dataset_ids": [
+        "FREQ"
+      ],
+      "dataset_pages": [
+        "https://bmrs.elexon.co.uk/system-frequency"
+      ],
+      "source_url_template": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=YYYY-MM-01T00:00Z&to=<next month>T00:00Z",
+      "partition_year": 2025,
+      "transformation_notes": [
+        "timestamp_utc = measurementTime (UTC, 15-second samples). Samples outside 48-52 Hz (telemetry zeros) are dropped (validation.invalid_samples_dropped_outside_48_52_hz).",
+        "frequency_dev_mhz = round((frequency_hz - 50) * 1000) as int16 (the source has three decimals, so this is lossless); frequency_hz = 50 + frequency_dev_mhz / 1000."
+      ],
+      "validation": {
+        "rows": 2098961,
+        "expected_rows_15s": 2102400,
+        "missing_samples": 3439,
+        "gaps_over_60s": 5,
+        "largest_gap_seconds": 10875.0,
+        "invalid_samples_dropped_outside_48_52_hz": 1215,
+        "min_dev_mhz": -373,
+        "max_dev_mhz": 320
+      },
+      "inputs": [
+        {
+          "chunk": "2025-01",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2025-01-01T00%3A00Z&to=2025-02-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:40Z",
+          "sha256": "0cbd3557ddbe0fd5940a778d3703ed49c209be06e0f22f3d637685388e22e830",
+          "size_bytes": 11050542
+        },
+        {
+          "chunk": "2025-02",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2025-02-01T00%3A00Z&to=2025-03-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:43Z",
+          "sha256": "65fd5bad13f78f854966a620c3a0624cc9821be7965080e6a57ec1b88d44430e",
+          "size_bytes": 9981215
+        },
+        {
+          "chunk": "2025-03",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2025-03-01T00%3A00Z&to=2025-04-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:46Z",
+          "sha256": "a84b7bbd8ee6f530ddb83f844497a95b23262ca64e52ec6d356c525ba6f5b972",
+          "size_bytes": 11006465
+        },
+        {
+          "chunk": "2025-04",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2025-04-01T00%3A00Z&to=2025-05-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:50Z",
+          "sha256": "11c46001033bd0aa73f41034fa040c8af81894a2dd6b722e4dd31b6cc2f7b1ee",
+          "size_bytes": 10689315
+        },
+        {
+          "chunk": "2025-05",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2025-05-01T00%3A00Z&to=2025-06-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:53Z",
+          "sha256": "fe72f6ad0e5784e659091f7b75c360517dbb798aa60db75de5f397061a7357db",
+          "size_bytes": 11050553
+        },
+        {
+          "chunk": "2025-06",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2025-06-01T00%3A00Z&to=2025-07-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:54Z",
+          "sha256": "37e6f6caa7a7b54911e829d247979ac7df53010339d88ad7e528c681168b7cfe",
+          "size_bytes": 10694201
+        },
+        {
+          "chunk": "2025-07",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2025-07-01T00%3A00Z&to=2025-08-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:57Z",
+          "sha256": "02539ca247b8b9a2f660c20ab86a4fc5f76c4deabf20f63e50d3295a430ae16f",
+          "size_bytes": 11007757
+        },
+        {
+          "chunk": "2025-08",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2025-08-01T00%3A00Z&to=2025-09-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:30:01Z",
+          "sha256": "11c22b5c1cfec735c79f02c07d1fec5d1caf3c72da02a1d94b1d373418b9a604",
+          "size_bytes": 11030274
+        },
+        {
+          "chunk": "2025-09",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2025-09-01T00%3A00Z&to=2025-10-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:30:06Z",
+          "sha256": "166036f757d1276e3316268b249e9ff494681aa71d2facd33e3a0811c10102c5",
+          "size_bytes": 10694433
+        },
+        {
+          "chunk": "2025-10",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2025-10-01T00%3A00Z&to=2025-11-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:30:10Z",
+          "sha256": "a77416e226a7c3b532a09fefba2a4fca3548890f1efd10482b48483378a848f2",
+          "size_bytes": 11050431
+        },
+        {
+          "chunk": "2025-11",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2025-11-01T00%3A00Z&to=2025-12-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:30:13Z",
+          "sha256": "8a41d2ff0082f32f60cc6fb7e0907d0c2589b234483a8c3ea7f78d02334f1cca",
+          "size_bytes": 10665382
+        },
+        {
+          "chunk": "2025-12",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2025-12-01T00%3A00Z&to=2026-01-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:30:17Z",
+          "sha256": "0947743c742774a0b1db2040ac33d6fdc24bf7590d6ec129e036b3fcad1cc81a",
+          "size_bytes": 11050985
+        }
+      ],
+      "coverage_start_utc": "2025-01-01T00:00:00Z",
+      "coverage_end_utc": "2026-01-01T00:00:00Z",
+      "rows": 2098961,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "frequency_dev_mhz",
+          "type": "int16"
+        }
+      ],
+      "size_bytes": 2410809,
+      "sha256": "bae0623d7d7e9a68bf0a408039a4be5bec9cc42353f7d9b791fcda82bd46e175"
+    },
+    {
+      "schema_version": 1,
+      "path": "gb/frequency_15s_2026.parquet",
+      "table": "gb_frequency",
+      "title": "GB system frequency at 15-second resolution (BMRS FREQ) as deviation from 50 Hz in mHz.",
+      "time_column": "timestamp_utc",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:30:47Z",
+      "fetch_command": "euroflex data gb fetch frequency  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target frequency)",
+      "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+      "snapshot_end_utc": "2026-10-26T00:00:00Z",
+      "source": "Elexon BMRS Insights Solution API (data.elexon.co.uk)",
+      "licence": "Elexon BMRS open data licence",
+      "licence_url": "https://www.elexon.co.uk/bsc/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+      "licence_terms": "Worldwide, royalty-free, perpetual, non-exclusive licence: copy, publish, distribute and transmit, adapt and exploit the BMRS Data (including commercially) provided the attribution statement is included and, where possible, a link to the licence; no implication of official status or endorsement; do not misrepresent the data. Excludes third-party rights that Elexon is not authorised to license.",
+      "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2026",
+      "dataset_ids": [
+        "FREQ"
+      ],
+      "dataset_pages": [
+        "https://bmrs.elexon.co.uk/system-frequency"
+      ],
+      "source_url_template": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=YYYY-MM-01T00:00Z&to=<next month>T00:00Z",
+      "partition_year": 2026,
+      "transformation_notes": [
+        "timestamp_utc = measurementTime (UTC, 15-second samples). Samples outside 48-52 Hz (telemetry zeros) are dropped (validation.invalid_samples_dropped_outside_48_52_hz).",
+        "frequency_dev_mhz = round((frequency_hz - 50) * 1000) as int16 (the source has three decimals, so this is lossless); frequency_hz = 50 + frequency_dev_mhz / 1000."
+      ],
+      "validation": {
+        "rows": 1712210,
+        "expected_rows_15s": 1716480,
+        "missing_samples": 4270,
+        "gaps_over_60s": 6,
+        "largest_gap_seconds": 9750.0,
+        "invalid_samples_dropped_outside_48_52_hz": 1526,
+        "min_dev_mhz": -401,
+        "max_dev_mhz": 294
+      },
+      "inputs": [
+        {
+          "chunk": "2026-01",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-01-01T00%3A00Z&to=2026-02-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:30:20Z",
+          "sha256": "1def61a43e081d1a7e14f3808347970f0e8f1c442ebde94acc6522e64f5f3ca4",
+          "size_bytes": 11026938
+        },
+        {
+          "chunk": "2026-02",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-02-01T00%3A00Z&to=2026-03-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:30:23Z",
+          "sha256": "3abe2e5eea55a7f6580a136f2b05a1f1b6e8e8e1defe078f05b7d85f8e314ef4",
+          "size_bytes": 9943527
+        },
+        {
+          "chunk": "2026-03",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-03-01T00%3A00Z&to=2026-04-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:30:27Z",
+          "sha256": "8605d82364700664863381a2a8d3d2c7871fdf14c5de10acb44f1d0bf47dc978",
+          "size_bytes": 11051011
+        },
+        {
+          "chunk": "2026-04",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-04-01T00%3A00Z&to=2026-05-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:30:30Z",
+          "sha256": "8aa8d93f5f209961fced998f2421115e08dc918cbaad8fb5cfb69c13b06ca773",
+          "size_bytes": 10694422
+        },
+        {
+          "chunk": "2026-05",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-05-01T00%3A00Z&to=2026-06-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:30:34Z",
+          "sha256": "469acc90ac874f8ed9ba048867016af3a08c4dc3c26d3fa99c6b99c067d1f7b4",
+          "size_bytes": 11050803
+        },
+        {
+          "chunk": "2026-06",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-06-01T00%3A00Z&to=2026-07-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:30:38Z",
+          "sha256": "8dfbb255e1ef84cd8b00ce2d3deb4385951b5419e183d985e80c207bcf507e05",
+          "size_bytes": 10672499
+        },
+        {
+          "chunk": "2026-07",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-07-01T00%3A00Z&to=2026-08-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:30:42Z",
+          "sha256": "5162e23a964fafc229000dbc1912202ac81910e2ed83ba5b55146993ae1a918c",
+          "size_bytes": 11010877
+        },
+        {
+          "chunk": "2026-08",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-08-01T00%3A00Z&to=2026-09-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:30:45Z",
+          "sha256": "f3508de8db42c2d2ae9493ca6a60977a46e6522de8b44afd3db15b6963c8dfd8",
+          "size_bytes": 11036309
+        },
+        {
+          "chunk": "2026-09",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-09-01T00%3A00Z&to=2026-10-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:30:46Z",
+          "sha256": "c986353b9604d3f5bdfed0a41a9da07e409c2be5dfacef1ef11a2a9bf83da748",
+          "size_bytes": 10694254
+        },
+        {
+          "chunk": "2026-10",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-10-01T00%3A00Z&to=2026-11-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:30:47Z",
+          "sha256": "e5ff4da5f6e960d7bed382df13d57d452fd828ef1dfa38fbd574d75f19750feb",
+          "size_bytes": 9088195
+        }
+      ],
+      "coverage_start_utc": "2026-01-01T00:00:00Z",
+      "coverage_end_utc": "2026-10-26T00:00:00Z",
+      "rows": 1712210,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "frequency_dev_mhz",
+          "type": "int16"
+        }
+      ],
+      "size_bytes": 1974027,
+      "sha256": "ab3016e81e8fd1e70e55e19bfa7779a08c3a46aeedcf8b042a579ad8db74885c"
+    },
+    {
+      "schema_version": 1,
+      "path": "gb/market_index.parquet",
+      "table": "gb_market_index",
+      "title": "GB Market Index Data per settlement period (BMRS MID; APX/EPEX and N2EX providers).",
+      "time_column": "timestamp_utc",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:44:46Z",
+      "fetch_command": "euroflex data gb fetch market-index  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target market-index)",
+      "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+      "snapshot_end_utc": "2026-10-26T00:00:00Z",
+      "source": "Elexon BMRS Insights Solution API (data.elexon.co.uk)",
+      "licence": "Elexon BMRS open data licence",
+      "licence_url": "https://www.elexon.co.uk/bsc/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+      "licence_terms": "Worldwide, royalty-free, perpetual, non-exclusive licence: copy, publish, distribute and transmit, adapt and exploit the BMRS Data (including commercially) provided the attribution statement is included and, where possible, a link to the licence; no implication of official status or endorsement; do not misrepresent the data. Excludes third-party rights that Elexon is not authorised to license.",
+      "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2023-2026",
+      "dataset_ids": [
+        "MID"
+      ],
+      "dataset_pages": [
+        "https://bmrs.elexon.co.uk/market-index-prices"
+      ],
+      "source_url_template": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=YYYY-MM-01T00:00Z&to=<next month>T00:00Z",
+      "upstream_note": "Market Index Data are calculated by the Market Index Data Providers (EPEX SPOT 'APXMIDP', Nord Pool 'N2EXMIDP') under the Market Index Definition Statement (BSC) and published on BMRS: volume-weighted prices of the half-hour, 1-, 2- and 4-hour products traded within eight hours before gate closure (day-ahead auction excluded). Redistributed here as BMRS data.",
+      "transformation_notes": [
+        "timestamp_utc = SP start (UTC). Provider rows with zero volume (below the Individual Liquidity Threshold, reported as price 0) are treated as missing.",
+        "mid_price_gbp_mwh = volume-weighted average of the provider prices with volume > 0 (NaN if none); mid_volume_mwh = their total volume. In practice N2EX volumes are zero, so the MID equals the APX value.",
+        "Monthly stream requests overlap at month boundaries; duplicates are dropped. Numeric columns float32."
+      ],
+      "validation": {
+        "grid": {
+          "rows": 50880,
+          "expected_rows": 50880,
+          "missing_intervals": 0,
+          "unique": true,
+          "sorted": true
+        },
+        "mid_missing_rows": 21,
+        "apx_traded_rows": 50855,
+        "n2ex_traded_rows": 122,
+        "negative_mid_rows": 1432
+      },
+      "inputs": [
+        {
+          "chunk": "2023-12",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2023-12-01T00%3A00Z&to=2024-01-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:44:46Z",
+          "sha256": "75d2dbb75039f1ac4756172d892e91bb8fa9f9b3223950d5bfffab2c5706e1b2",
+          "size_bytes": 477190
+        },
+        {
+          "chunk": "2024-01",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-01-01T00%3A00Z&to=2024-02-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:04Z",
+          "sha256": "bac5d768cfdb8cb320db8659a6a8dc1b5d06e960ae94e30d322b848614159ebf",
+          "size_bytes": 477124
+        },
+        {
+          "chunk": "2024-02",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-02-01T00%3A00Z&to=2024-03-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:04Z",
+          "sha256": "057f920fade9a7ae985ffa20eb5158d9b2e9f8e96934b4c61e5ec1eee1f40d28",
+          "size_bytes": 446099
+        },
+        {
+          "chunk": "2024-03",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-03-01T00%3A00Z&to=2024-04-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:05Z",
+          "sha256": "c52f4797a07b550745b3f69cbd4a8f1ee3a72764484a6803f65f43e249f4a7e5",
+          "size_bytes": 476412
+        },
+        {
+          "chunk": "2024-04",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-04-01T00%3A00Z&to=2024-05-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:05Z",
+          "sha256": "acdaf704112de361c16c55f6c92ad989f71bf09715c96074251a6ee634557cd2",
+          "size_bytes": 461357
+        },
+        {
+          "chunk": "2024-05",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-05-01T00%3A00Z&to=2024-06-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:05Z",
+          "sha256": "0b6f29970face7eecd4985fc2d7525e352abab5f4627c2a7fb77dafa4dd788e8",
+          "size_bytes": 475789
+        },
+        {
+          "chunk": "2024-06",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-06-01T00%3A00Z&to=2024-07-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:05Z",
+          "sha256": "f6088c0515dd54c2789e754d37303910985f9e8ba5c7db379538a570df527a3f",
+          "size_bytes": 461781
+        },
+        {
+          "chunk": "2024-07",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-07-01T00%3A00Z&to=2024-08-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:06Z",
+          "sha256": "aeb05649078fba0e682600d873512c1659eeed1fc4604a52b165cc48432f8230",
+          "size_bytes": 476795
+        },
+        {
+          "chunk": "2024-08",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-08-01T00%3A00Z&to=2024-09-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:06Z",
+          "sha256": "a0e0301c964a2b4686bcb1c5dbfff6b365771b8b503e30d63554cbb65083276a",
+          "size_bytes": 476952
+        },
+        {
+          "chunk": "2024-09",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-09-01T00%3A00Z&to=2024-10-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:06Z",
+          "sha256": "d679cc479bbf415eacc243f31630ca019c8e6aab51c4a524668ee800a516daa8",
+          "size_bytes": 461982
+        },
+        {
+          "chunk": "2024-10",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-10-01T00%3A00Z&to=2024-11-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:06Z",
+          "sha256": "cbceee2f19171584db8aad1f3d62d68308053e60e608da53ef21e767c79e6e80",
+          "size_bytes": 477304
+        },
+        {
+          "chunk": "2024-11",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-11-01T00%3A00Z&to=2024-12-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:06Z",
+          "sha256": "151ca0ad5bdb2042888b43e389878efb0df5dd346a95f55c844c0a3c4578c541",
+          "size_bytes": 461781
+        },
+        {
+          "chunk": "2024-12",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-12-01T00%3A00Z&to=2025-01-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:07Z",
+          "sha256": "0b9929c5e9c28c4d482a0fe01234ca8da1fe85285b50e82cfce32b9c89d81832",
+          "size_bytes": 477380
+        },
+        {
+          "chunk": "2025-01",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-01-01T00%3A00Z&to=2025-02-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:07Z",
+          "sha256": "7a52432e4f94762df264f805c935090c96fa5c67b986c08a8225b81f015423cd",
+          "size_bytes": 478009
+        },
+        {
+          "chunk": "2025-02",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-02-01T00%3A00Z&to=2025-03-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:07Z",
+          "sha256": "2f85136d575ec6fb1a229093729744c21470ef15caf464d84d1e2c2ace38baec",
+          "size_bytes": 432027
+        },
+        {
+          "chunk": "2025-03",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-03-01T00%3A00Z&to=2025-04-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:07Z",
+          "sha256": "2c16a893c164e369eedb8d9a34722cb04e19a29de78ac8d5572cd72a0aab75d2",
+          "size_bytes": 476919
+        },
+        {
+          "chunk": "2025-04",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-04-01T00%3A00Z&to=2025-05-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:07Z",
+          "sha256": "4e36a2ae9b84eae2573e491276777ebd03936b1f164ce1b8698cd365ea41bba8",
+          "size_bytes": 460774
+        },
+        {
+          "chunk": "2025-05",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-05-01T00%3A00Z&to=2025-06-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:08Z",
+          "sha256": "37f2124c403d0bd8f16816c62c4a6ac5bf49b10db83834347444d3bea56a2a86",
+          "size_bytes": 477192
+        },
+        {
+          "chunk": "2025-06",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-06-01T00%3A00Z&to=2025-07-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:08Z",
+          "sha256": "ce8c2696d0ffb650f799be03121a2acf8879b41e2e0bd94924ce2b737508039b",
+          "size_bytes": 442953
+        },
+        {
+          "chunk": "2025-07",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-07-01T00%3A00Z&to=2025-08-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:08Z",
+          "sha256": "554c5ea361ddd1ca889a949720166610d51a9e56e3a1c1f8482997382e78bed3",
+          "size_bytes": 473713
+        },
+        {
+          "chunk": "2025-08",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-08-01T00%3A00Z&to=2025-09-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:08Z",
+          "sha256": "a9ec451dcac45b2eb6ac52c893f538128a635fbc42a5c2e311b4fa868855e195",
+          "size_bytes": 477482
+        },
+        {
+          "chunk": "2025-09",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-09-01T00%3A00Z&to=2025-10-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:08Z",
+          "sha256": "e2d230ae26b400328954213449505cad33b7ebff6426796c63b46f3199c9c918",
+          "size_bytes": 462102
+        },
+        {
+          "chunk": "2025-10",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-10-01T00%3A00Z&to=2025-11-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:09Z",
+          "sha256": "bf4210cba037c6472ea044f33b85667813836d912b85ecfb95a59e891068c61a",
+          "size_bytes": 475144
+        },
+        {
+          "chunk": "2025-11",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-11-01T00%3A00Z&to=2025-12-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:09Z",
+          "sha256": "3e8682da94e285693318e467c44785c4347cce8bbf373edb8d308aedafb7e4c1",
+          "size_bytes": 461840
+        },
+        {
+          "chunk": "2025-12",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-12-01T00%3A00Z&to=2026-01-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:09Z",
+          "sha256": "4d0b387bbaa1de2a4e76900baf2be45b1ade2d068dc26fdf36029474fc10eaae",
+          "size_bytes": 477275
+        },
+        {
+          "chunk": "2026-01",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-01-01T00%3A00Z&to=2026-02-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:09Z",
+          "sha256": "1e7b1a920d3149c447d11447ca6a7870e16429dfa5ed4cb48525b6687124fc5f",
+          "size_bytes": 477278
+        },
+        {
+          "chunk": "2026-02",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-02-01T00%3A00Z&to=2026-03-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:09Z",
+          "sha256": "aee0769c27018a1fe5e3150ded33fffbfb2c8047f6d0c5446d406cb5f3a6cbbb",
+          "size_bytes": 431388
+        },
+        {
+          "chunk": "2026-03",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-03-01T00%3A00Z&to=2026-04-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:10Z",
+          "sha256": "56d05e6a376eba80a375fcf89651ccb6abfdb169b2e84ab53d82d6e70b48143b",
+          "size_bytes": 477746
+        },
+        {
+          "chunk": "2026-04",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-04-01T00%3A00Z&to=2026-05-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:10Z",
+          "sha256": "065e0261ff7723641e988902fb398a5b16dd3856413493a506b41ed2cfeb1710",
+          "size_bytes": 462576
+        },
+        {
+          "chunk": "2026-05",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-05-01T00%3A00Z&to=2026-06-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:10Z",
+          "sha256": "f835259317e13f372e5413289718f86b55b182d091d80b38435143ab1989f8ab",
+          "size_bytes": 478339
+        },
+        {
+          "chunk": "2026-06",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-06-01T00%3A00Z&to=2026-07-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:10Z",
+          "sha256": "cbe890c064af6b2ff030898d824684a19a7d1df3216c01c8c6927fe050beebc1",
+          "size_bytes": 462285
+        },
+        {
+          "chunk": "2026-07",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-07-01T00%3A00Z&to=2026-08-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:10Z",
+          "sha256": "e49589245acd39b5ca1625fc90b71d5bdc685eb14ba6359899f9e3ff0ee60295",
+          "size_bytes": 478412
+        },
+        {
+          "chunk": "2026-08",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-08-01T00%3A00Z&to=2026-09-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:11Z",
+          "sha256": "95ffdf609c4789838c23e2d26a14c4d11654bb75e3ed97698a839cdead432f72",
+          "size_bytes": 478678
+        },
+        {
+          "chunk": "2026-09",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-09-01T00%3A00Z&to=2026-10-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:11Z",
+          "sha256": "fdc4fbd84562ebe523c174fbb51e5c7c61ee077a8a4f1b14cbbe006c913196a6",
+          "size_bytes": 462596
+        },
+        {
+          "chunk": "2026-10",
+          "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-10-01T00%3A00Z&to=2026-11-01T00%3A00Z",
+          "retrieved_at_utc": "2026-10-26T14:29:11Z",
+          "sha256": "c711ec5a382fda070f194179b47be209da22d2f35b14b4e289019cf903e6cac1",
+          "size_bytes": 394404
+        }
+      ],
+      "coverage_start_utc": "2023-12-01T00:00:00Z",
+      "coverage_end_utc": "2026-10-26T00:00:00Z",
+      "rows": 50880,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "settlement_date",
+          "type": "large_string"
+        },
+        {
+          "name": "settlement_period",
+          "type": "int16"
+        },
+        {
+          "name": "mid_price_gbp_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mid_volume_mwh",
+          "type": "float"
+        },
+        {
+          "name": "apx_price_gbp_mwh",
+          "type": "float"
+        },
+        {
+          "name": "apx_volume_mwh",
+          "type": "float"
+        },
+        {
+          "name": "n2ex_price_gbp_mwh",
+          "type": "float"
+        },
+        {
+          "name": "n2ex_volume_mwh",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 543203,
+      "sha256": "4276511b537d66ef420c12a60696082ed3313bf289862678b915562be2ad2d8c"
+    },
+    {
+      "schema_version": 1,
+      "path": "gb/reserve_auctions.parquet",
+      "table": "gb_reserve_auctions",
+      "title": "NESO EAC day-ahead clearing prices and volumes for Quick, Slow and Balancing Reserve per window.",
+      "time_column": "delivery_start_utc",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:28:58Z",
+      "fetch_command": "euroflex data gb fetch eac  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target eac)",
+      "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+      "snapshot_end_utc": "2026-10-26T00:00:00Z",
+      "source": "NESO data portal (api.neso.energy, CKAN)",
+      "dataset_ids": [
+        "eac-auction-results"
+      ],
+      "dataset_pages": [
+        "https://www.neso.energy/data-portal/eac-auction-results"
+      ],
+      "source_url_template": "https://api.neso.energy/datastore/dump/{resource_id}",
+      "licence": "NESO Open Data Licence v1.0",
+      "licence_url": "https://www.neso.energy/data-portal/neso-open-licence",
+      "licence_terms": "Based on the Open Government Licence v3.0: copy, publish, distribute and transmit, adapt and exploit commercially and non-commercially, provided NESO is acknowledged with the statement 'Supported by National Energy SO Open Data'.",
+      "attribution": "Supported by National Energy SO Open Data",
+      "inputs": [
+        {
+          "chunk": "NESO Response-Reserve Results Summary FY2023 (Archive)",
+          "url": "https://api.neso.energy/datastore/dump/be5c6b0d-a335-4859-93f2-389585b4e9a1",
+          "retrieved_at_utc": "2026-10-26T14:28:53Z",
+          "sha256": "93c6e7dafd0d76dc9460e26f49e0e8d4e551a2b8fac628a35644c828a2946360",
+          "size_bytes": 370816,
+          "resource_id": "be5c6b0d-a335-4859-93f2-389585b4e9a1",
+          "archived": true
+        },
+        {
+          "chunk": "NESO Response-Reserve Results Summary FY2024 (Archive)",
+          "url": "https://api.neso.energy/datastore/dump/ab130833-3ce4-4361-90fb-69fa3cf30f15",
+          "retrieved_at_utc": "2026-10-26T14:28:54Z",
+          "sha256": "0a20c7cc1793e1a08352499833489b80eab7688fd1bdb2cfbbcf9f7663986628",
+          "size_bytes": 1753120,
+          "resource_id": "ab130833-3ce4-4361-90fb-69fa3cf30f15",
+          "archived": true
+        },
+        {
+          "chunk": "NESO Response-Reserve Results Summary FY2025 (Archive)",
+          "url": "https://api.neso.energy/datastore/dump/be55ee51-b79e-47da-b71e-a0f8865d9d66",
+          "retrieved_at_utc": "2026-10-26T14:28:56Z",
+          "sha256": "18e530716a7c9a89dfbfd13de18252f9feb1b6f484e8cf3e59b7677e5cf09b88",
+          "size_bytes": 4552002,
+          "resource_id": "be55ee51-b79e-47da-b71e-a0f8865d9d66",
+          "archived": true
+        },
+        {
+          "chunk": "NESO Response-Reserve Daily Results Summary",
+          "url": "https://api.neso.energy/datastore/dump/3c51a666-1c33-450e-a6eb-c9b4a0c91584",
+          "retrieved_at_utc": "2026-10-26T14:28:56Z",
+          "sha256": "7d9a498c322837a2b11709a639cc0dd6cb23b85d7e6680da21e471651129d483",
+          "size_bytes": 23660,
+          "resource_id": "3c51a666-1c33-450e-a6eb-c9b4a0c91584",
+          "archived": false
+        },
+        {
+          "chunk": "NESO Response-Reserve Results Summary",
+          "url": "https://api.neso.energy/datastore/dump/596f29ac-0387-4ba4-a6d3-95c243140707",
+          "retrieved_at_utc": "2026-10-26T14:28:58Z",
+          "sha256": "950695dde76420de1274fd569a1691ab7d442c50a6b47861ba52539ea597c46a",
+          "size_bytes": 4862697,
+          "resource_id": "596f29ac-0387-4ba4-a6d3-95c243140707",
+          "archived": false
+        }
+      ],
+      "package_show": {
+        "chunk": "package_show",
+        "url": "https://api.neso.energy/api/3/action/package_show?id=eac-auction-results",
+        "retrieved_at_utc": "2026-10-26T14:28:53Z",
+        "sha256": "c690cd5f4a8809436a7eba9a7fe624a9f3361fb69d86aec30525ad338ac0a320",
+        "size_bytes": 63185
+      },
+      "transformation_notes": [
+        "Same source as gb/response_auctions; only the reserve products are kept: PQR/NQR (Quick Reserve positive/negative), PSR/NSR (Slow Reserve), PBR/NBR (Balancing Reserve). Context only: these products are not used by the GB strategies in this repository."
+      ],
+      "validation": {
+        "rows_by_product": {
+          "NBR": 17376,
+          "NQR": 33216,
+          "NSR": 10034,
+          "PBR": 17376,
+          "PQR": 33216,
+          "PSR": 10034
+        },
+        "first_delivery_by_product": {
+          "NBR": "2025-10-29T23:00:00Z",
+          "NQR": "2024-12-03T23:00:00Z",
+          "NSR": "2026-03-31T22:00:00Z",
+          "PBR": "2025-10-29T23:00:00Z",
+          "PQR": "2024-12-03T23:00:00Z",
+          "PSR": "2026-03-31T22:00:00Z"
+        }
+      },
+      "coverage_start_utc": "2024-12-03T23:00:00Z",
+      "coverage_end_utc": "2026-10-26T23:00:00Z",
+      "rows": 121252,
+      "columns": [
+        {
+          "name": "delivery_start_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "delivery_end_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "product",
+          "type": "large_string"
+        },
+        {
+          "name": "service",
+          "type": "large_string"
+        },
+        {
+          "name": "direction",
+          "type": "large_string"
+        },
+        {
+          "name": "clearing_price_gbp_per_mw_h",
+          "type": "float"
+        },
+        {
+          "name": "cleared_volume_mw",
+          "type": "float"
+        },
+        {
+          "name": "auction_id",
+          "type": "int64"
+        }
+      ],
+      "size_bytes": 220191,
+      "sha256": "a5bb64395cfc3c3d12ec2032a7a302895a58c56dc3bad72f1f94ccc06a92bac7"
+    },
+    {
+      "schema_version": 1,
+      "path": "gb/response_auctions.parquet",
+      "table": "gb_response_auctions",
+      "title": "NESO EAC day-ahead clearing prices and volumes for DC/DM/DR low and high per EFA block.",
+      "time_column": "delivery_start_utc",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:28:58Z",
+      "fetch_command": "euroflex data gb fetch eac  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target eac)",
+      "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+      "snapshot_end_utc": "2026-10-26T00:00:00Z",
+      "source": "NESO data portal (api.neso.energy, CKAN)",
+      "dataset_ids": [
+        "eac-auction-results"
+      ],
+      "dataset_pages": [
+        "https://www.neso.energy/data-portal/eac-auction-results"
+      ],
+      "source_url_template": "https://api.neso.energy/datastore/dump/{resource_id}",
+      "licence": "NESO Open Data Licence v1.0",
+      "licence_url": "https://www.neso.energy/data-portal/neso-open-licence",
+      "licence_terms": "Based on the Open Government Licence v3.0: copy, publish, distribute and transmit, adapt and exploit commercially and non-commercially, provided NESO is acknowledged with the statement 'Supported by National Energy SO Open Data'.",
+      "attribution": "Supported by National Energy SO Open Data",
+      "inputs": [
+        {
+          "chunk": "NESO Response-Reserve Results Summary FY2023 (Archive)",
+          "url": "https://api.neso.energy/datastore/dump/be5c6b0d-a335-4859-93f2-389585b4e9a1",
+          "retrieved_at_utc": "2026-10-26T14:28:53Z",
+          "sha256": "93c6e7dafd0d76dc9460e26f49e0e8d4e551a2b8fac628a35644c828a2946360",
+          "size_bytes": 370816,
+          "resource_id": "be5c6b0d-a335-4859-93f2-389585b4e9a1",
+          "archived": true
+        },
+        {
+          "chunk": "NESO Response-Reserve Results Summary FY2024 (Archive)",
+          "url": "https://api.neso.energy/datastore/dump/ab130833-3ce4-4361-90fb-69fa3cf30f15",
+          "retrieved_at_utc": "2026-10-26T14:28:54Z",
+          "sha256": "0a20c7cc1793e1a08352499833489b80eab7688fd1bdb2cfbbcf9f7663986628",
+          "size_bytes": 1753120,
+          "resource_id": "ab130833-3ce4-4361-90fb-69fa3cf30f15",
+          "archived": true
+        },
+        {
+          "chunk": "NESO Response-Reserve Results Summary FY2025 (Archive)",
+          "url": "https://api.neso.energy/datastore/dump/be55ee51-b79e-47da-b71e-a0f8865d9d66",
+          "retrieved_at_utc": "2026-10-26T14:28:56Z",
+          "sha256": "18e530716a7c9a89dfbfd13de18252f9feb1b6f484e8cf3e59b7677e5cf09b88",
+          "size_bytes": 4552002,
+          "resource_id": "be55ee51-b79e-47da-b71e-a0f8865d9d66",
+          "archived": true
+        },
+        {
+          "chunk": "NESO Response-Reserve Daily Results Summary",
+          "url": "https://api.neso.energy/datastore/dump/3c51a666-1c33-450e-a6eb-c9b4a0c91584",
+          "retrieved_at_utc": "2026-10-26T14:28:56Z",
+          "sha256": "7d9a498c322837a2b11709a639cc0dd6cb23b85d7e6680da21e471651129d483",
+          "size_bytes": 23660,
+          "resource_id": "3c51a666-1c33-450e-a6eb-c9b4a0c91584",
+          "archived": false
+        },
+        {
+          "chunk": "NESO Response-Reserve Results Summary",
+          "url": "https://api.neso.energy/datastore/dump/596f29ac-0387-4ba4-a6d3-95c243140707",
+          "retrieved_at_utc": "2026-10-26T14:28:58Z",
+          "sha256": "950695dde76420de1274fd569a1691ab7d442c50a6b47861ba52539ea597c46a",
+          "size_bytes": 4862697,
+          "resource_id": "596f29ac-0387-4ba4-a6d3-95c243140707",
+          "archived": false
+        }
+      ],
+      "package_show": {
+        "chunk": "package_show",
+        "url": "https://api.neso.energy/api/3/action/package_show?id=eac-auction-results",
+        "retrieved_at_utc": "2026-10-26T14:28:53Z",
+        "sha256": "c690cd5f4a8809436a7eba9a7fe624a9f3361fb69d86aec30525ad338ac0a320",
+        "size_bytes": 63185
+      },
+      "transformation_notes": [
+        "Results Summary resources (live, daily and yearly archives) of the EAC package are concatenated; deliveryStart/deliveryEnd are UTC per the NESO dataset notes; duplicates on (product, delivery start) keep the highest auctionID.",
+        "Only the dynamic response products are kept: DCL/DCH (Dynamic Containment low/high), DML/DMH (Moderation), DRL/DRH (Regulation). Low = response to low frequency (export), high = import.",
+        "efa_date/efa_block derived from delivery_start_utc (EFA day starts 23:00 Europe/London; 4-hour blocks, 3 or 5 hours on clock-change days). Prices are pay-as-clear in GBP per MW per hour of availability and can be negative."
+      ],
+      "validation": {
+        "raw_rows": 160780,
+        "duplicates_dropped": 324,
+        "unknown_products": [],
+        "response_rows": 39204,
+        "reserve_rows": 121252,
+        "efa_days": 1089,
+        "complete_efa_days": 1089,
+        "incomplete_efa_days": [],
+        "negative_price_rows": 8725,
+        "duration_hours_counts": {
+          "3.0": 18,
+          "4.0": 39168,
+          "5.0": 18
+        }
+      },
+      "coverage_start_utc": "2023-11-02T23:00:00Z",
+      "coverage_end_utc": "2026-10-26T23:00:00Z",
+      "rows": 39204,
+      "columns": [
+        {
+          "name": "delivery_start_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "delivery_end_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "efa_date",
+          "type": "large_string"
+        },
+        {
+          "name": "efa_block",
+          "type": "int8"
+        },
+        {
+          "name": "duration_hours",
+          "type": "float"
+        },
+        {
+          "name": "product",
+          "type": "large_string"
+        },
+        {
+          "name": "service",
+          "type": "large_string"
+        },
+        {
+          "name": "direction",
+          "type": "large_string"
+        },
+        {
+          "name": "clearing_price_gbp_per_mw_h",
+          "type": "float"
+        },
+        {
+          "name": "cleared_volume_mw",
+          "type": "float"
+        },
+        {
+          "name": "auction_id",
+          "type": "int64"
+        }
+      ],
+      "size_bytes": 123409,
+      "sha256": "11575b8aaa3705f7739d7e5899fb45b1a8470cfa554b1da4ea2ba050731a2e54"
+    },
+    {
+      "schema_version": 1,
+      "path": "gb/response_energy.parquet",
+      "table": "gb_response_energy",
+      "title": "Energy delivered per MW of contracted DC/DM/DR (low/high) per settlement period, from BMRS FREQ.",
+      "time_column": "timestamp_utc",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:44:49Z",
+      "fetch_command": "euroflex data gb fetch frequency  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target frequency)",
+      "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+      "snapshot_end_utc": "2026-10-26T00:00:00Z",
+      "source": "Elexon BMRS Insights Solution API (data.elexon.co.uk)",
+      "licence": "Elexon BMRS open data licence",
+      "licence_url": "https://www.elexon.co.uk/bsc/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+      "licence_terms": "Worldwide, royalty-free, perpetual, non-exclusive licence: copy, publish, distribute and transmit, adapt and exploit the BMRS Data (including commercially) provided the attribution statement is included and, where possible, a link to the licence; no implication of official status or endorsement; do not misrepresent the data. Excludes third-party rights that Elexon is not authorised to license.",
+      "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2023-2026",
+      "dataset_ids": [
+        "FREQ"
+      ],
+      "dataset_pages": [
+        "https://bmrs.elexon.co.uk/system-frequency"
+      ],
+      "derived_from": [
+        "gb/frequency_15s_{year}.parquet"
+      ],
+      "method_reference": "NESO Response Services Service Terms, Schedule 2 Table 1 and para 6.7 (delivery curves)",
+      "transformation_notes": [
+        "For each SP and product (DCL, DCH, DML, DMH, DRL, DRH): MWh delivered per MW contracted = mean over the SP's 15-second samples of the product's delivery fraction x 0.5 h (sample-and-hold).",
+        "Delivery curves: deadband +/-0.015 Hz; DC 5 % at +/-0.2 Hz and 100 % at +/-0.5 Hz; DM 5 % at +/-0.1 Hz and 100 % at +/-0.2 Hz; DR linear to 100 % at +/-0.2 Hz; linear interpolation, saturation beyond.",
+        "Low products export (frequency below 50 Hz), high products import; values are non-negative.",
+        "SPs with fewer than 60 of 120 samples are NaN. freq_* columns are per-SP statistics of the deviation from 50 Hz in mHz; share_outside_200mhz is the share of samples with |deviation| > 0.2 Hz.",
+        "15-second sampling misses sub-15-second excursions (mostly relevant for DC); this is an approximation of the 1-second performance-monitoring view."
+      ],
+      "validation": {
+        "grid": {
+          "rows": 50880,
+          "expected_rows": 50880,
+          "missing_intervals": 0,
+          "unique": true,
+          "sorted": true
+        },
+        "nan_rows": 73,
+        "mean_mwh_per_mw_per_sp": {
+          "dcl_mwh_per_mw": 0.0035216102842241526,
+          "dch_mwh_per_mw": 0.0034684522543102503,
+          "dml_mwh_per_mw": 0.018880899995565414,
+          "dmh_mwh_per_mw": 0.018014447763562202,
+          "drl_mwh_per_mw": 0.06999269872903824,
+          "drh_mwh_per_mw": 0.06918001919984818
+        }
+      },
+      "coverage_start_utc": "2023-12-01T00:00:00Z",
+      "coverage_end_utc": "2026-10-26T00:00:00Z",
+      "rows": 50880,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "settlement_date",
+          "type": "large_string"
+        },
+        {
+          "name": "settlement_period",
+          "type": "int16"
+        },
+        {
+          "name": "dcl_mwh_per_mw",
+          "type": "float"
+        },
+        {
+          "name": "dch_mwh_per_mw",
+          "type": "float"
+        },
+        {
+          "name": "dml_mwh_per_mw",
+          "type": "float"
+        },
+        {
+          "name": "dmh_mwh_per_mw",
+          "type": "float"
+        },
+        {
+          "name": "drl_mwh_per_mw",
+          "type": "float"
+        },
+        {
+          "name": "drh_mwh_per_mw",
+          "type": "float"
+        },
+        {
+          "name": "freq_mean_dev_mhz",
+          "type": "float"
+        },
+        {
+          "name": "freq_std_mhz",
+          "type": "float"
+        },
+        {
+          "name": "freq_min_dev_mhz",
+          "type": "float"
+        },
+        {
+          "name": "freq_max_dev_mhz",
+          "type": "float"
+        },
+        {
+          "name": "share_outside_200mhz",
+          "type": "float"
+        },
+        {
+          "name": "n_samples",
+          "type": "int16"
+        }
+      ],
+      "size_bytes": 1293912,
+      "sha256": "fac751d67a8ce526a45898dd4e8127e237a7fe6863ff01ee0f431b6312c8e4fb"
+    },
+    {
+      "schema_version": 1,
+      "path": "gb/system_prices.parquet",
+      "table": "gb_system_prices",
+      "title": "GB single imbalance (cash-out) price and net imbalance volume per settlement period (BMRS DISEBSP).",
+      "time_column": "timestamp_utc",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:44:46Z",
+      "fetch_command": "euroflex data gb fetch system-prices  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target system-prices)",
+      "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+      "snapshot_end_utc": "2026-10-26T00:00:00Z",
+      "source": "Elexon BMRS Insights Solution API (data.elexon.co.uk)",
+      "licence": "Elexon BMRS open data licence",
+      "licence_url": "https://www.elexon.co.uk/bsc/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+      "licence_terms": "Worldwide, royalty-free, perpetual, non-exclusive licence: copy, publish, distribute and transmit, adapt and exploit the BMRS Data (including commercially) provided the attribution statement is included and, where possible, a link to the licence; no implication of official status or endorsement; do not misrepresent the data. Excludes third-party rights that Elexon is not authorised to license.",
+      "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2023-2026",
+      "dataset_ids": [
+        "DISEBSP"
+      ],
+      "dataset_pages": [
+        "https://bmrs.elexon.co.uk/system-prices"
+      ],
+      "source_url_template": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/system-prices/{settlement_date}?format=json",
+      "transformation_notes": [
+        "timestamp_utc = start of the 30-minute settlement period (UTC, from startTime); settlement_date and settlement_period are the Europe/London settlement day and 1-based period (46/50 on clock-change days).",
+        "system_price_gbp_mwh is the single cash-out price (system sell price; equal to the system buy price since BSC P305, 5 Nov 2015 - see validation.ssp_ne_sbp_rows).",
+        "niv_mwh > 0 means the system was short (net offer acceptances); < 0 long.",
+        "Values are from the latest settlement-run message returned by the API; published_utc is its createdDateTime and publication_lag_minutes = published_utc - SP end.",
+        "Numeric columns are float32."
+      ],
+      "validation": {
+        "grid": {
+          "rows": 50880,
+          "expected_rows": 50880,
+          "missing_intervals": 0,
+          "unique": true,
+          "sorted": true
+        },
+        "ssp_ne_sbp_rows": 0,
+        "niv_positive_share": 0.4691037735849057,
+        "price_derivation_code_counts": {
+          "N": 27004,
+          "P": 23868,
+          "K": 8
+        },
+        "publication_lag_minutes_after_sp_end": {
+          "note": "createdDateTime of the latest settlement-run message. Rows still on their first publication (lag < 120 min) show the indicative publication delay; most rows were re-issued about 24 h later.",
+          "first_publication_rows": 2974,
+          "first_publication_median": 22.399999618530273,
+          "first_publication_p95": 23.0,
+          "first_publication_max": 100.5,
+          "reissued_rows_share": 0.9415487421383648
+        },
+        "failures": []
+      },
+      "inputs_summary": {
+        "n_files": 1060,
+        "total_size_bytes": 45232324,
+        "first_chunk": "2023-12-01",
+        "last_chunk": "2026-10-25",
+        "retrieved_first_utc": "2026-10-26T14:29:19Z",
+        "retrieved_last_utc": "2026-10-26T14:44:46Z",
+        "sha256_of_sorted_file_sha256": "f4fa18faae9a8e7143816c1d28eb84bf75d2a939a5105ac68370a8c869e6e26f"
+      },
+      "coverage_start_utc": "2023-12-01T00:00:00Z",
+      "coverage_end_utc": "2026-10-26T00:00:00Z",
+      "rows": 50880,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "settlement_date",
+          "type": "large_string"
+        },
+        {
+          "name": "settlement_period",
+          "type": "int16"
+        },
+        {
+          "name": "system_price_gbp_mwh",
+          "type": "float"
+        },
+        {
+          "name": "niv_mwh",
+          "type": "float"
+        },
+        {
+          "name": "system_sell_price_gbp_mwh",
+          "type": "float"
+        },
+        {
+          "name": "system_buy_price_gbp_mwh",
+          "type": "float"
+        },
+        {
+          "name": "price_derivation_code",
+          "type": "large_string"
+        },
+        {
+          "name": "reserve_scarcity_price_gbp_mwh",
+          "type": "float"
+        },
+        {
+          "name": "replacement_price_gbp_mwh",
+          "type": "float"
+        },
+        {
+          "name": "replacement_price_reference_volume_mwh",
+          "type": "float"
+        },
+        {
+          "name": "sell_price_adjustment_gbp_mwh",
+          "type": "float"
+        },
+        {
+          "name": "buy_price_adjustment_gbp_mwh",
+          "type": "float"
+        },
+        {
+          "name": "bsad_defaulted",
+          "type": "bool"
+        },
+        {
+          "name": "accepted_offer_volume_mwh",
+          "type": "float"
+        },
+        {
+          "name": "accepted_bid_volume_mwh",
+          "type": "float"
+        },
+        {
+          "name": "adjustment_sell_volume_mwh",
+          "type": "float"
+        },
+        {
+          "name": "adjustment_buy_volume_mwh",
+          "type": "float"
+        },
+        {
+          "name": "system_tagged_offer_volume_mwh",
+          "type": "float"
+        },
+        {
+          "name": "system_tagged_bid_volume_mwh",
+          "type": "float"
+        },
+        {
+          "name": "published_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "publication_lag_minutes",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 1636147,
+      "sha256": "f71189100de20b5e1f65c5d0ad79b9e305a84efe64fd17c84a77c0dbf7e9b7ab"
+    },
+    {
+      "schema_version": 1,
       "path": "germany/afrr_capacity.parquet",
       "table": "germany_afrr_capacity",
       "title": "German aFRR capacity auction results (4-hour blocks, up/down).",
@@ -6981,6 +8436,1155 @@
       "size_bytes": 44715,
       "sha256": "cd7e8836cf873fbd8aefc42b5474b75727c6db439aece0cd3b9bb3da6e7d62ae",
       "note": "Not redistributed (regelleistung.net terms require prior written consent for reproduction). rows/sha256 describe the locally built file at retrieval time; rebuild with the fetch command."
+    },
+    {
+      "schema_version": 1,
+      "path": "intraday/id_aep_DE-LU.parquet",
+      "table": "intraday_id_aep_DE-LU",
+      "title": "German intraday price index ID AEP (TSOs' Index Ausgleichsenergiepreis), quarter-hourly, DE-LU.",
+      "source": "netztransparenz.de (German TSOs), public CSV download of the Index Ausgleichsenergiepreis page",
+      "dataset_ids": [
+        "netztransparenz_id_aep"
+      ],
+      "dataset_pages": [
+        "https://www.netztransparenz.de/Regelenergie/Ausgleichsenergiepreis/Index-Ausgleichsenergiepreis"
+      ],
+      "source_url_template": "https://www.netztransparenz.de/DesktopModules/LotesCharts/CsvDownloadHandler.ashx?request=<base64 of JSON {LocalFrom: YYYY-MM-01, LocalTo: first day of next month (exclusive), ResultTimeZone: utc, Settings: page chart settings}>",
+      "licence": "proprietary (copyright German TSOs; reproduction needs prior written consent)",
+      "licence_url": "https://www.netztransparenz.de/de-de/Impressum",
+      "attribution": "50Hertz, Amprion, TenneT TSO, TransnetBW via netztransparenz.de (Index Ausgleichsenergiepreis)",
+      "redistributed": false,
+      "local_path": "data/raw/intraday/id_aep_DE-LU.parquet",
+      "retrieved_at_utc": "2026-10-26T14:25:42Z",
+      "coverage_start_utc": "2023-12-31T23:00:00Z",
+      "coverage_end_utc": "2026-10-25T23:00:00Z",
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "time_column": "timestamp_utc",
+      "zone": "DE-LU",
+      "transformation_notes": [
+        "timestamp_utc = start of the quarter-hour delivery product (UTC); the CSV is requested with ResultTimeZone=utc so DST days carry 92 / 100 rows without ambiguity. resolution_minutes = 15.",
+        "id_aep_eur_mwh = ID AEP in EUR/MWh: volume-weighted average price of the most recent continuous intraday exchange trades (German market area) of the quarter-hour product covering 500 MW, topped up with the hourly product when the quarter-hour product traded less; NaN where the index is not defined (< 500 MW in both).",
+        "Monthly requests (local delivery days, LocalTo exclusive) are concatenated, de-duplicated on timestamp_utc, reindexed to a complete 15-minute UTC grid (missing quarter-hours are NaN) and cut after the last complete local delivery day. Values are float32."
+      ],
+      "validation": {
+        "source_rows": 98784,
+        "undefined_values": 0,
+        "unparsed_values": 0,
+        "duplicates_dropped": 0,
+        "grid_rows": 98784,
+        "missing_quarter_hours": 0,
+        "nan_values_total": 0,
+        "rows_after_trim": 98784,
+        "nan_values_after_trim": 0,
+        "months_requested": 34,
+        "last_complete_local_day": "2026-10-25",
+        "incomplete_local_days": [],
+        "n_incomplete_local_days": 0
+      },
+      "fetch_command": "python -m euroflex_bess_lab.public_data.intraday fetch --start 2024-01-01",
+      "generated_by": "euroflex_bess_lab.public_data.intraday (python -m euroflex_bess_lab.public_data.intraday fetch)",
+      "rows": 98784,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "resolution_minutes",
+          "type": "int16"
+        },
+        {
+          "name": "id_aep_eur_mwh",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 292514,
+      "sha256": "dfb7e2d0358ebbda5d5bc4fa53bed7c2faf1287a68fa6200d848196f87d6ae74",
+      "note": "Not redistributed: the netztransparenz.de imprint requires the German TSOs' prior written consent for any reproduction of the site content. rows/sha256 describe the locally built file at retrieval time; rebuild it with the fetch command (no account needed)."
+    },
+    {
+      "schema_version": 1,
+      "path": "nordic/afrr_capacity.parquet",
+      "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+      "dataset_ids": [
+        "AfrrReservesNordic"
+      ],
+      "dataset_pages": [
+        "https://www.energidataservice.dk/tso-electricity/AfrrReservesNordic"
+      ],
+      "source_urls": [
+        "https://api.energidataservice.dk/dataset/AfrrReservesNordic?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2024-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22FI%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2023-12-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/AfrrReservesNordic?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2025-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22FI%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2024-01-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/AfrrReservesNordic?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2026-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22FI%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2025-01-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/AfrrReservesNordic?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2027-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22FI%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2026-01-01T00%3A00&timezone=UTC"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+      "attribution": "Source: Energinet (www.energidataservice.dk)",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:45:12Z",
+      "table": "nordic_afrr_capacity",
+      "title": "aFRR capacity marginal prices, procured volumes and demand per zone, direction and hour.",
+      "zones": [
+        "DK1",
+        "DK2",
+        "FI",
+        "SE3",
+        "SE4"
+      ],
+      "time_column": "delivery_start_utc",
+      "coverage_start_utc": "2023-12-01T00:00:00Z",
+      "coverage_end_utc": "2026-10-25T23:00:00Z",
+      "transformation_notes": [
+        "Nordic aFRR capacity market (common Nordic platform, D-1, gate closure 07:30 CET, marginal pricing) for DK2, FI, SE3, SE4; DK1 rows (local DK1 aFRR capacity market) start 2024-10-02.",
+        "Long format: one row per hour, zone and direction (up/down); price_eur_per_mw_h = Up/DownPriceEUR (EUR per MW and hour), procured_mw = Up/DownProcuredMW, demand_mw = Up/DownDemandMW (published from 2025-08-21, null before).",
+        "Requests are filtered to PriceArea in the modelled zones."
+      ],
+      "validation": {
+        "duplicates_dropped": 0,
+        "per_zone": {
+          "DK1": {
+            "first_utc": "2024-10-01T22:00:00Z",
+            "last_utc": "2026-10-25T22:00:00Z",
+            "rows": 36194,
+            "null_prices": 0
+          },
+          "DK2": {
+            "first_utc": "2023-12-01T00:00:00Z",
+            "last_utc": "2026-10-25T22:00:00Z",
+            "rows": 50878,
+            "null_prices": 0
+          },
+          "FI": {
+            "first_utc": "2023-12-01T00:00:00Z",
+            "last_utc": "2026-10-25T22:00:00Z",
+            "rows": 50878,
+            "null_prices": 0
+          },
+          "SE3": {
+            "first_utc": "2023-12-01T00:00:00Z",
+            "last_utc": "2026-10-25T22:00:00Z",
+            "rows": 50878,
+            "null_prices": 0
+          },
+          "SE4": {
+            "first_utc": "2023-12-01T00:00:00Z",
+            "last_utc": "2026-10-25T22:00:00Z",
+            "rows": 50878,
+            "null_prices": 0
+          }
+        }
+      },
+      "fetch_command": "python scripts/research/nordic_fetch.py --tables afrr",
+      "generated_by": "euroflex_bess_lab.public_data.nordic (scripts/research/nordic_fetch.py)",
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "rows": 239706,
+      "columns": [
+        {
+          "name": "delivery_start_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "delivery_end_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "zone",
+          "type": "large_string"
+        },
+        {
+          "name": "product",
+          "type": "large_string"
+        },
+        {
+          "name": "direction",
+          "type": "large_string"
+        },
+        {
+          "name": "price_eur_per_mw_h",
+          "type": "float"
+        },
+        {
+          "name": "procured_mw",
+          "type": "float"
+        },
+        {
+          "name": "demand_mw",
+          "type": "float"
+        },
+        {
+          "name": "source",
+          "type": "large_string"
+        }
+      ],
+      "size_bytes": 399824,
+      "sha256": "0bf38119640a4396adaf11557e6a0bbcf33ad48dcce1c7370468d185bbac0f09"
+    },
+    {
+      "schema_version": 1,
+      "path": "nordic/da_prices_DK1.parquet",
+      "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+      "dataset_ids": [
+        "Elspotprices",
+        "DayAheadPrices"
+      ],
+      "dataset_pages": [
+        "https://www.energidataservice.dk/tso-electricity/Elspotprices",
+        "https://www.energidataservice.dk/tso-electricity/DayAheadPrices"
+      ],
+      "source_urls": [
+        "https://api.energidataservice.dk/dataset/Elspotprices?columns=HourUTC%2CPriceArea%2CSpotPriceEUR&end=2025-10-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=HourUTC+asc&start=2023-12-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/DayAheadPrices?columns=TimeUTC%2CPriceArea%2CDayAheadPriceEUR&end=2026-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2025-09-30T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/DayAheadPrices?columns=TimeUTC%2CPriceArea%2CDayAheadPriceEUR&end=2027-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2026-01-01T00%3A00&timezone=UTC"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+      "attribution": "Source: Energinet (www.energidataservice.dk)",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:46:25Z",
+      "table": "nordic_da_prices_DK1",
+      "title": "DK1 day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards).",
+      "zone": "DK1",
+      "time_column": "timestamp_utc",
+      "coverage_start_utc": "2023-12-01T00:00:00Z",
+      "coverage_end_utc": "2026-10-25T23:00:00Z",
+      "validation": {
+        "null_prices_dropped": 0,
+        "duplicates_dropped": 0,
+        "resolution_counts": {
+          "15": 37444,
+          "60": 16078
+        },
+        "grid_60min_until_2025_09_30": {
+          "rows": 16078,
+          "unique": true,
+          "sorted": true,
+          "expected_rows": 16078,
+          "missing_intervals": 0,
+          "largest_gaps": []
+        },
+        "grid_15min_from_2025_10_01": {
+          "rows": 37444,
+          "unique": true,
+          "sorted": true,
+          "expected_rows": 37444,
+          "missing_intervals": 0,
+          "largest_gaps": []
+        }
+      },
+      "fetch_command": "python scripts/research/nordic_fetch.py --tables day_ahead",
+      "transformation_notes": [
+        "timestamp_utc = start of the SDAC day-ahead product (UTC); resolution_minutes = 60 until delivery day 2025-09-30 and 15 from 2025-10-01 (SDAC 15-minute MTU go-live).",
+        "price_eur_mwh is float32; null prices dropped; duplicates on timestamp_utc dropped (last kept).",
+        "Hourly rows come from Elspotprices (SpotPriceEUR) before 2025-09-30T22:00Z, 15-minute rows from DayAheadPrices (DayAheadPriceEUR) afterwards; requests are filtered to PriceArea in ['DK1', 'DK2', 'SE3', 'SE4'] and to the EUR columns."
+      ],
+      "generated_by": "euroflex_bess_lab.public_data.nordic (scripts/research/nordic_fetch.py)",
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "rows": 53522,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "resolution_minutes",
+          "type": "int16"
+        },
+        {
+          "name": "price_eur_mwh",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 153378,
+      "sha256": "4d0bdcbd1961bb7622c2d4c6375a61605a0b2c3bbbe8fab2b696b59406186046"
+    },
+    {
+      "schema_version": 1,
+      "path": "nordic/da_prices_DK2.parquet",
+      "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+      "dataset_ids": [
+        "Elspotprices",
+        "DayAheadPrices"
+      ],
+      "dataset_pages": [
+        "https://www.energidataservice.dk/tso-electricity/Elspotprices",
+        "https://www.energidataservice.dk/tso-electricity/DayAheadPrices"
+      ],
+      "source_urls": [
+        "https://api.energidataservice.dk/dataset/Elspotprices?columns=HourUTC%2CPriceArea%2CSpotPriceEUR&end=2025-10-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=HourUTC+asc&start=2023-12-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/DayAheadPrices?columns=TimeUTC%2CPriceArea%2CDayAheadPriceEUR&end=2026-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2025-09-30T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/DayAheadPrices?columns=TimeUTC%2CPriceArea%2CDayAheadPriceEUR&end=2027-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2026-01-01T00%3A00&timezone=UTC"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+      "attribution": "Source: Energinet (www.energidataservice.dk)",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:46:25Z",
+      "table": "nordic_da_prices_DK2",
+      "title": "DK2 day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards).",
+      "zone": "DK2",
+      "time_column": "timestamp_utc",
+      "coverage_start_utc": "2023-12-01T00:00:00Z",
+      "coverage_end_utc": "2026-10-25T23:00:00Z",
+      "validation": {
+        "null_prices_dropped": 0,
+        "duplicates_dropped": 0,
+        "resolution_counts": {
+          "15": 37444,
+          "60": 16078
+        },
+        "grid_60min_until_2025_09_30": {
+          "rows": 16078,
+          "unique": true,
+          "sorted": true,
+          "expected_rows": 16078,
+          "missing_intervals": 0,
+          "largest_gaps": []
+        },
+        "grid_15min_from_2025_10_01": {
+          "rows": 37444,
+          "unique": true,
+          "sorted": true,
+          "expected_rows": 37444,
+          "missing_intervals": 0,
+          "largest_gaps": []
+        }
+      },
+      "fetch_command": "python scripts/research/nordic_fetch.py --tables day_ahead",
+      "transformation_notes": [
+        "timestamp_utc = start of the SDAC day-ahead product (UTC); resolution_minutes = 60 until delivery day 2025-09-30 and 15 from 2025-10-01 (SDAC 15-minute MTU go-live).",
+        "price_eur_mwh is float32; null prices dropped; duplicates on timestamp_utc dropped (last kept).",
+        "Hourly rows come from Elspotprices (SpotPriceEUR) before 2025-09-30T22:00Z, 15-minute rows from DayAheadPrices (DayAheadPriceEUR) afterwards; requests are filtered to PriceArea in ['DK1', 'DK2', 'SE3', 'SE4'] and to the EUR columns."
+      ],
+      "generated_by": "euroflex_bess_lab.public_data.nordic (scripts/research/nordic_fetch.py)",
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "rows": 53522,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "resolution_minutes",
+          "type": "int16"
+        },
+        {
+          "name": "price_eur_mwh",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 153751,
+      "sha256": "1240e31aa6ce344eb5e29e1c14e78db24b7bc03608f26c7b9c6bc5448d5ed1a5"
+    },
+    {
+      "schema_version": 1,
+      "path": "nordic/da_prices_FI.parquet",
+      "source": "Svenska kraftn\u00e4t, SVK Data Service (data.svk.se)",
+      "dataset_ids": [
+        "market_data_day_ahead_area_prices"
+      ],
+      "dataset_pages": [
+        "https://data.svk.se/dataset/market_data_day_ahead_area_prices"
+      ],
+      "source_urls": [
+        "https://data.svk.se/datastore/dump/cf392ef3-7345-4e98-970e-83088c185570?fields=start_time_utc%2Cbidding_zone%2Cprice%2Cprice_unit&filters=%7B%22bidding_zone%22%3A%22FI%22%7D&format=csv&sort=start_time_utc"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Svenska kraftn\u00e4t (SVK Data Service, data.svk.se), produced by Svk business units",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:45:01Z",
+      "table": "nordic_da_prices_FI",
+      "title": "FI day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards).",
+      "zone": "FI",
+      "time_column": "timestamp_utc",
+      "coverage_start_utc": "2023-12-01T00:00:00Z",
+      "coverage_end_utc": "2026-07-01T22:00:00Z",
+      "validation": {
+        "null_prices_dropped": 0,
+        "duplicates_dropped": 0,
+        "off_grid_rows_dropped": 0,
+        "dropped_suspect_delivery_days": {
+          "days": [
+            "2024-10-15"
+          ],
+          "rows": 24
+        },
+        "resolution_counts": {
+          "15": 24691,
+          "60": 15779
+        },
+        "grid_60min_until_2025_09_30": {
+          "rows": 15779,
+          "unique": true,
+          "sorted": true,
+          "expected_rows": 16078,
+          "missing_intervals": 299,
+          "largest_gaps": [
+            {
+              "after_utc": "2024-10-14T21:00:00Z",
+              "missing_intervals": 24
+            },
+            {
+              "after_utc": "2024-04-07T00:00:00Z",
+              "missing_intervals": 6
+            },
+            {
+              "after_utc": "2024-06-30T08:00:00Z",
+              "missing_intervals": 5
+            },
+            {
+              "after_utc": "2024-08-10T23:00:00Z",
+              "missing_intervals": 5
+            },
+            {
+              "after_utc": "2025-03-15T08:00:00Z",
+              "missing_intervals": 4
+            },
+            {
+              "after_utc": "2025-03-18T23:00:00Z",
+              "missing_intervals": 4
+            },
+            {
+              "after_utc": "2024-02-29T23:00:00Z",
+              "missing_intervals": 3
+            },
+            {
+              "after_utc": "2024-09-01T00:00:00Z",
+              "missing_intervals": 3
+            },
+            {
+              "after_utc": "2024-11-16T19:00:00Z",
+              "missing_intervals": 3
+            },
+            {
+              "after_utc": "2025-01-16T00:00:00Z",
+              "missing_intervals": 3
+            }
+          ]
+        },
+        "grid_15min_from_2025_10_01": {
+          "rows": 24691,
+          "unique": true,
+          "sorted": true,
+          "expected_rows": 25536,
+          "missing_intervals": 845,
+          "largest_gaps": [
+            {
+              "after_utc": "2025-11-29T00:00:00Z",
+              "missing_intervals": 16
+            },
+            {
+              "after_utc": "2025-10-12T22:15:00Z",
+              "missing_intervals": 13
+            },
+            {
+              "after_utc": "2026-06-14T07:00:00Z",
+              "missing_intervals": 11
+            },
+            {
+              "after_utc": "2025-11-29T04:15:00Z",
+              "missing_intervals": 10
+            },
+            {
+              "after_utc": "2025-12-20T00:15:00Z",
+              "missing_intervals": 10
+            },
+            {
+              "after_utc": "2025-10-12T10:30:00Z",
+              "missing_intervals": 9
+            },
+            {
+              "after_utc": "2026-03-25T23:30:00Z",
+              "missing_intervals": 9
+            },
+            {
+              "after_utc": "2025-12-29T09:30:00Z",
+              "missing_intervals": 8
+            },
+            {
+              "after_utc": "2026-04-23T23:30:00Z",
+              "missing_intervals": 8
+            },
+            {
+              "after_utc": "2026-06-22T22:30:00Z",
+              "missing_intervals": 8
+            }
+          ]
+        }
+      },
+      "fetch_command": "python scripts/research/nordic_fetch.py --tables day_ahead",
+      "transformation_notes": [
+        "timestamp_utc = start of the SDAC day-ahead product (UTC); resolution_minutes = 60 until delivery day 2025-09-30 and 15 from 2025-10-01 (SDAC 15-minute MTU go-live).",
+        "price_eur_mwh is float32; null prices dropped; duplicates on timestamp_utc dropped (last kept).",
+        "Source: SVK Data Service dataset market_data_day_ahead_area_prices (bidding_zone = FI), fetched as a filtered CSV dump. The dataset is marked 'currently not updating' (last row 2026-07-01) and has gaps (see validation); no other no-key CC BY source for Finnish day-ahead prices was found.",
+        "resolution_minutes is 60 before 2025-09-30T22:00Z and 15 afterwards (SDAC MTU).",
+        "Delivery days on which SVK's SE3/SE4 values contradict Energinet's (cross-check in the SE3/SE4 sidecars) are dropped, because the same publisher's FI values for that day cannot be verified."
+      ],
+      "generated_by": "euroflex_bess_lab.public_data.nordic (scripts/research/nordic_fetch.py)",
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "rows": 40470,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "resolution_minutes",
+          "type": "int16"
+        },
+        {
+          "name": "price_eur_mwh",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 120787,
+      "sha256": "22f3a0cc41dee1b39e414fee82e06ff2e2fe823c5d6c19d7723459321df78446"
+    },
+    {
+      "schema_version": 1,
+      "path": "nordic/da_prices_SE3.parquet",
+      "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+      "dataset_ids": [
+        "Elspotprices",
+        "DayAheadPrices"
+      ],
+      "dataset_pages": [
+        "https://www.energidataservice.dk/tso-electricity/Elspotprices",
+        "https://www.energidataservice.dk/tso-electricity/DayAheadPrices"
+      ],
+      "source_urls": [
+        "https://api.energidataservice.dk/dataset/Elspotprices?columns=HourUTC%2CPriceArea%2CSpotPriceEUR&end=2025-10-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=HourUTC+asc&start=2023-12-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/DayAheadPrices?columns=TimeUTC%2CPriceArea%2CDayAheadPriceEUR&end=2026-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2025-09-30T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/DayAheadPrices?columns=TimeUTC%2CPriceArea%2CDayAheadPriceEUR&end=2027-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2026-01-01T00%3A00&timezone=UTC"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+      "attribution": "Source: Energinet (www.energidataservice.dk)",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:46:25Z",
+      "table": "nordic_da_prices_SE3",
+      "title": "SE3 day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards).",
+      "zone": "SE3",
+      "time_column": "timestamp_utc",
+      "coverage_start_utc": "2023-12-01T00:00:00Z",
+      "coverage_end_utc": "2026-10-25T23:00:00Z",
+      "validation": {
+        "null_prices_dropped": 0,
+        "duplicates_dropped": 0,
+        "resolution_counts": {
+          "15": 37444,
+          "60": 16078
+        },
+        "grid_60min_until_2025_09_30": {
+          "rows": 16078,
+          "unique": true,
+          "sorted": true,
+          "expected_rows": 16078,
+          "missing_intervals": 0,
+          "largest_gaps": []
+        },
+        "grid_15min_from_2025_10_01": {
+          "rows": 37444,
+          "unique": true,
+          "sorted": true,
+          "expected_rows": 37444,
+          "missing_intervals": 0,
+          "largest_gaps": []
+        },
+        "cross_check_svk_data_service": {
+          "source_url": "https://data.svk.se/datastore/dump/cf392ef3-7345-4e98-970e-83088c185570?fields=start_time_utc%2Cbidding_zone%2Cprice%2Cprice_unit&filters=%7B%22bidding_zone%22%3A%22SE3%22%7D&format=csv&sort=start_time_utc",
+          "rows_compared": 41234,
+          "max_abs_diff_eur_mwh": 100.0,
+          "share_within_0_01_eur": 0.9994422078866955,
+          "mismatch_delivery_days": [
+            "2024-10-15"
+          ],
+          "note": "Energinet's values agree with Energy-Charts/SMARD on the mismatch days; SVK repeats some rows there."
+        }
+      },
+      "fetch_command": "python scripts/research/nordic_fetch.py --tables day_ahead",
+      "transformation_notes": [
+        "timestamp_utc = start of the SDAC day-ahead product (UTC); resolution_minutes = 60 until delivery day 2025-09-30 and 15 from 2025-10-01 (SDAC 15-minute MTU go-live).",
+        "price_eur_mwh is float32; null prices dropped; duplicates on timestamp_utc dropped (last kept).",
+        "Hourly rows come from Elspotprices (SpotPriceEUR) before 2025-09-30T22:00Z, 15-minute rows from DayAheadPrices (DayAheadPriceEUR) afterwards; requests are filtered to PriceArea in ['DK1', 'DK2', 'SE3', 'SE4'] and to the EUR columns."
+      ],
+      "generated_by": "euroflex_bess_lab.public_data.nordic (scripts/research/nordic_fetch.py)",
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "rows": 53522,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "resolution_minutes",
+          "type": "int16"
+        },
+        {
+          "name": "price_eur_mwh",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 144845,
+      "sha256": "95655cfd9420024a2a4ff4c1775f6581df688bae0fe9926a8cf25bea44974762"
+    },
+    {
+      "schema_version": 1,
+      "path": "nordic/da_prices_SE4.parquet",
+      "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+      "dataset_ids": [
+        "Elspotprices",
+        "DayAheadPrices"
+      ],
+      "dataset_pages": [
+        "https://www.energidataservice.dk/tso-electricity/Elspotprices",
+        "https://www.energidataservice.dk/tso-electricity/DayAheadPrices"
+      ],
+      "source_urls": [
+        "https://api.energidataservice.dk/dataset/Elspotprices?columns=HourUTC%2CPriceArea%2CSpotPriceEUR&end=2025-10-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=HourUTC+asc&start=2023-12-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/DayAheadPrices?columns=TimeUTC%2CPriceArea%2CDayAheadPriceEUR&end=2026-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2025-09-30T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/DayAheadPrices?columns=TimeUTC%2CPriceArea%2CDayAheadPriceEUR&end=2027-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2026-01-01T00%3A00&timezone=UTC"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+      "attribution": "Source: Energinet (www.energidataservice.dk)",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:46:25Z",
+      "table": "nordic_da_prices_SE4",
+      "title": "SE4 day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards).",
+      "zone": "SE4",
+      "time_column": "timestamp_utc",
+      "coverage_start_utc": "2023-12-01T00:00:00Z",
+      "coverage_end_utc": "2026-10-25T23:00:00Z",
+      "validation": {
+        "null_prices_dropped": 0,
+        "duplicates_dropped": 0,
+        "resolution_counts": {
+          "15": 37444,
+          "60": 16078
+        },
+        "grid_60min_until_2025_09_30": {
+          "rows": 16078,
+          "unique": true,
+          "sorted": true,
+          "expected_rows": 16078,
+          "missing_intervals": 0,
+          "largest_gaps": []
+        },
+        "grid_15min_from_2025_10_01": {
+          "rows": 37444,
+          "unique": true,
+          "sorted": true,
+          "expected_rows": 37444,
+          "missing_intervals": 0,
+          "largest_gaps": []
+        },
+        "cross_check_svk_data_service": {
+          "source_url": "https://data.svk.se/datastore/dump/cf392ef3-7345-4e98-970e-83088c185570?fields=start_time_utc%2Cbidding_zone%2Cprice%2Cprice_unit&filters=%7B%22bidding_zone%22%3A%22SE4%22%7D&format=csv&sort=start_time_utc",
+          "rows_compared": 41322,
+          "max_abs_diff_eur_mwh": 170.0,
+          "share_within_0_01_eur": 0.9994675959537292,
+          "mismatch_delivery_days": [
+            "2024-10-15"
+          ],
+          "note": "Energinet's values agree with Energy-Charts/SMARD on the mismatch days; SVK repeats some rows there."
+        }
+      },
+      "fetch_command": "python scripts/research/nordic_fetch.py --tables day_ahead",
+      "transformation_notes": [
+        "timestamp_utc = start of the SDAC day-ahead product (UTC); resolution_minutes = 60 until delivery day 2025-09-30 and 15 from 2025-10-01 (SDAC 15-minute MTU go-live).",
+        "price_eur_mwh is float32; null prices dropped; duplicates on timestamp_utc dropped (last kept).",
+        "Hourly rows come from Elspotprices (SpotPriceEUR) before 2025-09-30T22:00Z, 15-minute rows from DayAheadPrices (DayAheadPriceEUR) afterwards; requests are filtered to PriceArea in ['DK1', 'DK2', 'SE3', 'SE4'] and to the EUR columns."
+      ],
+      "generated_by": "euroflex_bess_lab.public_data.nordic (scripts/research/nordic_fetch.py)",
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "rows": 53522,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "resolution_minutes",
+          "type": "int16"
+        },
+        {
+          "name": "price_eur_mwh",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 153851,
+      "sha256": "c24f052d3a61ca6b43b6c5a7f3d951b533e4b8d1ed213189627b824dfc1ba0e8"
+    },
+    {
+      "schema_version": 1,
+      "path": "nordic/dk_imbalance.parquet",
+      "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+      "dataset_ids": [
+        "RegulatingBalancePowerdata",
+        "ImbalancePrice"
+      ],
+      "dataset_pages": [
+        "https://www.energidataservice.dk/tso-electricity/RegulatingBalancePowerdata",
+        "https://www.energidataservice.dk/tso-electricity/ImbalancePrice"
+      ],
+      "source_urls": [
+        "https://api.energidataservice.dk/dataset/RegulatingBalancePowerdata?columns=HourUTC%2CPriceArea%2CmFRRUpActBal%2CmFRRDownActBal%2CImbalanceMWh%2CImbalancePriceEUR%2CBalancingPowerPriceUpEUR%2CBalancingPowerPriceDownEUR&end=2025-03-05T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%5D%7D&limit=0&sort=HourUTC+asc&start=2023-12-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/ImbalancePrice?columns=TimeUTC%2CPriceArea%2CSatisfiedDemand%2CImbalancePriceEUR%2CSpotPriceEUR%2CDominatingDirection%2CaFRRUpMW%2CaFRRVWAUpEUR%2CaFRRDownMW%2CaFRRVWADownEUR%2CmFRRMarginalPriceUpEUR%2CmFRRMarginalPriceDownEUR&end=2026-01-01T00%3A00&limit=0&sort=TimeUTC+asc&start=2025-03-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/ImbalancePrice?columns=TimeUTC%2CPriceArea%2CSatisfiedDemand%2CImbalancePriceEUR%2CSpotPriceEUR%2CDominatingDirection%2CaFRRUpMW%2CaFRRVWAUpEUR%2CaFRRDownMW%2CaFRRVWADownEUR%2CmFRRMarginalPriceUpEUR%2CmFRRMarginalPriceDownEUR&end=2027-01-01T00%3A00&limit=0&sort=TimeUTC+asc&start=2026-01-01T00%3A00&timezone=UTC"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+      "attribution": "Source: Energinet (www.energidataservice.dk)",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:45:09Z",
+      "table": "nordic_dk_imbalance",
+      "title": "Danish (DK1, DK2) single imbalance prices and their components.",
+      "zones": [
+        "DK1",
+        "DK2"
+      ],
+      "time_column": "timestamp_utc",
+      "coverage_start_utc": "2023-12-01T00:00:00Z",
+      "coverage_end_utc": "2026-10-25T23:00:00Z",
+      "transformation_notes": [
+        "Hourly rows (resolution_minutes = 60) from RegulatingBalancePowerdata up to the first full hour of ImbalancePrice data (validation.cutover_utc, mFRR EAM go-live on 2025-03-04); 15-minute rows from ImbalancePrice afterwards (the three transitional quarter-hours before the cutover are dropped).",
+        "Hourly era: imbalance_price_eur_mwh = ImbalancePriceEUR, balancing_power_price_up/down = BalancingPowerPriceUp/DownEUR, mfrr_up/down_activated_mwh = mFRRUp/DownActBal, imbalance_mwh.",
+        "15-minute era: imbalance_price_eur_mwh, spot_price_eur_mwh, dominating_direction (+1 up, -1 down, 0 none), satisfied_demand_mw, afrr_up/down_mwh and afrr_vwa_up/down_eur_mwh (aFRR volume-weighted averages), mfrr_marginal_up/down_eur_mwh. Energinet: before 2025-03-19 the price equals the Pricing Module price; the dominating direction is set by balancing (mFRR) demand before 2026-03-04 and by satisfied demand afterwards."
+      ],
+      "validation": {
+        "duplicates_dropped": 0,
+        "null_imbalance_prices": 2,
+        "rows_per_resolution": {
+          "15": 115412,
+          "60": 22056
+        },
+        "price_rule_check_from_2025_03_20": {
+          "rows": 112320,
+          "rows_checked": 112320,
+          "share_matching_rule": 0.9115562678062679,
+          "share_matching_rule_idle_afrr_as_missing": 0.9999821937321938,
+          "rule": "up: max(mFRR up, aFRR VWA up); down: min(mFRR down, aFRR VWA down); none: spot"
+        },
+        "cutover_utc": "2025-03-04T12:00:00Z"
+      },
+      "fetch_command": "python scripts/research/nordic_fetch.py --tables dk_imbalance",
+      "generated_by": "euroflex_bess_lab.public_data.nordic (scripts/research/nordic_fetch.py)",
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "rows": 137344,
+      "columns": [
+        {
+          "name": "timestamp_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "area",
+          "type": "large_string"
+        },
+        {
+          "name": "resolution_minutes",
+          "type": "int16"
+        },
+        {
+          "name": "imbalance_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "balancing_power_price_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "balancing_power_price_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_up_activated_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_down_activated_mwh",
+          "type": "float"
+        },
+        {
+          "name": "imbalance_mwh",
+          "type": "float"
+        },
+        {
+          "name": "spot_price_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "dominating_direction",
+          "type": "int8"
+        },
+        {
+          "name": "satisfied_demand_mw",
+          "type": "float"
+        },
+        {
+          "name": "afrr_up_mwh",
+          "type": "float"
+        },
+        {
+          "name": "afrr_vwa_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "afrr_down_mwh",
+          "type": "float"
+        },
+        {
+          "name": "afrr_vwa_down_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_marginal_up_eur_mwh",
+          "type": "float"
+        },
+        {
+          "name": "mfrr_marginal_down_eur_mwh",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 2511587,
+      "sha256": "625ff487b7ddfb4e2bfc3daa8c2dab05d7c2d1a768988a279998a6cdf40e1e8c"
+    },
+    {
+      "schema_version": 1,
+      "path": "nordic/fcr_dk1.parquet",
+      "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+      "dataset_ids": [
+        "FcrDK1"
+      ],
+      "dataset_pages": [
+        "https://www.energidataservice.dk/tso-electricity/FcrDK1"
+      ],
+      "source_urls": [
+        "https://api.energidataservice.dk/dataset/FcrDK1?columns=HourUTC%2CHourDK%2CFCRdomestic_MW%2CFCRabroad_MW%2CFCRcross_EUR%2CFCRdk_EUR&end=2024-01-01T00%3A00&limit=0&sort=HourUTC+asc&start=2023-12-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/FcrDK1?columns=HourUTC%2CHourDK%2CFCRdomestic_MW%2CFCRabroad_MW%2CFCRcross_EUR%2CFCRdk_EUR&end=2025-01-01T00%3A00&limit=0&sort=HourUTC+asc&start=2024-01-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/FcrDK1?columns=HourUTC%2CHourDK%2CFCRdomestic_MW%2CFCRabroad_MW%2CFCRcross_EUR%2CFCRdk_EUR&end=2026-01-01T00%3A00&limit=0&sort=HourUTC+asc&start=2025-01-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/FcrDK1?columns=HourUTC%2CHourDK%2CFCRdomestic_MW%2CFCRabroad_MW%2CFCRcross_EUR%2CFCRdk_EUR&end=2027-01-01T00%3A00&limit=0&sort=HourUTC+asc&start=2026-01-01T00%3A00&timezone=UTC"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+      "attribution": "Source: Energinet (www.energidataservice.dk)",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:51:02Z",
+      "table": "nordic_fcr_dk1",
+      "title": "DK1 FCR capacity prices and volumes (Continental Europe FCR cooperation, symmetric).",
+      "zones": [
+        "DK1"
+      ],
+      "time_column": "delivery_start_utc",
+      "coverage_start_utc": "2023-12-01T00:00:00Z",
+      "coverage_end_utc": "2026-10-25T23:00:00Z",
+      "transformation_notes": [
+        "price_eur_per_mw_h = FCRdk_EUR (Danish price, EUR per MW and hour); cross_border_price_eur_per_mw_h = FCRcross_EUR; volume_domestic_mw / volume_abroad_mw = FCRdomestic_MW / FCRabroad_MW.",
+        "Published per hour; the FCR cooperation trades 4-hour products, see validation.constant_within_4h_blocks_share."
+      ],
+      "validation": {
+        "duplicates_dropped": 0,
+        "null_prices": 0,
+        "danish_equals_cross_border_share": 0.9150839742583582,
+        "grid_hourly": {
+          "rows": 25436,
+          "unique": true,
+          "sorted": true,
+          "expected_rows": 25439,
+          "missing_intervals": 3,
+          "largest_gaps": [
+            {
+              "after_utc": "2024-10-27T00:00:00Z",
+              "missing_intervals": 1
+            },
+            {
+              "after_utc": "2025-10-26T00:00:00Z",
+              "missing_intervals": 1
+            },
+            {
+              "after_utc": "2026-10-25T00:00:00Z",
+              "missing_intervals": 1
+            }
+          ]
+        },
+        "constant_within_4h_blocks_share": 1.0
+      },
+      "fetch_command": "python scripts/research/nordic_fetch.py --tables fcr_dk1",
+      "generated_by": "euroflex_bess_lab.public_data.nordic (scripts/research/nordic_fetch.py)",
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "rows": 25436,
+      "columns": [
+        {
+          "name": "delivery_start_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "delivery_end_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "zone",
+          "type": "large_string"
+        },
+        {
+          "name": "product",
+          "type": "large_string"
+        },
+        {
+          "name": "direction",
+          "type": "large_string"
+        },
+        {
+          "name": "price_eur_per_mw_h",
+          "type": "float"
+        },
+        {
+          "name": "cross_border_price_eur_per_mw_h",
+          "type": "float"
+        },
+        {
+          "name": "volume_domestic_mw",
+          "type": "float"
+        },
+        {
+          "name": "volume_abroad_mw",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 71318,
+      "sha256": "804929ef3c6e57b38e517bc610f095f4f67d582bc0673f9e03660338d3d8a051"
+    },
+    {
+      "schema_version": 1,
+      "path": "nordic/fcr_nordic.parquet",
+      "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+      "dataset_ids": [
+        "FcrNdDK2"
+      ],
+      "dataset_pages": [
+        "https://www.energidataservice.dk/tso-electricity/FcrNdDK2"
+      ],
+      "source_urls": [
+        "https://api.energidataservice.dk/dataset/FcrNdDK2?columns=HourUTC%2CHourDK%2CPriceArea%2CProductName%2CAuctionType%2CPurchasedVolumeLocal%2CPurchasedVolumeTotal%2CPriceTotalEUR&end=2024-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=HourUTC+asc&start=2023-12-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/FcrNdDK2?columns=HourUTC%2CHourDK%2CPriceArea%2CProductName%2CAuctionType%2CPurchasedVolumeLocal%2CPurchasedVolumeTotal%2CPriceTotalEUR&end=2025-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=HourUTC+asc&start=2024-01-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/FcrNdDK2?columns=HourUTC%2CHourDK%2CPriceArea%2CProductName%2CAuctionType%2CPurchasedVolumeLocal%2CPurchasedVolumeTotal%2CPriceTotalEUR&end=2026-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=HourUTC+asc&start=2025-01-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/FcrNdDK2?columns=HourUTC%2CHourDK%2CPriceArea%2CProductName%2CAuctionType%2CPurchasedVolumeLocal%2CPurchasedVolumeTotal%2CPriceTotalEUR&end=2027-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK2%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=HourUTC+asc&start=2026-01-01T00%3A00&timezone=UTC"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+      "attribution": "Source: Energinet (www.energidataservice.dk)",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:50:00Z",
+      "table": "nordic_fcr_nordic",
+      "title": "FCR-N, FCR-D up and FCR-D down capacity prices of the joint Swedish-DK2 auctions (hourly).",
+      "zones": [
+        "DK2",
+        "SE3",
+        "SE4"
+      ],
+      "time_column": "delivery_start_utc",
+      "coverage_start_utc": "2023-12-01T00:00:00Z",
+      "coverage_end_utc": "2026-10-25T23:00:00Z",
+      "transformation_notes": [
+        "One row per delivery hour, zone (DK2, SE3, SE4), product (fcr_n symmetric, fcr_d_up, fcr_d_down) and auction (early = 'D-1 early', former D-2; late = 'D-1 late', former D-1; total = volume-weighted average of the two marginal prices, as published).",
+        "price_eur_per_mw_h = PriceTotalEUR (EUR per MW and hour). From 2024-02-01 it is the marginal (pay-as-cleared) price of each auction; before that the published value is an average price.",
+        "volume_local_mw = PurchasedVolumeLocal (procured in the zone), volume_total_mw = PurchasedVolumeTotal.",
+        "The documented DST-2024 labelling error (HourUTC 2024-10-27 01:00 and 01:01) is repaired, see validation.dst_label_rows_repaired."
+      ],
+      "validation": {
+        "dst_label_rows_repaired": 108,
+        "duplicates_dropped": 0,
+        "unknown_products_dropped": [],
+        "unknown_auction_types_dropped": [],
+        "null_prices": 240,
+        "rows_per_auction": {
+          "early": 229374,
+          "late": 229158,
+          "total": 229374
+        },
+        "zone_price_identical_share": 1.0,
+        "grid_early_auction_hourly": {
+          "rows": 25438,
+          "unique": true,
+          "sorted": true,
+          "expected_rows": 25439,
+          "missing_intervals": 1,
+          "largest_gaps": [
+            {
+              "after_utc": "2026-03-29T20:00:00Z",
+              "missing_intervals": 1
+            }
+          ]
+        }
+      },
+      "fetch_command": "python scripts/research/nordic_fetch.py --tables fcr_nordic",
+      "generated_by": "euroflex_bess_lab.public_data.nordic (scripts/research/nordic_fetch.py)",
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "rows": 686826,
+      "columns": [
+        {
+          "name": "delivery_start_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "delivery_end_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "zone",
+          "type": "large_string"
+        },
+        {
+          "name": "product",
+          "type": "large_string"
+        },
+        {
+          "name": "direction",
+          "type": "large_string"
+        },
+        {
+          "name": "auction",
+          "type": "large_string"
+        },
+        {
+          "name": "price_eur_per_mw_h",
+          "type": "float"
+        },
+        {
+          "name": "volume_local_mw",
+          "type": "float"
+        },
+        {
+          "name": "volume_total_mw",
+          "type": "float"
+        }
+      ],
+      "size_bytes": 2473014,
+      "sha256": "80c7a35039b52c3d8b50e91b4395a4818820b8252391e995fceab17836ff31d9"
+    },
+    {
+      "schema_version": 1,
+      "path": "nordic/mfrr_capacity.parquet",
+      "source": "Energinet, Energi Data Service (api.energidataservice.dk); Svenska kraftn\u00e4t, SVK Data Service (data.svk.se)",
+      "dataset_ids": [
+        "mFRRCapacityMarket",
+        "mfrr_capacity_market"
+      ],
+      "dataset_pages": [
+        "https://www.energidataservice.dk/tso-electricity/mFRRCapacityMarket",
+        "https://data.svk.se/dataset/mfrr_capacity_market"
+      ],
+      "source_urls": [
+        "https://api.energidataservice.dk/dataset/mFRRCapacityMarket?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2024-01-01T00%3A00&limit=0&sort=TimeUTC+asc&start=2023-12-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/mFRRCapacityMarket?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2025-01-01T00%3A00&limit=0&sort=TimeUTC+asc&start=2024-01-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/mFRRCapacityMarket?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2026-01-01T00%3A00&limit=0&sort=TimeUTC+asc&start=2025-01-01T00%3A00&timezone=UTC",
+        "https://api.energidataservice.dk/dataset/mFRRCapacityMarket?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2027-01-01T00%3A00&limit=0&sort=TimeUTC+asc&start=2026-01-01T00%3A00&timezone=UTC",
+        "https://data.svk.se/datastore/dump/0c56e30d-8fce-4c27-afc8-621c230ae34d?fields=start_time_utc%2Cbidding_zone%2Creserve_product%2Creserve_direction%2Cprice%2Cprice_unit%2Cvolume%2Cvolume_unit&filters=%7B%22bidding_zone%22%3A%22SE3%22%7D&format=csv&sort=start_time_utc",
+        "https://data.svk.se/datastore/dump/0c56e30d-8fce-4c27-afc8-621c230ae34d?fields=start_time_utc%2Cbidding_zone%2Creserve_product%2Creserve_direction%2Cprice%2Cprice_unit%2Cvolume%2Cvolume_unit&filters=%7B%22bidding_zone%22%3A%22SE4%22%7D&format=csv&sort=start_time_utc"
+      ],
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+      "attribution": "Source: Energinet (www.energidataservice.dk); Svenska kraftn\u00e4t (SVK Data Service, data.svk.se), produced by Svk business units",
+      "redistributed": true,
+      "retrieved_at_utc": "2026-10-26T14:45:13Z",
+      "table": "nordic_mfrr_capacity",
+      "title": "mFRR capacity marginal prices and procured volumes per zone, direction and hour (DK1, DK2, SE3, SE4).",
+      "zones": [
+        "DK1",
+        "DK2",
+        "SE3",
+        "SE4"
+      ],
+      "time_column": "delivery_start_utc",
+      "coverage_start_utc": "2023-12-01T00:00:00Z",
+      "coverage_end_utc": "2026-10-25T23:00:00Z",
+      "transformation_notes": [
+        "DK1/DK2: Energinet daily (morning) auctions, national until 2024-11-18 and the trilateral DK-SE-FI market from 2024-11-19; extra afternoon auctions (MfrrCapacityMarketExtra) and the DK2 monthly slow-reserve auctions are not included. Columns as for aFRR (source = energinet).",
+        "SE3/SE4: SVK Data Service dataset mfrr_capacity_market (marginal price EUR/MW per hour and contracted volume); only hours with Swedish procurement are published, so missing hours mean no local procurement (source = svk, demand_mw null)."
+      ],
+      "validation": {
+        "duplicates_dropped": 0,
+        "per_zone": {
+          "DK1": {
+            "first_utc": "2023-12-01T00:00:00Z",
+            "last_utc": "2026-10-25T22:00:00Z",
+            "rows": 50878,
+            "null_prices": 0
+          },
+          "DK2": {
+            "first_utc": "2023-12-01T00:00:00Z",
+            "last_utc": "2026-10-25T22:00:00Z",
+            "rows": 50878,
+            "null_prices": 0
+          },
+          "SE3": {
+            "first_utc": "2023-12-01T00:00:00Z",
+            "last_utc": "2026-10-25T22:00:00Z",
+            "rows": 46899,
+            "null_prices": 0
+          },
+          "SE4": {
+            "first_utc": "2023-12-01T00:00:00Z",
+            "last_utc": "2026-10-25T22:00:00Z",
+            "rows": 43848,
+            "null_prices": 0
+          }
+        }
+      },
+      "fetch_command": "python scripts/research/nordic_fetch.py --tables mfrr",
+      "generated_by": "euroflex_bess_lab.public_data.nordic (scripts/research/nordic_fetch.py)",
+      "snapshot_end_utc": "2026-10-25T23:00:00Z",
+      "rows": 192503,
+      "columns": [
+        {
+          "name": "delivery_start_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "delivery_end_utc",
+          "type": "timestamp[ns, tz=UTC]"
+        },
+        {
+          "name": "zone",
+          "type": "large_string"
+        },
+        {
+          "name": "product",
+          "type": "large_string"
+        },
+        {
+          "name": "direction",
+          "type": "large_string"
+        },
+        {
+          "name": "price_eur_per_mw_h",
+          "type": "float"
+        },
+        {
+          "name": "procured_mw",
+          "type": "float"
+        },
+        {
+          "name": "demand_mw",
+          "type": "float"
+        },
+        {
+          "name": "source",
+          "type": "large_string"
+        }
+      ],
+      "size_bytes": 418232,
+      "sha256": "35db7616576008b61d43a9e87f96ea64202fe1ea735c1c25f3419d1660362a50"
     }
   ]
 }

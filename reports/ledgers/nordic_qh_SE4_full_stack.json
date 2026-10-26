@@ -1,0 +1,35 @@
+{
+  "asset_id": "nordic_qh_SE4_full_stack",
+  "description": "Quarter-hour ledger, SE4 full stack, persistence forecast (decided D-1, settled at realised prices).",
+  "strategy": "nordic_full_stack_persistence",
+  "mechanism": "SE4 day-ahead + pay-as-cleared capacity (no activation energy)",
+  "market": "SE4",
+  "timezone": "Europe/Copenhagen",
+  "start_utc": "2024-01-31T23:00:00+00:00",
+  "end_utc": "2026-10-25T23:00:00+00:00",
+  "battery": {
+    "power_mw": 1.0,
+    "energy_mwh": 2.0,
+    "soc_window": [
+      0.05,
+      0.95
+    ],
+    "daily_start_end_soc_frac": 0.5,
+    "efficiency": [
+      0.95,
+      0.95
+    ],
+    "degradation_eur_per_mwh_discharged": 8.0,
+    "degradation_eur_per_mwh": 8.0
+  },
+  "price_taker": true,
+  "fleet_mw": 0.0,
+  "source": "scripts/research/nordic_backtest.py on data/public/nordic (Energinet, Svenska kraftn\u00e4t; CC BY 4.0)",
+  "columns": "valuation QH ledger contract (revenue_eur = day-ahead + capacity) + da_revenue_eur, reserve_revenue_eur and <product>_mw",
+  "summary": {
+    "eur_per_mw_year": 533611.5025868539,
+    "cycles_per_day": 0.25205375279747394,
+    "days": 998.0,
+    "capture_vs_oracle": 0.7866019878550167
+  }
+}

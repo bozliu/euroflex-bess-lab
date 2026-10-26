@@ -1,0 +1,32 @@
+# Persistent state. The run directory holds the decision journal, the paper ledger, the heartbeat and the
+# archive of every row version seen live (a few GB per year); the engine resumes from it after a restart.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: euroflex-live-run
+  namespace: euroflex
+  labels:
+    app.kubernetes.io/name: euroflex-live
+    app.kubernetes.io/part-of: euroflex-bess-lab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+# Fitted forecasters for forecast-mpc / SCALES-L (about 54 MB; built with scripts/ops/build_models.py).
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: euroflex-live-models
+  namespace: euroflex
+  labels:
+    app.kubernetes.io/name: euroflex-live
+    app.kubernetes.io/part-of: euroflex-bess-lab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

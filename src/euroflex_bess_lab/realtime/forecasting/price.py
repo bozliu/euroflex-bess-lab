@@ -11,7 +11,14 @@ from numpy.typing import NDArray
 from ..replay import MarketData
 from ..types import PublicationModel
 from .base import DiscreteForecast, WalkForwardForecaster
-from .features import CURRENT_GROUPS, FeatureConfig, FeatureMatrix, baseline_values, minute_target
+from .features import (
+    CURRENT_GROUPS,
+    FeatureConfig,
+    FeatureMatrix,
+    baseline_values,
+    history_price_series,
+    minute_target,
+)
 from .models import DEFAULT_QUANTILES, GBMParams, MeanHead, QuantileHead, SignHead, quantile_weights
 from .splits import Fold, training_rows
 
@@ -21,13 +28,20 @@ FloatArray = NDArray[np.float64]
 #: published final price.
 CURRENT_PRICE_BASELINE: tuple[str, ...] = ("cur_price_cum", "cur_price_prev_qh", "hist_price_last")
 NEW_FORMULA_PRICE_BASELINE: tuple[str, ...] = ("nf_price_cum", "nf_price_prev_qh", "hist_price_last")
+#: For targets rebuilt from current-design state: the running (single) aFRR price, as SCALES-L's component heads.
+REBUILT_PRICE_BASELINE: tuple[str, ...] = ("afrr_price_up_cum", "afrr_price_up_prev_qh", "hist_price_last")
 
 
 @dataclass(frozen=True)
 class PriceForecasterConfig:
     """``mechanism`` names the settlement series to predict (``market.settlement(mechanism)``); ``si_field`` the
     quarter-hour SI used for the P(SI < 0) head (``nf_si_mw`` for the new-formula tables). Heads learn the residual
-    to ``baseline`` (feature names, first finite value wins)."""
+    to ``baseline`` (feature names, first finite value wins).
+
+    ``target`` overrides the price series to learn (and to use as published history in the MPC), e.g.
+    ``"reconstructed:new2026"``: new-formula prices rebuilt from current-design state, which lets a *direct* price
+    model be trained without any new-formula price (the ablation of SCALES-L's sign/branch decomposition).
+    """
 
     mechanism: str = "current"
     features: FeatureConfig = field(default_factory=lambda: FeatureConfig(groups=CURRENT_GROUPS))
@@ -36,6 +50,7 @@ class PriceForecasterConfig:
     params: GBMParams = field(default_factory=GBMParams)
     si_field: str = "si_mw"
     baseline: tuple[str, ...] = CURRENT_PRICE_BASELINE
+    target: str | None = None
 
 
 @dataclass
@@ -55,6 +70,9 @@ class PriceForecaster(WalkForwardForecaster):
         self._weights = quantile_weights(self.config.quantiles).astype(np.float32)
 
     def history_prices(self, market: MarketData) -> FloatArray:
+        target = getattr(self.config, "target", None)  # absent in configs pickled before the option existed
+        if target:
+            return history_price_series(market, target)
         if self.config.mechanism in market.settlement_prices:
             return np.asarray(market.settlement(self.config.mechanism), dtype=float)
         return np.full(market.n_qh, np.nan)

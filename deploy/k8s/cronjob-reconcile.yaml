@@ -1,0 +1,77 @@
+# Optional: reconcile the provisional paper ledger with Elia's validated prices once a day (read-only API GETs;
+# output in /data/run/reconcile). Not part of kustomization.yaml; apply it explicitly:
+#   kubectl apply -f deploy/k8s/cronjob-reconcile.yaml
+# The run volume is ReadWriteOnce, so the job is scheduled onto the node of the live pod (podAffinity). Use a
+# ReadWriteMany storage class instead if your cluster has one.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: euroflex-live-reconcile
+  namespace: euroflex
+  labels:
+    app.kubernetes.io/name: euroflex-live-reconcile
+    app.kubernetes.io/part-of: euroflex-bess-lab
+spec:
+  schedule: "30 12 * * *"
+  timeZone: Etc/UTC
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 1800
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: euroflex-live-reconcile
+            app.kubernetes.io/part-of: euroflex-bess-lab
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
+            fsGroup: 10001
+            seccompProfile:
+              type: RuntimeDefault
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: euroflex-live
+                  topologyKey: kubernetes.io/hostname
+          containers:
+            - name: reconcile
+              image: euroflex-bess-lab:live
+              imagePullPolicy: IfNotPresent
+              command: ["/opt/venv/bin/euroflex", "live", "reconcile", "/data/run"]
+              env:
+                - name: MPLCONFIGDIR
+                  value: /tmp/matplotlib
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop: ["ALL"]
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 256Mi
+                limits:
+                  cpu: 500m
+                  memory: 1Gi
+              volumeMounts:
+                - name: run
+                  mountPath: /data
+                - name: tmp
+                  mountPath: /tmp
+          volumes:
+            - name: run
+              persistentVolumeClaim:
+                claimName: euroflex-live-run
+            - name: tmp
+              emptyDir:
+                sizeLimit: 128Mi

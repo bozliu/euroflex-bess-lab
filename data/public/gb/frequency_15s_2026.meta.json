@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "path": "gb/frequency_15s_2026.parquet",
+  "table": "gb_frequency",
+  "title": "GB system frequency at 15-second resolution (BMRS FREQ) as deviation from 50 Hz in mHz.",
+  "time_column": "timestamp_utc",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T14:30:47Z",
+  "fetch_command": "euroflex data gb fetch frequency  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target frequency)",
+  "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+  "snapshot_end_utc": "2026-10-26T00:00:00Z",
+  "source": "Elexon BMRS Insights Solution API (data.elexon.co.uk)",
+  "licence": "Elexon BMRS open data licence",
+  "licence_url": "https://www.elexon.co.uk/bsc/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+  "licence_terms": "Worldwide, royalty-free, perpetual, non-exclusive licence: copy, publish, distribute and transmit, adapt and exploit the BMRS Data (including commercially) provided the attribution statement is included and, where possible, a link to the licence; no implication of official status or endorsement; do not misrepresent the data. Excludes third-party rights that Elexon is not authorised to license.",
+  "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2026",
+  "dataset_ids": [
+    "FREQ"
+  ],
+  "dataset_pages": [
+    "https://bmrs.elexon.co.uk/system-frequency"
+  ],
+  "source_url_template": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=YYYY-MM-01T00:00Z&to=<next month>T00:00Z",
+  "partition_year": 2026,
+  "transformation_notes": [
+    "timestamp_utc = measurementTime (UTC, 15-second samples). Samples outside 48-52 Hz (telemetry zeros) are dropped (validation.invalid_samples_dropped_outside_48_52_hz).",
+    "frequency_dev_mhz = round((frequency_hz - 50) * 1000) as int16 (the source has three decimals, so this is lossless); frequency_hz = 50 + frequency_dev_mhz / 1000."
+  ],
+  "validation": {
+    "rows": 1712210,
+    "expected_rows_15s": 1716480,
+    "missing_samples": 4270,
+    "gaps_over_60s": 6,
+    "largest_gap_seconds": 9750.0,
+    "invalid_samples_dropped_outside_48_52_hz": 1526,
+    "min_dev_mhz": -401,
+    "max_dev_mhz": 294
+  },
+  "inputs": [
+    {
+      "chunk": "2026-01",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-01-01T00%3A00Z&to=2026-02-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:30:20Z",
+      "sha256": "1def61a43e081d1a7e14f3808347970f0e8f1c442ebde94acc6522e64f5f3ca4",
+      "size_bytes": 11026938
+    },
+    {
+      "chunk": "2026-02",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-02-01T00%3A00Z&to=2026-03-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:30:23Z",
+      "sha256": "3abe2e5eea55a7f6580a136f2b05a1f1b6e8e8e1defe078f05b7d85f8e314ef4",
+      "size_bytes": 9943527
+    },
+    {
+      "chunk": "2026-03",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-03-01T00%3A00Z&to=2026-04-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:30:27Z",
+      "sha256": "8605d82364700664863381a2a8d3d2c7871fdf14c5de10acb44f1d0bf47dc978",
+      "size_bytes": 11051011
+    },
+    {
+      "chunk": "2026-04",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-04-01T00%3A00Z&to=2026-05-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:30:30Z",
+      "sha256": "8aa8d93f5f209961fced998f2421115e08dc918cbaad8fb5cfb69c13b06ca773",
+      "size_bytes": 10694422
+    },
+    {
+      "chunk": "2026-05",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-05-01T00%3A00Z&to=2026-06-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:30:34Z",
+      "sha256": "469acc90ac874f8ed9ba048867016af3a08c4dc3c26d3fa99c6b99c067d1f7b4",
+      "size_bytes": 11050803
+    },
+    {
+      "chunk": "2026-06",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-06-01T00%3A00Z&to=2026-07-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:30:38Z",
+      "sha256": "8dfbb255e1ef84cd8b00ce2d3deb4385951b5419e183d985e80c207bcf507e05",
+      "size_bytes": 10672499
+    },
+    {
+      "chunk": "2026-07",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-07-01T00%3A00Z&to=2026-08-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:30:42Z",
+      "sha256": "5162e23a964fafc229000dbc1912202ac81910e2ed83ba5b55146993ae1a918c",
+      "size_bytes": 11010877
+    },
+    {
+      "chunk": "2026-08",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-08-01T00%3A00Z&to=2026-09-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:30:45Z",
+      "sha256": "f3508de8db42c2d2ae9493ca6a60977a46e6522de8b44afd3db15b6963c8dfd8",
+      "size_bytes": 11036309
+    },
+    {
+      "chunk": "2026-09",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-09-01T00%3A00Z&to=2026-10-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:30:46Z",
+      "sha256": "c986353b9604d3f5bdfed0a41a9da07e409c2be5dfacef1ef11a2a9bf83da748",
+      "size_bytes": 10694254
+    },
+    {
+      "chunk": "2026-10",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/system/frequency/stream?from=2026-10-01T00%3A00Z&to=2026-11-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:30:47Z",
+      "sha256": "e5ff4da5f6e960d7bed382df13d57d452fd828ef1dfa38fbd574d75f19750feb",
+      "size_bytes": 9088195
+    }
+  ],
+  "coverage_start_utc": "2026-01-01T00:00:00Z",
+  "coverage_end_utc": "2026-10-26T00:00:00Z",
+  "rows": 1712210,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "frequency_dev_mhz",
+      "type": "int16"
+    }
+  ],
+  "size_bytes": 1974027,
+  "sha256": "ab3016e81e8fd1e70e55e19bfa7779a08c3a46aeedcf8b042a579ad8db74885c"
+}

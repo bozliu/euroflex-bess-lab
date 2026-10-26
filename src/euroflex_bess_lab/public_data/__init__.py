@@ -13,6 +13,15 @@ The data tree lives in ``data/public`` (override with ``EUROFLEX_DATA_DIR``); re
 
 from __future__ import annotations
 
+from .gb import (
+    load_gb_frequency,
+    load_gb_fx,
+    load_gb_market_index,
+    load_gb_reserve_auctions,
+    load_gb_response_auctions,
+    load_gb_response_energy,
+    load_gb_system_prices,
+)
 from .loaders import (
     load_belgium_legacy,
     load_belgium_minute,
@@ -28,6 +37,7 @@ from .loaders import (
     read_manifest,
     table_path,
 )
+from .nordic import load_dk_imbalance, load_nordic_day_ahead, load_nordic_reserve
 from .paths import data_root, raw_root
 from .registry import TABLES
 from .validate import last_minute_vs_qh
@@ -44,8 +54,18 @@ __all__ = [
     "load_belgium_si_forecast",
     "load_capacity_awards",
     "load_day_ahead_prices",
+    "load_dk_imbalance",
     "load_energy_bid_curves",
+    "load_gb_frequency",
+    "load_gb_fx",
+    "load_gb_market_index",
+    "load_gb_reserve_auctions",
+    "load_gb_response_auctions",
+    "load_gb_response_energy",
+    "load_gb_system_prices",
     "load_germany_reserve",
+    "load_nordic_day_ahead",
+    "load_nordic_reserve",
     "load_res_load",
     "raw_root",
     "read_manifest",

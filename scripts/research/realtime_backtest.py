@@ -54,6 +54,10 @@ AUDIT_SLICES = {
 }
 AUDIT_CUTS = (37, 1503, 2999)
 LAGS = (0, 1, 2, 3)
+#: Ablation of SCALES-L's sign/branch decomposition: direct price models on rebuilt new-formula targets.
+ABLATION_VARIANTS = ("direct_rebuilt", "direct_rebuilt_curfeat")
+#: Natural-experiment groups whose ablation ledgers are exported (group key -> ledger period label).
+ABLATION_EXPORT = {"NE_AprJul_new2026": "AprJul2026", "NE_JanJul_new2026": "JanJul2026"}
 DEGRADATION = (0.0, 4.0, 8.0, 16.0)
 
 
@@ -226,6 +230,23 @@ def forecaster_specs(s: Settings) -> dict[str, ForecasterSpec]:
             folds=single_fold(*nf_train, *nf_test),
             description="PRISM with published new-formula components Jan-Mar 2026",
         ),
+        # ablation: the direct price model on new-formula prices rebuilt from current-design state
+        "direct_rebuilt_frozen": ForecasterSpec(
+            "direct_rebuilt_frozen",
+            "price",
+            "new2026",
+            features="rebuilt_invariant",
+            folds=single_fold(*frozen_train, *ne_test),
+            description="direct price model, rebuilt new-formula targets, SCALES-L zero-history information set",
+        ),
+        "direct_rebuilt_curfeat_frozen": ForecasterSpec(
+            "direct_rebuilt_curfeat_frozen",
+            "price",
+            "new2026",
+            features="rebuilt_current",
+            folds=single_fold(*frozen_train, *ne_test),
+            description="direct price model, rebuilt new-formula targets, feature set of the naive arm (a)",
+        ),
     }
     c0 = s.periods["C"][0]
     wf_c = monthly_folds(c0, c1, data_start=DATA_START, train_months=TRAIN_MONTHS)
@@ -243,8 +264,12 @@ def forecaster_specs(s: Settings) -> dict[str, ForecasterSpec]:
 
 def build_forecaster(spec: ForecasterSpec, gbm: dict[str, Any]) -> Any:
     from euroflex_bess_lab.realtime.forecasting import (
+        CURRENT_GROUPS,
+        CURRENT_PRICE_BASELINE,
+        INVARIANT_GROUPS,
         NEW_FORMULA_GROUPS,
         NEW_FORMULA_PRICE_BASELINE,
+        REBUILT_PRICE_BASELINE,
         FeatureConfig,
         GBMParams,
         PriceForecaster,
@@ -263,13 +288,31 @@ def build_forecaster(spec: ForecasterSpec, gbm: dict[str, Any]) -> Any:
                 baseline=NEW_FORMULA_PRICE_BASELINE,
                 params=params,
             )
+        elif spec.features == "rebuilt_invariant":
+            config = PriceForecasterConfig(
+                mechanism=spec.mechanism,
+                features=FeatureConfig(groups=INVARIANT_GROUPS, history="reconstructed:new2026"),
+                si_field="si_mw",
+                baseline=REBUILT_PRICE_BASELINE,
+                target="reconstructed:new2026",
+                params=params,
+            )
+        elif spec.features == "rebuilt_current":
+            config = PriceForecasterConfig(
+                mechanism=spec.mechanism,
+                features=FeatureConfig(groups=CURRENT_GROUPS, history="settlement:current"),
+                si_field="si_mw",
+                baseline=CURRENT_PRICE_BASELINE,
+                target="reconstructed:new2026",
+                params=params,
+            )
         else:
             config = PriceForecasterConfig(mechanism=spec.mechanism, params=params)
         return PriceForecaster(config, name=spec.name)
     si_field = "nf_si_mw" if (spec.mechanism == "new2026" and spec.components == "published") else "si_mw"
     config_p = PrismForecasterConfig(
-        mechanism=spec.mechanism,  # type: ignore[arg-type]
-        components=spec.components,  # type: ignore[arg-type]
+        mechanism=spec.mechanism,
+        components=spec.components,
         params=params,
         si_field=si_field,
     )
@@ -464,6 +507,14 @@ def make_strategy(s: Settings, name: str, mechanism: str, lag: int = 1) -> Any:
         "ne_prism_zero_wf": ("prism_zero_wf", neutral, "prism"),
         "ne_prism_new_published": ("prism_new_published", neutral, "prism"),
         "ne_prism_zero_live": ("prism_zero_frozen_live", neutral, "prism"),
+        "direct_rebuilt": ("direct_rebuilt_frozen", neutral, "mpc"),
+        "direct_rebuilt_risk": ("direct_rebuilt_frozen", risk, "mpc"),
+        "direct_rebuilt_live": ("direct_rebuilt_frozen_live", neutral, "mpc"),
+        "direct_rebuilt_live_risk": ("direct_rebuilt_frozen_live", risk, "mpc"),
+        "direct_rebuilt_curfeat": ("direct_rebuilt_curfeat_frozen", neutral, "mpc"),
+        "direct_rebuilt_curfeat_risk": ("direct_rebuilt_curfeat_frozen", risk, "mpc"),
+        "direct_rebuilt_curfeat_live": ("direct_rebuilt_curfeat_frozen_live", neutral, "mpc"),
+        "direct_rebuilt_curfeat_live_risk": ("direct_rebuilt_curfeat_frozen_live", risk, "mpc"),
         "ne_prism_zero_live_risk": ("prism_zero_frozen_live", risk, "prism"),
         "prism_live": ("prism_zero_wf_live", neutral, "prism"),
         "prism_live_risk": ("prism_zero_wf_live", risk, "prism"),
@@ -532,6 +583,8 @@ def simulation_groups(s: Settings) -> list[SimGroup]:
     b0, b1 = s.periods["B"][0], s.periods["B"][1]
     nf0 = max(utc(NF_TEST[0]), utc(b0)) if not s.quick else utc(b0)
     nf1 = min(utc(NF_TEST[1]), utc(b1))
+    ablation = tuple(f"{v}{suffix}" for v in ABLATION_VARIANTS for suffix in ("", "_risk", "_live", "_live_risk"))
+    ablation_skill = tuple(f"{v}_frozen{live}" for v in ABLATION_VARIANTS for live in ("", "_live"))
     ne_arms = (
         "idle",
         "threshold_price",
@@ -547,6 +600,7 @@ def simulation_groups(s: Settings) -> list[SimGroup]:
         "ne_prism_zero_live",
         "ne_prism_zero_live_risk",
         "ne_prism_new_published",
+        *ablation,
         "oracle_qh",
     )
     groups.append(
@@ -565,6 +619,7 @@ def simulation_groups(s: Settings) -> list[SimGroup]:
                 "prism_new_published",
                 "price_current",
                 "prism_zero_frozen_live",
+                *ablation_skill,
             ),
         )
     )
@@ -594,9 +649,10 @@ def simulation_groups(s: Settings) -> list[SimGroup]:
                 "ne_prism_zero_wf",
                 "ne_prism_zero_live",
                 "ne_prism_zero_live_risk",
+                *ablation,
                 "oracle_qh",
             ),
-            skill=("price_current_frozen", "prism_zero_frozen", "prism_zero_frozen_live"),
+            skill=("price_current_frozen", "prism_zero_frozen", "prism_zero_frozen_live", *ablation_skill),
         )
     )
     c0, c1 = s.periods["C"][0], s.periods["C"][1]
@@ -968,6 +1024,9 @@ def stage_audit(s: Settings) -> None:
                     "ne_prism_zero_frozen",
                     "ne_prism_zero_wf",
                     "ne_prism_zero_live",
+                    "direct_rebuilt",
+                    "direct_rebuilt_live_risk",
+                    "direct_rebuilt_curfeat",
                     "prism_live",
                 ]
                 if utc(start) >= utc(NF_TEST[0]):
@@ -1014,7 +1073,8 @@ def stage_audit(s: Settings) -> None:
 
 def _load_group(s: Settings, key: str) -> tuple[dict[str, dict[str, Any]], dict[str, pd.DataFrame]]:
     out_dir = s.cache / "sim" / key
-    summaries, ledgers = {}, {}
+    summaries: dict[str, dict[str, Any]] = {}
+    ledgers: dict[str, pd.DataFrame] = {}
     if not out_dir.exists():
         return summaries, ledgers
     for path in sorted(out_dir.glob("*.json")):
@@ -1104,6 +1164,44 @@ def _export_ledgers(s: Settings) -> list[str]:
                     )
                     if k in summary
                 },
+            }
+            (s.ledgers / f"{stem}.json").write_text(json.dumps(sidecar, indent=1, default=str))
+            written.append(stem)
+    written += _export_ablation_ledgers(s)
+    return written
+
+
+def _export_ablation_ledgers(s: Settings) -> list[str]:
+    """Quarter-hour ledgers of the rebuilt-target ablation arms (``realtime_direct_rebuilt*``)."""
+    written = []
+    for key, label in ABLATION_EXPORT.items():
+        summaries, ledgers = _load_group(s, key)
+        for name, ledger in ledgers.items():
+            if not name.startswith("direct_rebuilt"):
+                continue
+            stem = f"realtime_{name}_new2026_{label}"
+            frame = ledger.copy()
+            for column in frame.columns:
+                if frame[column].dtype == np.float64:
+                    frame[column] = frame[column].astype(np.float32)
+            frame["strategy"] = name
+            frame["mechanism"] = "new2026"
+            frame["fleet_mw"] = np.float32(1.0)
+            frame.to_parquet(s.ledgers / f"{stem}.parquet", index=False, compression="zstd")
+            summary = summaries[name]
+            sidecar = {
+                "strategy": name,
+                "mechanism": "new2026",
+                "period": label,
+                "start_utc": summary["start_utc"],
+                "end_utc": summary["end_utc"],
+                "battery": summary["battery"],
+                "publication": summary["publication"],
+                "price_taker": True,
+                "fleet_mw": 1.0,
+                "training": "frozen fold 2025-07-01..2026-01-01, targets rebuilt with reconstruct_new_formula_history",
+                "source": "scripts/research/realtime_backtest.py on data/public (Elia Open Data, CC BY 4.0)",
+                "summary": {k: summary[k] for k in ("eur_per_mw_year", "cycles_per_day", "pnl_eur") if k in summary},
             }
             (s.ledgers / f"{stem}.json").write_text(json.dumps(sidecar, indent=1, default=str))
             written.append(stem)

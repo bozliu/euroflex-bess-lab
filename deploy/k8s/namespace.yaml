@@ -1,0 +1,8 @@
+# Namespace for the live paper-trading engine (shadow mode; never submits orders).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: euroflex
+  labels:
+    app.kubernetes.io/part-of: euroflex-bess-lab
+    pod-security.kubernetes.io/enforce: restricted

@@ -1,0 +1,333 @@
+{
+  "schema_version": 1,
+  "path": "gb/market_index.parquet",
+  "table": "gb_market_index",
+  "title": "GB Market Index Data per settlement period (BMRS MID; APX/EPEX and N2EX providers).",
+  "time_column": "timestamp_utc",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T14:44:46Z",
+  "fetch_command": "euroflex data gb fetch market-index  (or: .venv/bin/python scripts/research/gb_fetch_data.py --target market-index)",
+  "generated_by": "euroflex_bess_lab.public_data.gb (scripts/research/gb_fetch_data.py)",
+  "snapshot_end_utc": "2026-10-26T00:00:00Z",
+  "source": "Elexon BMRS Insights Solution API (data.elexon.co.uk)",
+  "licence": "Elexon BMRS open data licence",
+  "licence_url": "https://www.elexon.co.uk/bsc/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+  "licence_terms": "Worldwide, royalty-free, perpetual, non-exclusive licence: copy, publish, distribute and transmit, adapt and exploit the BMRS Data (including commercially) provided the attribution statement is included and, where possible, a link to the licence; no implication of official status or endorsement; do not misrepresent the data. Excludes third-party rights that Elexon is not authorised to license.",
+  "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2023-2026",
+  "dataset_ids": [
+    "MID"
+  ],
+  "dataset_pages": [
+    "https://bmrs.elexon.co.uk/market-index-prices"
+  ],
+  "source_url_template": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=YYYY-MM-01T00:00Z&to=<next month>T00:00Z",
+  "upstream_note": "Market Index Data are calculated by the Market Index Data Providers (EPEX SPOT 'APXMIDP', Nord Pool 'N2EXMIDP') under the Market Index Definition Statement (BSC) and published on BMRS: volume-weighted prices of the half-hour, 1-, 2- and 4-hour products traded within eight hours before gate closure (day-ahead auction excluded). Redistributed here as BMRS data.",
+  "transformation_notes": [
+    "timestamp_utc = SP start (UTC). Provider rows with zero volume (below the Individual Liquidity Threshold, reported as price 0) are treated as missing.",
+    "mid_price_gbp_mwh = volume-weighted average of the provider prices with volume > 0 (NaN if none); mid_volume_mwh = their total volume. In practice N2EX volumes are zero, so the MID equals the APX value.",
+    "Monthly stream requests overlap at month boundaries; duplicates are dropped. Numeric columns float32."
+  ],
+  "validation": {
+    "grid": {
+      "rows": 50880,
+      "expected_rows": 50880,
+      "missing_intervals": 0,
+      "unique": true,
+      "sorted": true
+    },
+    "mid_missing_rows": 21,
+    "apx_traded_rows": 50855,
+    "n2ex_traded_rows": 122,
+    "negative_mid_rows": 1432
+  },
+  "inputs": [
+    {
+      "chunk": "2023-12",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2023-12-01T00%3A00Z&to=2024-01-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:44:46Z",
+      "sha256": "75d2dbb75039f1ac4756172d892e91bb8fa9f9b3223950d5bfffab2c5706e1b2",
+      "size_bytes": 477190
+    },
+    {
+      "chunk": "2024-01",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-01-01T00%3A00Z&to=2024-02-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:04Z",
+      "sha256": "bac5d768cfdb8cb320db8659a6a8dc1b5d06e960ae94e30d322b848614159ebf",
+      "size_bytes": 477124
+    },
+    {
+      "chunk": "2024-02",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-02-01T00%3A00Z&to=2024-03-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:04Z",
+      "sha256": "057f920fade9a7ae985ffa20eb5158d9b2e9f8e96934b4c61e5ec1eee1f40d28",
+      "size_bytes": 446099
+    },
+    {
+      "chunk": "2024-03",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-03-01T00%3A00Z&to=2024-04-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:05Z",
+      "sha256": "c52f4797a07b550745b3f69cbd4a8f1ee3a72764484a6803f65f43e249f4a7e5",
+      "size_bytes": 476412
+    },
+    {
+      "chunk": "2024-04",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-04-01T00%3A00Z&to=2024-05-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:05Z",
+      "sha256": "acdaf704112de361c16c55f6c92ad989f71bf09715c96074251a6ee634557cd2",
+      "size_bytes": 461357
+    },
+    {
+      "chunk": "2024-05",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-05-01T00%3A00Z&to=2024-06-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:05Z",
+      "sha256": "0b6f29970face7eecd4985fc2d7525e352abab5f4627c2a7fb77dafa4dd788e8",
+      "size_bytes": 475789
+    },
+    {
+      "chunk": "2024-06",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-06-01T00%3A00Z&to=2024-07-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:05Z",
+      "sha256": "f6088c0515dd54c2789e754d37303910985f9e8ba5c7db379538a570df527a3f",
+      "size_bytes": 461781
+    },
+    {
+      "chunk": "2024-07",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-07-01T00%3A00Z&to=2024-08-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:06Z",
+      "sha256": "aeb05649078fba0e682600d873512c1659eeed1fc4604a52b165cc48432f8230",
+      "size_bytes": 476795
+    },
+    {
+      "chunk": "2024-08",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-08-01T00%3A00Z&to=2024-09-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:06Z",
+      "sha256": "a0e0301c964a2b4686bcb1c5dbfff6b365771b8b503e30d63554cbb65083276a",
+      "size_bytes": 476952
+    },
+    {
+      "chunk": "2024-09",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-09-01T00%3A00Z&to=2024-10-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:06Z",
+      "sha256": "d679cc479bbf415eacc243f31630ca019c8e6aab51c4a524668ee800a516daa8",
+      "size_bytes": 461982
+    },
+    {
+      "chunk": "2024-10",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-10-01T00%3A00Z&to=2024-11-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:06Z",
+      "sha256": "cbceee2f19171584db8aad1f3d62d68308053e60e608da53ef21e767c79e6e80",
+      "size_bytes": 477304
+    },
+    {
+      "chunk": "2024-11",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-11-01T00%3A00Z&to=2024-12-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:06Z",
+      "sha256": "151ca0ad5bdb2042888b43e389878efb0df5dd346a95f55c844c0a3c4578c541",
+      "size_bytes": 461781
+    },
+    {
+      "chunk": "2024-12",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2024-12-01T00%3A00Z&to=2025-01-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:07Z",
+      "sha256": "0b9929c5e9c28c4d482a0fe01234ca8da1fe85285b50e82cfce32b9c89d81832",
+      "size_bytes": 477380
+    },
+    {
+      "chunk": "2025-01",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-01-01T00%3A00Z&to=2025-02-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:07Z",
+      "sha256": "7a52432e4f94762df264f805c935090c96fa5c67b986c08a8225b81f015423cd",
+      "size_bytes": 478009
+    },
+    {
+      "chunk": "2025-02",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-02-01T00%3A00Z&to=2025-03-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:07Z",
+      "sha256": "2f85136d575ec6fb1a229093729744c21470ef15caf464d84d1e2c2ace38baec",
+      "size_bytes": 432027
+    },
+    {
+      "chunk": "2025-03",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-03-01T00%3A00Z&to=2025-04-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:07Z",
+      "sha256": "2c16a893c164e369eedb8d9a34722cb04e19a29de78ac8d5572cd72a0aab75d2",
+      "size_bytes": 476919
+    },
+    {
+      "chunk": "2025-04",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-04-01T00%3A00Z&to=2025-05-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:07Z",
+      "sha256": "4e36a2ae9b84eae2573e491276777ebd03936b1f164ce1b8698cd365ea41bba8",
+      "size_bytes": 460774
+    },
+    {
+      "chunk": "2025-05",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-05-01T00%3A00Z&to=2025-06-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:08Z",
+      "sha256": "37f2124c403d0bd8f16816c62c4a6ac5bf49b10db83834347444d3bea56a2a86",
+      "size_bytes": 477192
+    },
+    {
+      "chunk": "2025-06",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-06-01T00%3A00Z&to=2025-07-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:08Z",
+      "sha256": "ce8c2696d0ffb650f799be03121a2acf8879b41e2e0bd94924ce2b737508039b",
+      "size_bytes": 442953
+    },
+    {
+      "chunk": "2025-07",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-07-01T00%3A00Z&to=2025-08-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:08Z",
+      "sha256": "554c5ea361ddd1ca889a949720166610d51a9e56e3a1c1f8482997382e78bed3",
+      "size_bytes": 473713
+    },
+    {
+      "chunk": "2025-08",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-08-01T00%3A00Z&to=2025-09-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:08Z",
+      "sha256": "a9ec451dcac45b2eb6ac52c893f538128a635fbc42a5c2e311b4fa868855e195",
+      "size_bytes": 477482
+    },
+    {
+      "chunk": "2025-09",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-09-01T00%3A00Z&to=2025-10-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:08Z",
+      "sha256": "e2d230ae26b400328954213449505cad33b7ebff6426796c63b46f3199c9c918",
+      "size_bytes": 462102
+    },
+    {
+      "chunk": "2025-10",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-10-01T00%3A00Z&to=2025-11-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:09Z",
+      "sha256": "bf4210cba037c6472ea044f33b85667813836d912b85ecfb95a59e891068c61a",
+      "size_bytes": 475144
+    },
+    {
+      "chunk": "2025-11",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-11-01T00%3A00Z&to=2025-12-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:09Z",
+      "sha256": "3e8682da94e285693318e467c44785c4347cce8bbf373edb8d308aedafb7e4c1",
+      "size_bytes": 461840
+    },
+    {
+      "chunk": "2025-12",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2025-12-01T00%3A00Z&to=2026-01-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:09Z",
+      "sha256": "4d0b387bbaa1de2a4e76900baf2be45b1ade2d068dc26fdf36029474fc10eaae",
+      "size_bytes": 477275
+    },
+    {
+      "chunk": "2026-01",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-01-01T00%3A00Z&to=2026-02-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:09Z",
+      "sha256": "1e7b1a920d3149c447d11447ca6a7870e16429dfa5ed4cb48525b6687124fc5f",
+      "size_bytes": 477278
+    },
+    {
+      "chunk": "2026-02",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-02-01T00%3A00Z&to=2026-03-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:09Z",
+      "sha256": "aee0769c27018a1fe5e3150ded33fffbfb2c8047f6d0c5446d406cb5f3a6cbbb",
+      "size_bytes": 431388
+    },
+    {
+      "chunk": "2026-03",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-03-01T00%3A00Z&to=2026-04-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:10Z",
+      "sha256": "56d05e6a376eba80a375fcf89651ccb6abfdb169b2e84ab53d82d6e70b48143b",
+      "size_bytes": 477746
+    },
+    {
+      "chunk": "2026-04",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-04-01T00%3A00Z&to=2026-05-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:10Z",
+      "sha256": "065e0261ff7723641e988902fb398a5b16dd3856413493a506b41ed2cfeb1710",
+      "size_bytes": 462576
+    },
+    {
+      "chunk": "2026-05",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-05-01T00%3A00Z&to=2026-06-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:10Z",
+      "sha256": "f835259317e13f372e5413289718f86b55b182d091d80b38435143ab1989f8ab",
+      "size_bytes": 478339
+    },
+    {
+      "chunk": "2026-06",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-06-01T00%3A00Z&to=2026-07-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:10Z",
+      "sha256": "cbe890c064af6b2ff030898d824684a19a7d1df3216c01c8c6927fe050beebc1",
+      "size_bytes": 462285
+    },
+    {
+      "chunk": "2026-07",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-07-01T00%3A00Z&to=2026-08-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:10Z",
+      "sha256": "e49589245acd39b5ca1625fc90b71d5bdc685eb14ba6359899f9e3ff0ee60295",
+      "size_bytes": 478412
+    },
+    {
+      "chunk": "2026-08",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-08-01T00%3A00Z&to=2026-09-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:11Z",
+      "sha256": "95ffdf609c4789838c23e2d26a14c4d11654bb75e3ed97698a839cdead432f72",
+      "size_bytes": 478678
+    },
+    {
+      "chunk": "2026-09",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-09-01T00%3A00Z&to=2026-10-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:11Z",
+      "sha256": "fdc4fbd84562ebe523c174fbb51e5c7c61ee077a8a4f1b14cbbe006c913196a6",
+      "size_bytes": 462596
+    },
+    {
+      "chunk": "2026-10",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/MID/stream?from=2026-10-01T00%3A00Z&to=2026-11-01T00%3A00Z",
+      "retrieved_at_utc": "2026-10-26T14:29:11Z",
+      "sha256": "c711ec5a382fda070f194179b47be209da22d2f35b14b4e289019cf903e6cac1",
+      "size_bytes": 394404
+    }
+  ],
+  "coverage_start_utc": "2023-12-01T00:00:00Z",
+  "coverage_end_utc": "2026-10-26T00:00:00Z",
+  "rows": 50880,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "settlement_date",
+      "type": "large_string"
+    },
+    {
+      "name": "settlement_period",
+      "type": "int16"
+    },
+    {
+      "name": "mid_price_gbp_mwh",
+      "type": "float"
+    },
+    {
+      "name": "mid_volume_mwh",
+      "type": "float"
+    },
+    {
+      "name": "apx_price_gbp_mwh",
+      "type": "float"
+    },
+    {
+      "name": "apx_volume_mwh",
+      "type": "float"
+    },
+    {
+      "name": "n2ex_price_gbp_mwh",
+      "type": "float"
+    },
+    {
+      "name": "n2ex_volume_mwh",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 543203,
+  "sha256": "4276511b537d66ef420c12a60696082ed3313bf289862678b915562be2ad2d8c"
+}

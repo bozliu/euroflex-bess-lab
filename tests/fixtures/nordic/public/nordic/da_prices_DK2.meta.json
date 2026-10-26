@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "path": "nordic/da_prices_DK2.parquet",
+  "table": "nordic_da_prices_DK2",
+  "title": "DK2 day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards).",
+  "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+  "dataset_ids": [
+    "Elspotprices",
+    "DayAheadPrices"
+  ],
+  "dataset_pages": [
+    "https://www.energidataservice.dk/tso-electricity/Elspotprices",
+    "https://www.energidataservice.dk/tso-electricity/DayAheadPrices"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+  "attribution": "Source: Energinet (www.energidataservice.dk)",
+  "redistributed": true,
+  "zone": "DK2",
+  "time_column": "timestamp_utc",
+  "transformation_notes": [
+    "timestamp_utc = start of the SDAC day-ahead product (UTC); resolution_minutes = 60 until delivery day 2025-09-30 and 15 from 2025-10-01 (SDAC 15-minute MTU go-live).",
+    "price_eur_mwh is float32; null prices dropped; duplicates on timestamp_utc dropped (last kept).",
+    "Hourly rows come from Elspotprices (SpotPriceEUR) before 2025-09-30T22:00Z, 15-minute rows from DayAheadPrices (DayAheadPriceEUR) afterwards; requests are filtered to PriceArea in ['DK1', 'DK2', 'SE3', 'SE4'] and to the EUR columns."
+  ],
+  "fetch_command": "python scripts/research/nordic_fetch.py --tables day_ahead",
+  "coverage_start_utc": "2025-06-07T22:00:00Z",
+  "coverage_end_utc": "2025-10-27T23:00:00Z",
+  "fixture_windows_utc": [
+    [
+      "2025-06-07T22:00:00Z",
+      "2025-06-13T22:00:00Z"
+    ],
+    [
+      "2025-09-25T22:00:00Z",
+      "2025-10-03T22:00:00Z"
+    ],
+    [
+      "2025-10-22T22:00:00Z",
+      "2025-10-27T23:00:00Z"
+    ]
+  ],
+  "note": "Test fixture sliced from data/public/nordic/da_prices_DK2.parquet by scripts/research/nordic_make_fixtures.py",
+  "rows": 1036,
+  "columns": [
+    {
+      "name": "timestamp_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "resolution_minutes",
+      "type": "int16"
+    },
+    {
+      "name": "price_eur_mwh",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 7121,
+  "sha256": "8ec9705ccc2bb1d748865c2cbc731e81d2a7f7d64ef31d2a71dc7198937bae85"
+}

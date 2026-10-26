@@ -32,7 +32,13 @@ from .features import (
 )
 from .fusion import RunningEstimateFusion, running_error_variance, running_estimate
 from .models import DEFAULT_QUANTILES, GBMParams, MeanHead, QuantileHead, SignHead, quantile_weights, require_sklearn
-from .price import CURRENT_PRICE_BASELINE, NEW_FORMULA_PRICE_BASELINE, PriceForecaster, PriceForecasterConfig
+from .price import (
+    CURRENT_PRICE_BASELINE,
+    NEW_FORMULA_PRICE_BASELINE,
+    REBUILT_PRICE_BASELINE,
+    PriceForecaster,
+    PriceForecasterConfig,
+)
 from .skill import forecast_skill, pinball_loss
 from .splits import Fold, monthly_folds, single_fold, training_rows, window_rows
 from .state import PrismForecaster, PrismForecasterConfig, regime_components
@@ -58,6 +64,7 @@ __all__ = [
     "PrismForecaster",
     "PrismForecasterConfig",
     "QuantileHead",
+    "REBUILT_PRICE_BASELINE",
     "RunningEstimateFusion",
     "SignHead",
     "SupportsForecast",

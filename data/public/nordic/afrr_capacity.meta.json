@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "path": "nordic/afrr_capacity.parquet",
+  "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+  "dataset_ids": [
+    "AfrrReservesNordic"
+  ],
+  "dataset_pages": [
+    "https://www.energidataservice.dk/tso-electricity/AfrrReservesNordic"
+  ],
+  "source_urls": [
+    "https://api.energidataservice.dk/dataset/AfrrReservesNordic?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2024-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22FI%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2023-12-01T00%3A00&timezone=UTC",
+    "https://api.energidataservice.dk/dataset/AfrrReservesNordic?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2025-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22FI%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2024-01-01T00%3A00&timezone=UTC",
+    "https://api.energidataservice.dk/dataset/AfrrReservesNordic?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2026-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22FI%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2025-01-01T00%3A00&timezone=UTC",
+    "https://api.energidataservice.dk/dataset/AfrrReservesNordic?columns=TimeUTC%2CPriceArea%2CUpDemandMW%2CUpProcuredMW%2CUpPriceEUR%2CDownDemandMW%2CDownProcuredMW%2CDownPriceEUR&end=2027-01-01T00%3A00&filter=%7B%22PriceArea%22%3A%5B%22DK1%22%2C%22DK2%22%2C%22FI%22%2C%22SE3%22%2C%22SE4%22%5D%7D&limit=0&sort=TimeUTC+asc&start=2026-01-01T00%3A00&timezone=UTC"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+  "attribution": "Source: Energinet (www.energidataservice.dk)",
+  "redistributed": true,
+  "retrieved_at_utc": "2026-10-26T14:45:12Z",
+  "table": "nordic_afrr_capacity",
+  "title": "aFRR capacity marginal prices, procured volumes and demand per zone, direction and hour.",
+  "zones": [
+    "DK1",
+    "DK2",
+    "FI",
+    "SE3",
+    "SE4"
+  ],
+  "time_column": "delivery_start_utc",
+  "coverage_start_utc": "2023-12-01T00:00:00Z",
+  "coverage_end_utc": "2026-10-25T23:00:00Z",
+  "transformation_notes": [
+    "Nordic aFRR capacity market (common Nordic platform, D-1, gate closure 07:30 CET, marginal pricing) for DK2, FI, SE3, SE4; DK1 rows (local DK1 aFRR capacity market) start 2024-10-02.",
+    "Long format: one row per hour, zone and direction (up/down); price_eur_per_mw_h = Up/DownPriceEUR (EUR per MW and hour), procured_mw = Up/DownProcuredMW, demand_mw = Up/DownDemandMW (published from 2025-08-21, null before).",
+    "Requests are filtered to PriceArea in the modelled zones."
+  ],
+  "validation": {
+    "duplicates_dropped": 0,
+    "per_zone": {
+      "DK1": {
+        "first_utc": "2024-10-01T22:00:00Z",
+        "last_utc": "2026-10-25T22:00:00Z",
+        "rows": 36194,
+        "null_prices": 0
+      },
+      "DK2": {
+        "first_utc": "2023-12-01T00:00:00Z",
+        "last_utc": "2026-10-25T22:00:00Z",
+        "rows": 50878,
+        "null_prices": 0
+      },
+      "FI": {
+        "first_utc": "2023-12-01T00:00:00Z",
+        "last_utc": "2026-10-25T22:00:00Z",
+        "rows": 50878,
+        "null_prices": 0
+      },
+      "SE3": {
+        "first_utc": "2023-12-01T00:00:00Z",
+        "last_utc": "2026-10-25T22:00:00Z",
+        "rows": 50878,
+        "null_prices": 0
+      },
+      "SE4": {
+        "first_utc": "2023-12-01T00:00:00Z",
+        "last_utc": "2026-10-25T22:00:00Z",
+        "rows": 50878,
+        "null_prices": 0
+      }
+    }
+  },
+  "fetch_command": "python scripts/research/nordic_fetch.py --tables afrr",
+  "generated_by": "euroflex_bess_lab.public_data.nordic (scripts/research/nordic_fetch.py)",
+  "snapshot_end_utc": "2026-10-25T23:00:00Z",
+  "rows": 239706,
+  "columns": [
+    {
+      "name": "delivery_start_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "delivery_end_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "zone",
+      "type": "large_string"
+    },
+    {
+      "name": "product",
+      "type": "large_string"
+    },
+    {
+      "name": "direction",
+      "type": "large_string"
+    },
+    {
+      "name": "price_eur_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "procured_mw",
+      "type": "float"
+    },
+    {
+      "name": "demand_mw",
+      "type": "float"
+    },
+    {
+      "name": "source",
+      "type": "large_string"
+    }
+  ],
+  "size_bytes": 399824,
+  "sha256": "0bf38119640a4396adaf11557e6a0bbcf33ad48dcce1c7370468d185bbac0f09"
+}

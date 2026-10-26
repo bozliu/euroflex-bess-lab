@@ -1,0 +1,42 @@
+{
+  "description": "Daily results per zone, workflow (da_only, da_fcr, da_afrr, da_mfrr, full_stack) and mode (persistence, oracle).",
+  "generated_by": "scripts/research/nordic_backtest.py",
+  "period": {
+    "DK1": [
+      "2024-02-01",
+      "2026-10-25"
+    ],
+    "DK2": [
+      "2024-02-01",
+      "2026-10-25"
+    ],
+    "SE3": [
+      "2024-02-01",
+      "2026-10-25"
+    ],
+    "SE4": [
+      "2024-02-01",
+      "2026-10-25"
+    ],
+    "FI": [
+      "2024-02-01",
+      "2026-07-01"
+    ]
+  },
+  "battery": {
+    "power_mw": 1.0,
+    "energy_mwh": 2.0,
+    "soc_window": [
+      0.05,
+      0.95
+    ],
+    "daily_start_end_soc_frac": 0.5,
+    "efficiency": [
+      0.95,
+      0.95
+    ],
+    "degradation_eur_per_mwh_discharged": 8.0
+  },
+  "units": "EUR per day for a 1 MW / 2 MWh battery; avg_*_mw = mean reserved MW",
+  "data": "data/public/nordic (Energinet Energi Data Service, Svenska kraftn\u00e4t SVK Data Service; CC BY 4.0)"
+}

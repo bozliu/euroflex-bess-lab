@@ -1,0 +1,544 @@
+{
+  "generated_by": "scripts/research/nordic_backtest.py",
+  "battery": {
+    "power_mw": 1.0,
+    "energy_mwh": 2.0,
+    "soc_window": [
+      0.05,
+      0.95
+    ],
+    "daily_start_end_soc_frac": 0.5,
+    "efficiency": [
+      0.95,
+      0.95
+    ],
+    "degradation_eur_per_mwh_discharged": 8.0
+  },
+  "periods": {
+    "DK1": {
+      "latest12": [
+        "2025-10-01",
+        "2026-09-30"
+      ],
+      "2024": [
+        "2024-02-01",
+        "2024-12-31"
+      ],
+      "2025": [
+        "2025-01-01",
+        "2025-12-31"
+      ],
+      "2026": [
+        "2026-01-01",
+        "2026-10-25"
+      ],
+      "full": [
+        "2024-02-01",
+        "2026-10-25"
+      ]
+    },
+    "DK2": {
+      "latest12": [
+        "2025-10-01",
+        "2026-09-30"
+      ],
+      "2024": [
+        "2024-02-01",
+        "2024-12-31"
+      ],
+      "2025": [
+        "2025-01-01",
+        "2025-12-31"
+      ],
+      "2026": [
+        "2026-01-01",
+        "2026-10-25"
+      ],
+      "full": [
+        "2024-02-01",
+        "2026-10-25"
+      ]
+    },
+    "SE3": {
+      "latest12": [
+        "2025-10-01",
+        "2026-09-30"
+      ],
+      "2024": [
+        "2024-02-01",
+        "2024-12-31"
+      ],
+      "2025": [
+        "2025-01-01",
+        "2025-12-31"
+      ],
+      "2026": [
+        "2026-01-01",
+        "2026-10-25"
+      ],
+      "full": [
+        "2024-02-01",
+        "2026-10-25"
+      ]
+    },
+    "SE4": {
+      "latest12": [
+        "2025-10-01",
+        "2026-09-30"
+      ],
+      "2024": [
+        "2024-02-01",
+        "2024-12-31"
+      ],
+      "2025": [
+        "2025-01-01",
+        "2025-12-31"
+      ],
+      "2026": [
+        "2026-01-01",
+        "2026-10-25"
+      ],
+      "full": [
+        "2024-02-01",
+        "2026-10-25"
+      ]
+    },
+    "FI": {
+      "latest12": [
+        "2025-07-01",
+        "2026-06-30"
+      ],
+      "2024": [
+        "2024-02-01",
+        "2024-12-31"
+      ],
+      "2025": [
+        "2025-01-01",
+        "2025-12-31"
+      ],
+      "2026": [
+        "2026-01-02",
+        "2026-07-01"
+      ],
+      "full": [
+        "2024-02-01",
+        "2026-07-01"
+      ]
+    }
+  },
+  "latest12": {
+    "DK1": {
+      "da_only": {
+        "persistence": {
+          "net_eur": 57885.557443293335,
+          "da_revenue_eur": 67695.51244329335,
+          "degradation_eur": -9809.955000000002,
+          "cycles_per_day": 1.6797868150684934,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 79176.39881114435,
+          "da_revenue_eur": 88990.35381114436,
+          "degradation_eur": -9813.955000000002,
+          "cycles_per_day": 1.6804717465753427,
+          "days": 365.0
+        }
+      },
+      "da_fcr": {
+        "persistence": {
+          "net_eur": 126043.31819978461,
+          "da_revenue_eur": 34778.594410976344,
+          "degradation_eur": -4143.528871834707,
+          "cycles_per_day": 0.7095083684648471,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 143211.96461760136,
+          "da_revenue_eur": 51089.047548403745,
+          "degradation_eur": -4134.086053153388,
+          "cycles_per_day": 0.7078914474577719,
+          "days": 365.0
+        }
+      },
+      "da_afrr": {
+        "persistence": {
+          "net_eur": 142073.24512844582,
+          "da_revenue_eur": 48541.95553569508,
+          "degradation_eur": -6090.098206581056,
+          "cycles_per_day": 1.0428250353734683,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 172209.8714700099,
+          "da_revenue_eur": 64949.3028833054,
+          "degradation_eur": -6090.149873247721,
+          "cycles_per_day": 1.0428338824054317,
+          "days": 365.0
+        }
+      },
+      "da_mfrr": {
+        "persistence": {
+          "net_eur": 130667.3861469891,
+          "da_revenue_eur": 49960.330656086844,
+          "degradation_eur": -6442.575174364752,
+          "cycles_per_day": 1.1031806805419095,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 162597.69926392444,
+          "da_revenue_eur": 65501.36406929963,
+          "degradation_eur": -6451.173020958501,
+          "cycles_per_day": 1.1046529145476887,
+          "days": 365.0
+        }
+      },
+      "full_stack": {
+        "persistence": {
+          "net_eur": 203046.70970436887,
+          "da_revenue_eur": 26846.526510150772,
+          "degradation_eur": -3150.334992073171,
+          "cycles_per_day": 0.5394409233002005,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 261559.3759062064,
+          "da_revenue_eur": 36948.82328788277,
+          "degradation_eur": -3155.200334415514,
+          "cycles_per_day": 0.5402740298656702,
+          "days": 365.0
+        }
+      }
+    },
+    "DK2": {
+      "da_only": {
+        "persistence": {
+          "net_eur": 61685.28775920141,
+          "da_revenue_eur": 71836.7927592014,
+          "degradation_eur": -10151.505000000001,
+          "cycles_per_day": 1.7382714041095892,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 85190.35611678386,
+          "da_revenue_eur": 95347.66611678388,
+          "degradation_eur": -10157.310000000001,
+          "cycles_per_day": 1.7392654109589043,
+          "days": 365.0
+        }
+      },
+      "da_fcr": {
+        "persistence": {
+          "net_eur": 154432.8528835596,
+          "da_revenue_eur": 41765.15172119865,
+          "degradation_eur": -4263.846062298471,
+          "cycles_per_day": 0.7301106271059026,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 187796.46456173647,
+          "da_revenue_eur": 60911.41834370394,
+          "degradation_eur": -4254.391853343248,
+          "cycles_per_day": 0.7284917557094602,
+          "days": 365.0
+        }
+      },
+      "da_afrr": {
+        "persistence": {
+          "net_eur": 113106.86795146027,
+          "da_revenue_eur": 53272.098404596254,
+          "degradation_eur": -5996.710918346693,
+          "cycles_per_day": 1.026834061360735,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 144023.26218421973,
+          "da_revenue_eur": 75003.50297591093,
+          "degradation_eur": -5989.436151680027,
+          "cycles_per_day": 1.0255883821369909,
+          "days": 365.0
+        }
+      },
+      "da_mfrr": {
+        "persistence": {
+          "net_eur": 177603.668701737,
+          "da_revenue_eur": 44582.29647999974,
+          "degradation_eur": -5189.61039701808,
+          "cycles_per_day": 0.8886319172976165,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 207230.59859865034,
+          "da_revenue_eur": 62022.76339658609,
+          "degradation_eur": -5200.63349701808,
+          "cycles_per_day": 0.8905194344209041,
+          "days": 365.0
+        }
+      },
+      "full_stack": {
+        "persistence": {
+          "net_eur": 196362.33783138663,
+          "da_revenue_eur": 35256.190000001036,
+          "degradation_eur": -3535.040041043979,
+          "cycles_per_day": 0.6053150755212292,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 272094.75742510107,
+          "da_revenue_eur": 50240.6204598114,
+          "degradation_eur": -3554.599023046363,
+          "cycles_per_day": 0.6086642162750622,
+          "days": 365.0
+        }
+      }
+    },
+    "SE3": {
+      "da_only": {
+        "persistence": {
+          "net_eur": 32082.450839078825,
+          "da_revenue_eur": 41519.185839078826,
+          "degradation_eur": -9436.735,
+          "cycles_per_day": 1.615879280821918,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 52243.83929639735,
+          "da_revenue_eur": 61678.77929639735,
+          "degradation_eur": -9434.94,
+          "cycles_per_day": 1.6155719178082193,
+          "days": 365.0
+        }
+      },
+      "da_fcr": {
+        "persistence": {
+          "net_eur": 141073.75201713844,
+          "da_revenue_eur": 14268.157792898923,
+          "degradation_eur": -2837.169423353338,
+          "cycles_per_day": 0.48581668208105105,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 166990.90523384482,
+          "da_revenue_eur": 26623.06721119097,
+          "degradation_eur": -2821.9134532040844,
+          "cycles_per_day": 0.4832043584253569,
+          "days": 365.0
+        }
+      },
+      "da_afrr": {
+        "persistence": {
+          "net_eur": 194400.8996309795,
+          "da_revenue_eur": 11610.362618206558,
+          "degradation_eur": -2245.2296409065993,
+          "cycles_per_day": 0.3844571302922259,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 213750.13561890018,
+          "da_revenue_eur": 22408.930123828184,
+          "degradation_eur": -2223.176307573266,
+          "cycles_per_day": 0.38068087458446337,
+          "days": 365.0
+        }
+      },
+      "da_mfrr": {
+        "persistence": {
+          "net_eur": 152094.45204848802,
+          "da_revenue_eur": 20943.734161905504,
+          "degradation_eur": -4844.627541465763,
+          "cycles_per_day": 0.8295595105249595,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 176916.7636539085,
+          "da_revenue_eur": 36083.52457679949,
+          "degradation_eur": -4856.1092081324305,
+          "cycles_per_day": 0.8315255493377449,
+          "days": 365.0
+        }
+      },
+      "full_stack": {
+        "persistence": {
+          "net_eur": 237935.50683910438,
+          "da_revenue_eur": 6643.663689026456,
+          "degradation_eur": -1555.4958707004932,
+          "cycles_per_day": 0.26635203265419405,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 309451.7487184643,
+          "da_revenue_eur": 13765.611721333236,
+          "degradation_eur": -1548.6464090844215,
+          "cycles_per_day": 0.2651791796377434,
+          "days": 365.0
+        }
+      }
+    },
+    "SE4": {
+      "da_only": {
+        "persistence": {
+          "net_eur": 46101.969126244636,
+          "da_revenue_eur": 55917.59412624462,
+          "degradation_eur": -9815.625000000002,
+          "cycles_per_day": 1.6807577054794525,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 72881.12324469797,
+          "da_revenue_eur": 82695.33324469798,
+          "degradation_eur": -9814.210000000003,
+          "cycles_per_day": 1.6805154109589047,
+          "days": 365.0
+        }
+      },
+      "da_fcr": {
+        "persistence": {
+          "net_eur": 144224.83253587835,
+          "da_revenue_eur": 27273.73933915414,
+          "degradation_eur": -4112.723068048488,
+          "cycles_per_day": 0.7042334020630973,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 180051.01232224403,
+          "da_revenue_eur": 49636.758983450054,
+          "degradation_eur": -4097.158192426597,
+          "cycles_per_day": 0.7015681836346913,
+          "days": 365.0
+        }
+      },
+      "da_afrr": {
+        "persistence": {
+          "net_eur": 184900.57867993903,
+          "da_revenue_eur": 26996.120347546545,
+          "degradation_eur": -3867.364688512905,
+          "cycles_per_day": 0.662219980909744,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 217611.75977740978,
+          "da_revenue_eur": 48380.41148997242,
+          "degradation_eur": -3847.358021846238,
+          "cycles_per_day": 0.658794181822986,
+          "days": 365.0
+        }
+      },
+      "da_mfrr": {
+        "persistence": {
+          "net_eur": 232122.07765705528,
+          "da_revenue_eur": 25117.473656978702,
+          "degradation_eur": -3917.8210926764204,
+          "cycles_per_day": 0.6708597761432227,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 267268.475704795,
+          "da_revenue_eur": 42755.269222318384,
+          "degradation_eur": -3899.754426009754,
+          "cycles_per_day": 0.6677661688372866,
+          "days": 365.0
+        }
+      },
+      "full_stack": {
+        "persistence": {
+          "net_eur": 274900.2807060953,
+          "da_revenue_eur": 14546.514506403533,
+          "degradation_eur": -2292.6491658633054,
+          "cycles_per_day": 0.39257691196289474,
+          "days": 365.0
+        },
+        "oracle": {
+          "net_eur": 365031.3005351705,
+          "da_revenue_eur": 27805.416923894798,
+          "degradation_eur": -2272.1391658633056,
+          "cycles_per_day": 0.38906492566152495,
+          "days": 365.0
+        }
+      }
+    },
+    "FI": {
+      "da_only": {
+        "persistence": {
+          "net_eur": 23927.323633818854,
+          "da_revenue_eur": 33668.809753450754,
+          "degradation_eur": -9741.486119631903,
+          "cycles_per_day": 1.6680626917177916,
+          "days": 326.0
+        },
+        "oracle": {
+          "net_eur": 54392.034890239316,
+          "da_revenue_eur": 63825.04562643563,
+          "degradation_eur": -9433.010736196318,
+          "cycles_per_day": 1.615241564417178,
+          "days": 326.0
+        }
+      },
+      "da_afrr": {
+        "persistence": {
+          "net_eur": 113114.38670407832,
+          "da_revenue_eur": 19007.963741085558,
+          "degradation_eur": -4941.526445399902,
+          "cycles_per_day": 0.8461517885958737,
+          "days": 326.0
+        },
+        "oracle": {
+          "net_eur": 141252.34508449727,
+          "da_revenue_eur": 44892.32239942326,
+          "degradation_eur": -4706.503320422041,
+          "cycles_per_day": 0.8059081028119933,
+          "days": 326.0
+        }
+      },
+      "full_stack": {
+        "persistence": {
+          "net_eur": 113114.38670407832,
+          "da_revenue_eur": 19007.963741085558,
+          "degradation_eur": -4941.526445399902,
+          "cycles_per_day": 0.8461517885958737,
+          "days": 326.0
+        },
+        "oracle": {
+          "net_eur": 141252.34508449727,
+          "da_revenue_eur": 44892.32239942326,
+          "degradation_eur": -4706.503320422041,
+          "cycles_per_day": 0.8059081028119933,
+          "days": 326.0
+        }
+      }
+    }
+  },
+  "checks": {
+    "solve_qh_arbitrage": {
+      "zone": "SE3",
+      "days": 20,
+      "max_abs_objective_gap_eur": 1.7053025658242404e-13
+    },
+    "feasibility": {
+      "schedules_checked": 75,
+      "violations": 0
+    },
+    "no_lookahead": {
+      "days_tested": 25,
+      "forecasts_changed_by_future_prices": 0
+    }
+  },
+  "sensitivities": [
+    {
+      "label": "No opposite-direction reservation for aFRR/mFRR (Nordic-style rules only)",
+      "zone": "DK1",
+      "net": 205094.23030748102,
+      "base": 203046.70970436887
+    },
+    {
+      "label": "No opposite-direction reservation for aFRR/mFRR (Nordic-style rules only)",
+      "zone": "DK2",
+      "net": 206316.17054882238,
+      "base": 196362.33783138663
+    },
+    {
+      "label": "FCR-N energy 1.5 h per direction (upper end of the range the TSOs will evaluate)",
+      "zone": "SE3",
+      "net": 234773.9607047074,
+      "base": 237935.50683910438
+    }
+  ]
+}

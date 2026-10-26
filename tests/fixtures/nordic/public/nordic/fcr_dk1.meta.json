@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "path": "nordic/fcr_dk1.parquet",
+  "table": "nordic_fcr_dk1",
+  "title": "DK1 FCR capacity prices and volumes (Continental Europe FCR cooperation, symmetric).",
+  "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+  "dataset_ids": [
+    "FcrDK1"
+  ],
+  "dataset_pages": [
+    "https://www.energidataservice.dk/tso-electricity/FcrDK1"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+  "attribution": "Source: Energinet (www.energidataservice.dk)",
+  "redistributed": true,
+  "zones": [
+    "DK1"
+  ],
+  "time_column": "delivery_start_utc",
+  "transformation_notes": [
+    "price_eur_per_mw_h = FCRdk_EUR (Danish price, EUR per MW and hour); cross_border_price_eur_per_mw_h = FCRcross_EUR; volume_domestic_mw / volume_abroad_mw = FCRdomestic_MW / FCRabroad_MW.",
+    "Published per hour; the FCR cooperation trades 4-hour products, see validation.constant_within_4h_blocks_share."
+  ],
+  "fetch_command": "python scripts/research/nordic_fetch.py --tables fcr_dk1",
+  "coverage_start_utc": "2025-06-07T22:00:00Z",
+  "coverage_end_utc": "2025-10-27T23:00:00Z",
+  "fixture_windows_utc": [
+    [
+      "2025-06-07T22:00:00Z",
+      "2025-06-13T22:00:00Z"
+    ],
+    [
+      "2025-09-25T22:00:00Z",
+      "2025-10-03T22:00:00Z"
+    ],
+    [
+      "2025-10-22T22:00:00Z",
+      "2025-10-27T23:00:00Z"
+    ]
+  ],
+  "note": "Test fixture sliced from data/public/nordic/fcr_dk1.parquet by scripts/research/nordic_make_fixtures.py",
+  "rows": 456,
+  "columns": [
+    {
+      "name": "delivery_start_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "delivery_end_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "zone",
+      "type": "large_string"
+    },
+    {
+      "name": "product",
+      "type": "large_string"
+    },
+    {
+      "name": "direction",
+      "type": "large_string"
+    },
+    {
+      "name": "price_eur_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "cross_border_price_eur_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "volume_domestic_mw",
+      "type": "float"
+    },
+    {
+      "name": "volume_abroad_mw",
+      "type": "float"
+    }
+  ],
+  "size_bytes": 7967,
+  "sha256": "b8b0a4ee46eff121b5329b571627e613c30926b61448a1b19eef8fbd39838e60"
+}

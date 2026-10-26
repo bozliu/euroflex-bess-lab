@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "path": "nordic/afrr_capacity.parquet",
+  "table": "nordic_afrr_capacity",
+  "title": "aFRR capacity marginal prices, procured volumes and demand per zone, direction and hour.",
+  "source": "Energinet, Energi Data Service (api.energidataservice.dk)",
+  "dataset_ids": [
+    "AfrrReservesNordic"
+  ],
+  "dataset_pages": [
+    "https://www.energidataservice.dk/tso-electricity/AfrrReservesNordic"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+  "attribution": "Source: Energinet (www.energidataservice.dk)",
+  "redistributed": true,
+  "zones": [
+    "DK1",
+    "DK2",
+    "FI",
+    "SE3",
+    "SE4"
+  ],
+  "time_column": "delivery_start_utc",
+  "transformation_notes": [
+    "Nordic aFRR capacity market (common Nordic platform, D-1, gate closure 07:30 CET, marginal pricing) for DK2, FI, SE3, SE4; DK1 rows (local DK1 aFRR capacity market) start 2024-10-02.",
+    "Long format: one row per hour, zone and direction (up/down); price_eur_per_mw_h = Up/DownPriceEUR (EUR per MW and hour), procured_mw = Up/DownProcuredMW, demand_mw = Up/DownDemandMW (published from 2025-08-21, null before).",
+    "Requests are filtered to PriceArea in the modelled zones."
+  ],
+  "fetch_command": "python scripts/research/nordic_fetch.py --tables afrr",
+  "coverage_start_utc": "2025-06-07T22:00:00Z",
+  "coverage_end_utc": "2025-10-27T23:00:00Z",
+  "fixture_windows_utc": [
+    [
+      "2025-06-07T22:00:00Z",
+      "2025-06-13T22:00:00Z"
+    ],
+    [
+      "2025-09-25T22:00:00Z",
+      "2025-10-03T22:00:00Z"
+    ],
+    [
+      "2025-10-22T22:00:00Z",
+      "2025-10-27T23:00:00Z"
+    ]
+  ],
+  "note": "Test fixture sliced from data/public/nordic/afrr_capacity.parquet by scripts/research/nordic_make_fixtures.py",
+  "rows": 4570,
+  "columns": [
+    {
+      "name": "delivery_start_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "delivery_end_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "zone",
+      "type": "large_string"
+    },
+    {
+      "name": "product",
+      "type": "large_string"
+    },
+    {
+      "name": "direction",
+      "type": "large_string"
+    },
+    {
+      "name": "price_eur_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "procured_mw",
+      "type": "float"
+    },
+    {
+      "name": "demand_mw",
+      "type": "float"
+    },
+    {
+      "name": "source",
+      "type": "large_string"
+    }
+  ],
+  "size_bytes": 15983,
+  "sha256": "1abc8147527f50126d4de486508ddf185d16acade38593383950e27270109245"
+}

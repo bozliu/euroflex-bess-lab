@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "path": "nordic/mfrr_capacity.parquet",
+  "table": "nordic_mfrr_capacity",
+  "title": "mFRR capacity marginal prices and procured volumes per zone, direction and hour (DK1, DK2, SE3, SE4).",
+  "source": "Energinet, Energi Data Service (api.energidataservice.dk); Svenska kraftn\u00e4t, SVK Data Service (data.svk.se)",
+  "dataset_ids": [
+    "mFRRCapacityMarket",
+    "mfrr_capacity_market"
+  ],
+  "dataset_pages": [
+    "https://www.energidataservice.dk/tso-electricity/mFRRCapacityMarket",
+    "https://data.svk.se/dataset/mfrr_capacity_market"
+  ],
+  "licence": "CC BY 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+  "terms_url": "https://www.energidataservice.dk/terms-and-conditions",
+  "attribution": "Source: Energinet (www.energidataservice.dk); Svenska kraftn\u00e4t (SVK Data Service, data.svk.se), produced by Svk business units",
+  "redistributed": true,
+  "zones": [
+    "DK1",
+    "DK2",
+    "SE3",
+    "SE4"
+  ],
+  "time_column": "delivery_start_utc",
+  "transformation_notes": [
+    "DK1/DK2: Energinet daily (morning) auctions, national until 2024-11-18 and the trilateral DK-SE-FI market from 2024-11-19; extra afternoon auctions (MfrrCapacityMarketExtra) and the DK2 monthly slow-reserve auctions are not included. Columns as for aFRR (source = energinet).",
+    "SE3/SE4: SVK Data Service dataset mfrr_capacity_market (marginal price EUR/MW per hour and contracted volume); only hours with Swedish procurement are published, so missing hours mean no local procurement (source = svk, demand_mw null)."
+  ],
+  "fetch_command": "python scripts/research/nordic_fetch.py --tables mfrr",
+  "coverage_start_utc": "2025-06-07T22:00:00Z",
+  "coverage_end_utc": "2025-10-27T23:00:00Z",
+  "fixture_windows_utc": [
+    [
+      "2025-06-07T22:00:00Z",
+      "2025-06-13T22:00:00Z"
+    ],
+    [
+      "2025-09-25T22:00:00Z",
+      "2025-10-03T22:00:00Z"
+    ],
+    [
+      "2025-10-22T22:00:00Z",
+      "2025-10-27T23:00:00Z"
+    ]
+  ],
+  "note": "Test fixture sliced from data/public/nordic/mfrr_capacity.parquet by scripts/research/nordic_make_fixtures.py",
+  "rows": 3656,
+  "columns": [
+    {
+      "name": "delivery_start_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "delivery_end_utc",
+      "type": "timestamp[ns, tz=UTC]"
+    },
+    {
+      "name": "zone",
+      "type": "large_string"
+    },
+    {
+      "name": "product",
+      "type": "large_string"
+    },
+    {
+      "name": "direction",
+      "type": "large_string"
+    },
+    {
+      "name": "price_eur_per_mw_h",
+      "type": "float"
+    },
+    {
+      "name": "procured_mw",
+      "type": "float"
+    },
+    {
+      "name": "demand_mw",
+      "type": "float"
+    },
+    {
+      "name": "source",
+      "type": "large_string"
+    }
+  ],
+  "size_bytes": 19614,
+  "sha256": "b1eb262b1f1dec2d925532bc7b55aa6330fab018ae45433c5ed3e28464d366f8"
+}

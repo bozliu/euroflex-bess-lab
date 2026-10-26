@@ -3,7 +3,7 @@
 euroflex-bess-lab ships a reproducible public-data layer (`euroflex_bess_lab.public_data`): downloaders with
 retries and a raw cache, normalizers that map upstream fields to a snake_case contract, writers (zstd parquet +
 `.meta.json` sidecar + `MANIFEST.json`) and loaders. The committed tree lives in `data/public/`
-(111.7 MB); the raw downloads are cached in the gitignored `data/raw/`.
+(129.2 MB); the raw downloads are cached in the gitignored `data/raw/`.
 
 ## Datasets
 
@@ -41,8 +41,29 @@ retries and a raw cache, normalizers that map upstream fields to a snake_case co
 | `data/public/belgium/si_forecast_next_qh_2026.parquet` | ods147 | Elia SI forecast for the next quarter-hour, issued every minute. | CC BY 4.0 | 2026-01-01 00:00 -> 2026-10-25 23:00 | 424,510 | 3.74 |
 | `data/public/energy_charts/da_prices_BE.parquet` | energy_charts_price_BE | Belgian day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards). | CC BY 4.0 | 2022-12-31 23:00 -> 2026-10-25 23:00 | 61,539 | 0.18 |
 | `data/public/energy_charts/da_prices_DE-LU.parquet` | energy_charts_price_DE-LU | German-Luxembourg day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards). | CC BY 4.0 | 2022-12-31 23:00 -> 2026-10-25 23:00 | 61,539 | 0.18 |
+| `data/public/gb/ecb_gbp_per_eur.parquet` | EXR.D.GBP.EUR.SP00.A | ECB euro foreign exchange reference rate, GBP per EUR (daily). | ECB terms of use (free reuse with source citation) | 2023-12-01 00:00 -> 2026-10-24 00:00 | 738 | 0.01 |
+| `data/public/gb/frequency_15s_2023.parquet` | FREQ | GB system frequency at 15-second resolution (BMRS FREQ) as deviation from 50 Hz in mHz. | Elexon BMRS open data licence | 2023-12-01 00:00 -> 2024-01-01 00:00 | 177,658 | 0.21 |
+| `data/public/gb/frequency_15s_2024.parquet` | FREQ | GB system frequency at 15-second resolution (BMRS FREQ) as deviation from 50 Hz in mHz. | Elexon BMRS open data licence | 2024-01-01 00:00 -> 2025-01-01 00:00 | 2,104,664 | 2.42 |
+| `data/public/gb/frequency_15s_2025.parquet` | FREQ | GB system frequency at 15-second resolution (BMRS FREQ) as deviation from 50 Hz in mHz. | Elexon BMRS open data licence | 2025-01-01 00:00 -> 2026-01-01 00:00 | 2,098,961 | 2.41 |
+| `data/public/gb/frequency_15s_2026.parquet` | FREQ | GB system frequency at 15-second resolution (BMRS FREQ) as deviation from 50 Hz in mHz. | Elexon BMRS open data licence | 2026-01-01 00:00 -> 2026-10-26 00:00 | 1,712,210 | 1.97 |
+| `data/public/gb/market_index.parquet` | MID | GB Market Index Data per settlement period (BMRS MID; APX/EPEX and N2EX providers). | Elexon BMRS open data licence | 2023-12-01 00:00 -> 2026-10-26 00:00 | 50,880 | 0.54 |
+| `data/public/gb/reserve_auctions.parquet` | eac-auction-results | NESO EAC day-ahead clearing prices and volumes for Quick, Slow and Balancing Reserve per window. | NESO Open Data Licence v1.0 | 2024-12-03 23:00 -> 2026-10-26 23:00 | 121,252 | 0.22 |
+| `data/public/gb/response_auctions.parquet` | eac-auction-results | NESO EAC day-ahead clearing prices and volumes for DC/DM/DR low and high per EFA block. | NESO Open Data Licence v1.0 | 2023-11-02 23:00 -> 2026-10-26 23:00 | 39,204 | 0.12 |
+| `data/public/gb/response_energy.parquet` | FREQ | Energy delivered per MW of contracted DC/DM/DR (low/high) per settlement period, from BMRS FREQ. | Elexon BMRS open data licence | 2023-12-01 00:00 -> 2026-10-26 00:00 | 50,880 | 1.29 |
+| `data/public/gb/system_prices.parquet` | DISEBSP | GB single imbalance (cash-out) price and net imbalance volume per settlement period (BMRS DISEBSP). | Elexon BMRS open data licence | 2023-12-01 00:00 -> 2026-10-26 00:00 | 50,880 | 1.64 |
 | `data/raw/germany/afrr_capacity.parquet` (local build only, not redistributed) | regelleistung_aFRR_capacity_results, regelleistung_aFRR_capacity_demands | German aFRR capacity auction results (4-hour blocks, up/down). | proprietary (copyright German TSOs; reproduction needs prior written consent) | 2023-12-31 23:00 -> 2026-10-25 23:00 | 12,348 | - |
 | `data/raw/germany/fcr_capacity.parquet` (local build only, not redistributed) | regelleistung_FCR_capacity_results | German FCR capacity auction results (4-hour blocks). | proprietary (copyright German TSOs; reproduction needs prior written consent) | 2023-12-31 23:00 -> 2026-10-25 23:00 | 6,174 | - |
+| `data/raw/intraday/id_aep_DE-LU.parquet` (local build only, not redistributed) | netztransparenz_id_aep | German intraday price index ID AEP (TSOs' Index Ausgleichsenergiepreis), quarter-hourly, DE-LU. | proprietary (copyright German TSOs; reproduction needs prior written consent) | 2023-12-31 23:00 -> 2026-10-25 23:00 | 98,784 | - |
+| `data/public/nordic/afrr_capacity.parquet` | AfrrReservesNordic | aFRR capacity marginal prices, procured volumes and demand per zone, direction and hour. | CC BY 4.0 | 2023-12-01 00:00 -> 2026-10-25 23:00 | 239,706 | 0.40 |
+| `data/public/nordic/da_prices_DK1.parquet` | Elspotprices, DayAheadPrices | DK1 day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards). | CC BY 4.0 | 2023-12-01 00:00 -> 2026-10-25 23:00 | 53,522 | 0.15 |
+| `data/public/nordic/da_prices_DK2.parquet` | Elspotprices, DayAheadPrices | DK2 day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards). | CC BY 4.0 | 2023-12-01 00:00 -> 2026-10-25 23:00 | 53,522 | 0.15 |
+| `data/public/nordic/da_prices_FI.parquet` | market_data_day_ahead_area_prices | FI day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards). | CC BY 4.0 | 2023-12-01 00:00 -> 2026-07-01 22:00 | 40,470 | 0.12 |
+| `data/public/nordic/da_prices_SE3.parquet` | Elspotprices, DayAheadPrices | SE3 day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards). | CC BY 4.0 | 2023-12-01 00:00 -> 2026-10-25 23:00 | 53,522 | 0.14 |
+| `data/public/nordic/da_prices_SE4.parquet` | Elspotprices, DayAheadPrices | SE4 day-ahead auction prices (hourly until 2025-09-30, 15-minute afterwards). | CC BY 4.0 | 2023-12-01 00:00 -> 2026-10-25 23:00 | 53,522 | 0.15 |
+| `data/public/nordic/dk_imbalance.parquet` | RegulatingBalancePowerdata, ImbalancePrice | Danish (DK1, DK2) single imbalance prices and their components. | CC BY 4.0 | 2023-12-01 00:00 -> 2026-10-25 23:00 | 137,344 | 2.51 |
+| `data/public/nordic/fcr_dk1.parquet` | FcrDK1 | DK1 FCR capacity prices and volumes (Continental Europe FCR cooperation, symmetric). | CC BY 4.0 | 2023-12-01 00:00 -> 2026-10-25 23:00 | 25,436 | 0.07 |
+| `data/public/nordic/fcr_nordic.parquet` | FcrNdDK2 | FCR-N, FCR-D up and FCR-D down capacity prices of the joint Swedish-DK2 auctions (hourly). | CC BY 4.0 | 2023-12-01 00:00 -> 2026-10-25 23:00 | 686,826 | 2.47 |
+| `data/public/nordic/mfrr_capacity.parquet` | mFRRCapacityMarket, mfrr_capacity_market | mFRR capacity marginal prices and procured volumes per zone, direction and hour (DK1, DK2, SE3, SE4). | CC BY 4.0 | 2023-12-01 00:00 -> 2026-10-25 23:00 | 192,503 | 0.42 |
 
 ## Attribution
 
@@ -50,7 +71,15 @@ Contains data from Elia Open Data (https://opendata.elia.be), (c) Elia Transmiss
 
 Day-ahead prices: Bundesnetzagentur | SMARD.de, retrieved via the Energy-Charts API of Fraunhofer ISE (https://api.energy-charts.info), licensed under CC BY 4.0; de-duplicated and annotated with the product resolution.
 
+Contains data from Energinet's Energi Data Service (https://www.energidataservice.dk), licensed under the Creative Commons Attribution 4.0 International licence (CC BY 4.0; terms: https://www.energidataservice.dk/terms-and-conditions). The data were modified: filtered to the modelled bidding zones, renamed, type-cast, reshaped to one row per product and direction, and a documented DST labelling error was repaired, as recorded in each file's `.meta.json` sidecar.
+
+Contains data from Svenska kraftnät's SVK Data Service (https://data.svk.se), licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). The data were modified: filtered to the modelled bidding zones, renamed, type-cast and merged with the Danish tables as recorded in each file's `.meta.json` sidecar.
+
+Great Britain: Contains BMRS data © Elexon Limited copyright and database right 2023-2026 (Elexon BMRS open data licence: https://www.elexon.co.uk/bsc/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/). Supported by National Energy SO Open Data (NESO Open Data Licence v1.0: https://www.neso.energy/data-portal/neso-open-licence). FX rates: Source: European Central Bank (euro foreign exchange reference rates) (https://www.ecb.europa.eu/services/disclaimer/html/index.en.html); daily rates are joined onto delivery dates.
+
 German reserve auction results from regelleistung.net (50Hertz, Amprion, TenneT TSO, TransnetBW) are NOT redistributed: the site's terms (https://www.regelleistung.net/de-de/Impressum, 'Nutzung der Internet-Seiten') require the TSOs' prior written consent for reproducing its content. Only the fetch code and a manifest stub (`redistributed: false`) are committed; build the files locally with `euroflex data fetch germany-reserve`.
+
+The German intraday index ID AEP (netztransparenz.de, published by the four German TSOs) is NOT redistributed: the site's imprint requires the TSOs' prior written consent for reproducing its content. Only the fetch code, a manifest stub (`redistributed: false`) and derived daily backtest results are committed; build the index locally with `euroflex data intraday fetch`.
 
 ## Loader API
 
@@ -72,6 +101,11 @@ frames sorted by time with `datetime64[ns, UTC]` timestamps, and raise `FileNotF
 | `load_energy_bid_curves(start, end, direction=None)` | `belgium/energy_bid_curves_qh_<YYYY>.parquet` |
 | `load_germany_reserve(product, start, end)` | `germany/{fcr,afrr}_capacity.parquet` (local build only) |
 | `load_belgium_legacy(kind, start, end, columns=None)` | `belgium/{qh,minute}_<YYYY>_legacy.parquet` |
+| `load_nordic_day_ahead(zone, start, end, quarter_hourly=False)` | `nordic/da_prices_{DK1,DK2,SE3,SE4,FI}.parquet` |
+| `load_nordic_reserve(product, zone, start, end, auction="early", direction=None)` | `nordic/{fcr_nordic,fcr_dk1,afrr_capacity,mfrr_capacity}.parquet` |
+| `load_dk_imbalance(area, start, end)` | `nordic/dk_imbalance.parquet` |
+| `load_gb_system_prices(start, end)`, `load_gb_market_index(...)`, `load_gb_response_auctions(...)`, `load_gb_frequency(...)`, `load_gb_fx(...)` | `gb/*.parquet` |
+| `load_intraday_index(start, end)` (in `public_data.intraday`) | `intraday/id_aep_DE-LU.parquet` (local build only) |
 | `read_manifest()` | `MANIFEST.json` |
 
 CLI (`euroflex data ...`): `fetch <target>` (`belgium-minute`, `belgium-qh`, `belgium-new-formula`,

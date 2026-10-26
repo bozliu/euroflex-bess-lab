@@ -1,5 +1,22 @@
 # Release Notes
 
+## `v2.1.0`
+
+- Out-of-sample evidence: models trained once up to a cutoff and frozen keep 97-101 % of the value of monthly
+  retraining for 7-16 months and beat the best reactive rule by 11-16 % (`scripts/research/out_of_sample.py`)
+- Continuous-intraday re-trading for Germany on the TSOs' quarter-hour intraday index (ID AEP): +20 % over
+  day-ahead only (`markets.intraday`, `euroflex data intraday`)
+- Nordic markets (DK1, DK2, SE3, SE4, FI): day-ahead co-optimised with FCR-N / FCR-D, aFRR and mFRR on Energinet and
+  Svenska kraftnät data (`markets.nordic`, `euroflex data nordic`)
+- Great Britain: wholesale on the market index, NIV chasing, DC / DM / DR stacking on Elexon BMRS and NESO data
+  (`markets.gb`, `euroflex data gb`)
+- Deployment: non-root live container, docker-compose, Kubernetes, AWS ECS / CloudFormation, systemd and launchd
+  templates, health check, reproducible model packaging, and a forward track record (`deploy/`, `scripts/ops/`)
+- Ablation: a direct price model trained on operator-rebuilt targets matches SCALES-L, so the explicit settlement
+  operator is what enables zero-history training
+- scripts that regenerate the numbers and figures of the PES GM 2027 submission
+- CI also builds the live container image (no push)
+
 ## `v2.0.0`
 
 Real-data, real-time trading lab. Additive: the v1 scheduling, revision, reconciliation and export surface and its

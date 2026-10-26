@@ -36,6 +36,9 @@ from .data.normalization import (
 from .diagnostics import append_jsonl_event
 from .exports import export_bids, export_revision, export_schedule
 from .public_data.cli import data_app
+from .public_data.gb.cli import gb_app
+from .public_data.intraday.cli import intraday_app
+from .public_data.nordic.cli import nordic_data_app
 from .realtime.cli import rt_app
 from .realtime.live.cli import live_app
 from .reconciliation import reconcile_run
@@ -1003,6 +1006,9 @@ def serve(
 app.add_typer(ingest_app, name="ingest")
 app.add_typer(rt_app, name="rt")
 app.add_typer(live_app, name="live")
+data_app.add_typer(intraday_app, name="intraday")
+data_app.add_typer(nordic_data_app, name="nordic")
+data_app.add_typer(gb_app, name="gb")
 app.add_typer(data_app, name="data")
 app.add_typer(value_app, name="value")
 

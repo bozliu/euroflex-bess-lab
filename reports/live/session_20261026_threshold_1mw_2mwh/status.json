@@ -1,0 +1,627 @@
+{
+  "schema": "euroflex-live-status/1",
+  "run_id": "live-20261026T040341Z-865916",
+  "state": "completed",
+  "mode": "paper",
+  "market_submission": false,
+  "safety": "Paper trading (shadow mode) only: setpoints are logged or handed to the configured adapter; no order or bid is ever submitted to any market.",
+  "strategy": "threshold",
+  "mechanism_setting": "auto",
+  "mechanism_now": "current",
+  "new_formula_live": false,
+  "battery": {
+    "power_mw": 1.0,
+    "energy_mwh": 2.0,
+    "charge_efficiency": 0.95,
+    "discharge_efficiency": 0.95,
+    "soc_min_frac": 0.05,
+    "soc_max_frac": 0.95,
+    "initial_soc_frac": 0.5,
+    "degradation_eur_per_mwh": 8.0,
+    "availability": 1.0
+  },
+  "publication": {
+    "minute_lag": 1,
+    "qh_final_lag_minutes": 5,
+    "da_publication_hour_local": 13
+  },
+  "started_at_utc": "2026-10-26T04:03:41Z",
+  "heartbeat_utc": "2026-10-26T04:45:54.477Z",
+  "last_minute_utc": "2026-10-26T04:44:00Z",
+  "next_minute_utc": "2026-10-26T04:45:00Z",
+  "soc_mwh": 1.485702,
+  "soc_frac": 0.742851,
+  "last_power_mw": -1.0,
+  "counters": {
+    "decisions": 41,
+    "missed": 0,
+    "late": 0,
+    "strategy_errors": 0,
+    "execution_errors": 0,
+    "gap_decisions": 34,
+    "resumes": 0,
+    "settlements": 3,
+    "corrections": 1
+  },
+  "ledger": {
+    "settled_qh": 3,
+    "pnl_eur": -55.4453,
+    "revenue_eur": -55.0453,
+    "degradation_eur": 0.4,
+    "discharged_mwh": 0.05,
+    "charged_mwh": 0.566667,
+    "price_missing_qh": 0
+  },
+  "open_quarter_hours": [],
+  "awaiting_price": [],
+  "window": {
+    "start_utc": "2026-10-12T04:00:00Z",
+    "end_utc": "2026-10-28T23:00:00Z"
+  },
+  "feeds": {
+    "imbalance_price_minute": {
+      "polls": 506,
+      "successes": 506,
+      "errors": 0,
+      "consecutive_errors": 0,
+      "unchanged_polls": 463,
+      "rows_new": 345,
+      "rows_revised": 0,
+      "schema_warnings": 0,
+      "last_poll_utc": "2026-10-26T04:45:52Z",
+      "last_success_utc": "2026-10-26T04:45:52Z",
+      "last_error": null,
+      "first_row_utc": "2026-10-25T23:00:00Z",
+      "latest_row_utc": "2026-10-26T04:44:00Z",
+      "latency_upper_s": {
+        "n": 42,
+        "min": 7.3,
+        "p50": 22.3,
+        "p90": 32.58,
+        "p99": 42.4,
+        "max": 42.44,
+        "mean": 20.76
+      },
+      "latency_mid_s": {
+        "n": 42,
+        "min": 4.84,
+        "p50": 19.84,
+        "p90": 30.0,
+        "p99": 39.83,
+        "max": 39.85,
+        "mean": 18.27
+      },
+      "http_elapsed_s": {
+        "n": 506,
+        "min": 0.22,
+        "p50": 0.36,
+        "p90": 0.55,
+        "p99": 1.27,
+        "max": 3.63,
+        "mean": 0.42
+      },
+      "clock_offset_s": {
+        "n": 506,
+        "min": 0.04,
+        "p50": 0.36,
+        "p90": 0.49,
+        "p99": 0.9,
+        "max": 0.98,
+        "mean": 0.38
+      },
+      "staleness_s": 54.5,
+      "live": true,
+      "gaps": {
+        "count": 0,
+        "last": []
+      },
+      "dataset_id": "ods161",
+      "poll_every_s": 5.0,
+      "next_due_utc": "2026-10-26T04:45:57Z"
+    },
+    "system_imbalance_minute": {
+      "polls": 506,
+      "successes": 506,
+      "errors": 0,
+      "consecutive_errors": 0,
+      "unchanged_polls": 463,
+      "rows_new": 285,
+      "rows_revised": 0,
+      "schema_warnings": 0,
+      "last_poll_utc": "2026-10-26T04:45:52Z",
+      "last_success_utc": "2026-10-26T04:45:52Z",
+      "last_error": null,
+      "first_row_utc": "2026-10-26T00:00:00Z",
+      "latest_row_utc": "2026-10-26T04:44:00Z",
+      "latency_upper_s": {
+        "n": 42,
+        "min": 22.67,
+        "p50": 27.76,
+        "p90": 32.78,
+        "p99": 40.97,
+        "max": 42.91,
+        "mean": 28.26
+      },
+      "latency_mid_s": {
+        "n": 42,
+        "min": 20.23,
+        "p50": 25.26,
+        "p90": 30.46,
+        "p99": 38.34,
+        "max": 40.35,
+        "mean": 25.73
+      },
+      "http_elapsed_s": {
+        "n": 506,
+        "min": 0.24,
+        "p50": 0.39,
+        "p90": 0.63,
+        "p99": 1.52,
+        "max": 2.59,
+        "mean": 0.46
+      },
+      "clock_offset_s": {
+        "n": 506,
+        "min": 0.01,
+        "p50": 0.72,
+        "p90": 0.88,
+        "p99": 1.01,
+        "max": 1.06,
+        "mean": 0.69
+      },
+      "staleness_s": 54.5,
+      "live": true,
+      "gaps": {
+        "count": 0,
+        "last": []
+      },
+      "dataset_id": "ods169",
+      "poll_every_s": 5.0,
+      "next_due_utc": "2026-10-26T04:45:57Z"
+    },
+    "price_components_minute": {
+      "polls": 506,
+      "successes": 506,
+      "errors": 0,
+      "consecutive_errors": 0,
+      "unchanged_polls": 465,
+      "rows_new": 345,
+      "rows_revised": 0,
+      "schema_warnings": 0,
+      "last_poll_utc": "2026-10-26T04:45:52Z",
+      "last_success_utc": "2026-10-26T04:45:53Z",
+      "last_error": null,
+      "first_row_utc": "2026-10-25T23:00:00Z",
+      "latest_row_utc": "2026-10-26T04:44:00Z",
+      "latency_upper_s": {
+        "n": 42,
+        "min": 8.36,
+        "p50": 68.2,
+        "p90": 93.29,
+        "p99": 116.51,
+        "max": 118.81,
+        "mean": 67.11
+      },
+      "latency_mid_s": {
+        "n": 42,
+        "min": 5.87,
+        "p50": 65.89,
+        "p90": 90.69,
+        "p99": 113.96,
+        "max": 116.31,
+        "mean": 64.67
+      },
+      "http_elapsed_s": {
+        "n": 506,
+        "min": 0.21,
+        "p50": 0.35,
+        "p90": 0.51,
+        "p99": 1.3,
+        "max": 1.5,
+        "mean": 0.4
+      },
+      "clock_offset_s": {
+        "n": 506,
+        "min": 0.02,
+        "p50": 0.32,
+        "p90": 0.98,
+        "p99": 1.05,
+        "max": 1.12,
+        "mean": 0.47
+      },
+      "staleness_s": 54.5,
+      "live": true,
+      "gaps": {
+        "count": 0,
+        "last": []
+      },
+      "dataset_id": "ods175",
+      "poll_every_s": 5.0,
+      "next_due_utc": "2026-10-26T04:45:57Z"
+    },
+    "imbalance_price_qh": {
+      "polls": 85,
+      "successes": 85,
+      "errors": 0,
+      "consecutive_errors": 0,
+      "unchanged_polls": 78,
+      "rows_new": 1247,
+      "rows_revised": 3,
+      "schema_warnings": 0,
+      "last_poll_utc": "2026-10-26T04:45:52Z",
+      "last_success_utc": "2026-10-26T04:45:53Z",
+      "last_error": null,
+      "first_row_utc": "2026-10-12T04:00:00Z",
+      "latest_row_utc": "2026-10-26T04:30:00Z",
+      "latency_upper_s": {
+        "n": 3,
+        "min": 53.77,
+        "p50": 83.65,
+        "p90": 84.08,
+        "p99": 84.17,
+        "max": 84.18,
+        "mean": 73.87
+      },
+      "latency_mid_s": {
+        "n": 3,
+        "min": 39.21,
+        "p50": 69.13,
+        "p90": 69.2,
+        "p99": 69.21,
+        "max": 69.22,
+        "mean": 59.18
+      },
+      "http_elapsed_s": {
+        "n": 85,
+        "min": 0.22,
+        "p50": 0.34,
+        "p90": 0.49,
+        "p99": 1.13,
+        "max": 1.2,
+        "mean": 0.38
+      },
+      "clock_offset_s": {
+        "n": 85,
+        "min": 0.07,
+        "p50": 0.42,
+        "p90": 0.64,
+        "p99": 0.85,
+        "max": 1.04,
+        "mean": 0.42
+      },
+      "staleness_s": 54.5,
+      "live": true,
+      "gaps": {
+        "count": 100,
+        "last": [
+          "2026-10-25T20:30:00Z",
+          "2026-10-25T20:45:00Z",
+          "2026-10-25T21:00:00Z",
+          "2026-10-25T21:15:00Z",
+          "2026-10-25T21:30:00Z",
+          "2026-10-25T21:45:00Z",
+          "2026-10-25T22:00:00Z",
+          "2026-10-25T22:15:00Z",
+          "2026-10-25T22:30:00Z",
+          "2026-10-25T22:45:00Z"
+        ]
+      },
+      "dataset_id": "ods162",
+      "poll_every_s": 30.0,
+      "next_due_utc": "2026-10-26T04:46:22Z"
+    },
+    "si_forecast_current_qh": {
+      "polls": 85,
+      "successes": 85,
+      "errors": 0,
+      "consecutive_errors": 0,
+      "unchanged_polls": 42,
+      "rows_new": 401,
+      "rows_revised": 0,
+      "schema_warnings": 0,
+      "last_poll_utc": "2026-10-26T04:45:52Z",
+      "last_success_utc": "2026-10-26T04:45:54Z",
+      "last_error": null,
+      "first_row_utc": "2026-10-25T22:04:00Z",
+      "latest_row_utc": "2026-10-26T04:45:00Z",
+      "latency_upper_s": {
+        "n": 42,
+        "min": 53.44,
+        "p50": 53.81,
+        "p90": 54.56,
+        "p99": 55.51,
+        "max": 55.72,
+        "mean": 53.96
+      },
+      "latency_mid_s": {
+        "n": 42,
+        "min": 38.46,
+        "p50": 38.9,
+        "p90": 39.4,
+        "p99": 40.21,
+        "max": 40.31,
+        "mean": 39.02
+      },
+      "http_elapsed_s": {
+        "n": 85,
+        "min": 0.25,
+        "p50": 0.37,
+        "p90": 0.52,
+        "p99": 1.09,
+        "max": 1.23,
+        "mean": 0.41
+      },
+      "clock_offset_s": {
+        "n": 85,
+        "min": 0.04,
+        "p50": 0.69,
+        "p90": 0.93,
+        "p99": 1.06,
+        "max": 1.1,
+        "mean": 0.66
+      },
+      "staleness_s": 54.5,
+      "live": true,
+      "gaps": {
+        "count": 1,
+        "last": [
+          "2026-10-25T23:35:00Z"
+        ]
+      },
+      "dataset_id": "ods136",
+      "poll_every_s": 30.0,
+      "next_due_utc": "2026-10-26T04:46:22Z"
+    },
+    "si_forecast_next_qh": {
+      "polls": 85,
+      "successes": 85,
+      "errors": 0,
+      "consecutive_errors": 0,
+      "unchanged_polls": 42,
+      "rows_new": 401,
+      "rows_revised": 0,
+      "schema_warnings": 0,
+      "last_poll_utc": "2026-10-26T04:45:52Z",
+      "last_success_utc": "2026-10-26T04:45:54Z",
+      "last_error": null,
+      "first_row_utc": "2026-10-25T22:04:00Z",
+      "latest_row_utc": "2026-10-26T04:45:00Z",
+      "latency_upper_s": {
+        "n": 42,
+        "min": 53.73,
+        "p50": 54.22,
+        "p90": 55.02,
+        "p99": 56.14,
+        "max": 56.21,
+        "mean": 54.35
+      },
+      "latency_mid_s": {
+        "n": 42,
+        "min": 38.81,
+        "p50": 39.3,
+        "p90": 39.92,
+        "p99": 40.59,
+        "max": 40.68,
+        "mean": 39.41
+      },
+      "http_elapsed_s": {
+        "n": 85,
+        "min": 0.25,
+        "p50": 0.36,
+        "p90": 0.47,
+        "p99": 1.17,
+        "max": 1.22,
+        "mean": 0.39
+      },
+      "clock_offset_s": {
+        "n": 85,
+        "min": 0.01,
+        "p50": 0.34,
+        "p90": 0.95,
+        "p99": 1.03,
+        "max": 1.05,
+        "mean": 0.46
+      },
+      "staleness_s": 54.5,
+      "live": true,
+      "gaps": {
+        "count": 1,
+        "last": [
+          "2026-10-25T23:35:00Z"
+        ]
+      },
+      "dataset_id": "ods147",
+      "poll_every_s": 30.0,
+      "next_due_utc": "2026-10-26T04:46:22Z"
+    },
+    "new_formula_minute": {
+      "polls": 4,
+      "successes": 4,
+      "errors": 0,
+      "consecutive_errors": 0,
+      "unchanged_polls": 3,
+      "rows_new": 20,
+      "rows_revised": 0,
+      "schema_warnings": 0,
+      "last_poll_utc": "2026-10-26T04:40:30Z",
+      "last_success_utc": "2026-10-26T04:40:30Z",
+      "last_error": null,
+      "first_row_utc": "2026-07-31T23:40:00Z",
+      "latest_row_utc": "2026-07-31T23:59:00Z",
+      "latency_upper_s": {
+        "n": 0,
+        "min": null,
+        "p50": null,
+        "p90": null,
+        "p99": null,
+        "max": null,
+        "mean": null
+      },
+      "latency_mid_s": {
+        "n": 0,
+        "min": null,
+        "p50": null,
+        "p90": null,
+        "p99": null,
+        "max": null,
+        "mean": null
+      },
+      "http_elapsed_s": {
+        "n": 4,
+        "min": 0.33,
+        "p50": 0.44,
+        "p90": 0.73,
+        "p99": 0.81,
+        "max": 0.82,
+        "mean": 0.51
+      },
+      "clock_offset_s": {
+        "n": 4,
+        "min": 0.34,
+        "p50": 0.45,
+        "p90": 0.73,
+        "p99": 0.82,
+        "max": 0.83,
+        "mean": 0.52
+      },
+      "staleness_s": 7447554.5,
+      "live": false,
+      "gaps": {
+        "count": 0,
+        "last": []
+      },
+      "dataset_id": "ods211",
+      "poll_every_s": 600.0,
+      "next_due_utc": "2026-10-26T04:50:30Z"
+    },
+    "new_formula_qh": {
+      "polls": 4,
+      "successes": 4,
+      "errors": 0,
+      "consecutive_errors": 0,
+      "unchanged_polls": 3,
+      "rows_new": 8,
+      "rows_revised": 0,
+      "schema_warnings": 0,
+      "last_poll_utc": "2026-10-26T04:40:30Z",
+      "last_success_utc": "2026-10-26T04:40:30Z",
+      "last_error": null,
+      "first_row_utc": "2026-07-31T22:00:00Z",
+      "latest_row_utc": "2026-07-31T23:45:00Z",
+      "latency_upper_s": {
+        "n": 0,
+        "min": null,
+        "p50": null,
+        "p90": null,
+        "p99": null,
+        "max": null,
+        "mean": null
+      },
+      "latency_mid_s": {
+        "n": 0,
+        "min": null,
+        "p50": null,
+        "p90": null,
+        "p99": null,
+        "max": null,
+        "mean": null
+      },
+      "http_elapsed_s": {
+        "n": 4,
+        "min": 0.45,
+        "p50": 0.51,
+        "p90": 0.53,
+        "p99": 0.54,
+        "max": 0.54,
+        "mean": 0.5
+      },
+      "clock_offset_s": {
+        "n": 4,
+        "min": 0.38,
+        "p50": 0.88,
+        "p90": 0.95,
+        "p99": 0.97,
+        "max": 0.97,
+        "mean": 0.78
+      },
+      "staleness_s": 7447554.5,
+      "live": false,
+      "gaps": {
+        "count": 0,
+        "last": []
+      },
+      "dataset_id": "ods212",
+      "poll_every_s": 600.0,
+      "next_due_utc": "2026-10-26T04:50:30Z"
+    },
+    "day_ahead_be": {
+      "polls": 1,
+      "successes": 2,
+      "errors": 0,
+      "consecutive_errors": 0,
+      "unchanged_polls": 0,
+      "rows_new": 1444,
+      "rows_revised": 0,
+      "schema_warnings": 0,
+      "last_poll_utc": "2026-10-26T04:33:48Z",
+      "last_success_utc": "2026-10-26T04:33:48Z",
+      "last_error": null,
+      "first_row_utc": "2026-10-11T22:00:00Z",
+      "latest_row_utc": "2026-10-26T22:45:00Z",
+      "latency_upper_s": {
+        "n": 0,
+        "min": null,
+        "p50": null,
+        "p90": null,
+        "p99": null,
+        "max": null,
+        "mean": null
+      },
+      "latency_mid_s": {
+        "n": 0,
+        "min": null,
+        "p50": null,
+        "p90": null,
+        "p99": null,
+        "max": null,
+        "mean": null
+      },
+      "http_elapsed_s": {
+        "n": 1,
+        "min": 0.19,
+        "p50": 0.19,
+        "p90": 0.19,
+        "p99": 0.19,
+        "max": 0.19,
+        "mean": 0.19
+      },
+      "clock_offset_s": {
+        "n": 1,
+        "min": 1.92,
+        "p50": 1.92,
+        "p90": 1.92,
+        "p99": 1.92,
+        "max": 1.92,
+        "mean": 1.92
+      },
+      "gaps": {
+        "count": 0,
+        "last": []
+      },
+      "dataset_id": "energy_charts_price_BE",
+      "poll_every_s": 1800.0,
+      "next_due_utc": "2026-10-26T05:03:48Z"
+    }
+  },
+  "execution": {
+    "adapter": "paper",
+    "market_submission": false,
+    "sent": 41
+  },
+  "notes": [
+    "data/public history: qh rows=1224",
+    "data/public history: si_forecast_current rows=56",
+    "data/public history: si_forecast_next rows=56",
+    "data/public history: day_ahead rows=1324"
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "table": "impact_capacity_value_curve",
+  "owner": "impact",
+  "columns": {
+    "mechanism": "settlement mechanism: current (marginal +/- alpha) or new2026 (volume-weighted aFRR/mFRR)",
+    "policy": "price_taking_threshold (ThresholdStrategy replicated across the fleet, herding), impact_aware_threshold (internalises its own impact; same signal and bands), or strat:<name> (another agent's published price-taking ledger re-settled for the fleet)",
+    "fleet_mw": "fleet size Q in MW (Q / unit power identical batteries following the policy)",
+    "eur_per_mw_year": "net P&L (imbalance revenue - degradation) per MW of fleet per year",
+    "cycles_per_day": "discharged MWh / usable MWh / day",
+    "overshoot_share": "share of active quarter-hours where the fleet deviation is opposite to SI and larger than |SI| (the sign of SI flips)",
+    "overshoot_qh_share": "same, as a share of all quarter-hours",
+    "harmful_share": "share of active quarter-hours where |SI + q| > |SI| (fleet made the imbalance worse)",
+    "window": "evaluation window label"
+  },
+  "windows": [
+    {
+      "window": "2025",
+      "mechanism": "current",
+      "start_utc": "2025-01-01 00:00:00+00:00",
+      "end_utc": "2026-01-01 00:00:00+00:00",
+      "days": 365.0
+    },
+    {
+      "window": "2026H1",
+      "mechanism": "current",
+      "start_utc": "2026-01-01 00:00:00+00:00",
+      "end_utc": "2026-08-01 00:00:00+00:00",
+      "days": 212.0
+    },
+    {
+      "window": "2026H1",
+      "mechanism": "new2026",
+      "start_utc": "2026-01-01 00:00:00+00:00",
+      "end_utc": "2026-08-01 00:00:00+00:00",
+      "days": 212.0
+    }
+  ],
+  "battery": {
+    "power_mw": 1.0,
+    "energy_mwh": 2.0,
+    "charge_efficiency": 0.95,
+    "discharge_efficiency": 0.95,
+    "soc_min_frac": 0.05,
+    "soc_max_frac": 0.95,
+    "initial_soc_frac": 0.5,
+    "degradation_eur_per_mwh": 8.0,
+    "availability": 1.0
+  },
+  "publication": {
+    "minute_lag": 1,
+    "qh_final_lag_minutes": 5,
+    "da_publication_hour_local": 13
+  },
+  "settings": {
+    "fleet_sizes_mw": [
+      1.0,
+      10.0,
+      25.0,
+      50.0,
+      100.0,
+      200.0,
+      400.0,
+      800.0,
+      1600.0
+    ],
+    "windows": {
+      "2026H1": [
+        "2026-01-01",
+        "2026-08-01",
+        [
+          "current",
+          "new2026"
+        ]
+      ],
+      "2025": [
+        "2025-01-01",
+        "2026-01-01",
+        [
+          "current"
+        ]
+      ]
+    },
+    "price_taking_policy": "ThresholdStrategy(mode='price', signal=running QH price of the mechanism, bands = 0.25 / 0.75 quantiles of the last 14 days of published prices, min spread 20 EUR/MWh)",
+    "impact_aware_policy": "ImpactAwareThresholdStrategy (same signal and bands; maximises q (P(q) - band))",
+    "strat_policies": "strat:<name> rows: Agent STRAT's published price-taking QH ledgers (reports/ledgers/realtime_*.parquet) re-settled at the counterfactual price of a fleet of Q MW (_1h = 1 MW / 1 MWh battery)",
+    "impact_operator": "fitted on the evaluation window itself. current: Elia's exact rule (neutral band |SI| < 25 MW, MIP / MDP bounded by FLOOR / CAP, alpha = tariff x price factor at the counterfactual SI of this and the previous quarter-hour), MIP / MDP first-difference volume curves, activation pass-through; new2026: NewWeightedMechanism2026 with aFRR / mFRR price curves and published weights (pro-rata)"
+  },
+  "notes": [
+    "Prices respond to the fleet through the fitted impact operators (euroflex_bess_lab.realtime.impact); see reports/impact.md for the fit periods, validation errors and approximations.",
+    "Open-loop signals: the fleet's running signal does not contain its own deviation (worst case for the price taker); see the closed-loop multi-fleet results in reports/impact.md.",
+    "No look-ahead: strategies only use rows visible under the publication model."
+  ]
+}

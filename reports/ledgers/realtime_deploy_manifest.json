@@ -1,0 +1,55 @@
+{
+ "fold": {
+  "train_start": "2026-04-24T22:00:00+00:00",
+  "train_end": "2026-10-24T22:00:00+00:00",
+  "test_start": "2026-10-24T22:00:00+00:00",
+  "test_end": "2027-11-28T22:00:00+00:00"
+ },
+ "forecasters": {
+  "price_current": "deploy_price_current.pkl",
+  "prism_current": "deploy_prism_current.pkl",
+  "prism_new2026": "deploy_prism_zero.pkl"
+ },
+ "fusion_variance": "deploy_fusion_variance.json",
+ "rl_policy": "rl_policy.npz",
+ "fit_logs": [
+  {
+   "name": "price_current",
+   "seconds": 56.96865637501469,
+   "fold": "2026-10",
+   "train_start": "2026-04-24T22:00:00+00:00",
+   "train_end": "2026-10-24T22:00:00+00:00",
+   "test_start": "2026-10-24T22:00:00+00:00",
+   "test_end": "2027-11-28T22:00:00+00:00",
+   "train_rows_h0": 87835,
+   "train_rows_h1": 87830
+  },
+  {
+   "name": "prism_new2026",
+   "seconds": 58.847375124983955,
+   "fold": "2026-10",
+   "train_start": "2026-04-24T22:00:00+00:00",
+   "train_end": "2026-10-24T22:00:00+00:00",
+   "test_start": "2026-10-24T22:00:00+00:00",
+   "test_end": "2027-11-28T22:00:00+00:00",
+   "train_rows_h0": 87835,
+   "short_share_h0": 0.519041384413958,
+   "train_rows_h1": 87830,
+   "short_share_h1": 0.5190709324832062
+  },
+  {
+   "name": "prism_current",
+   "seconds": 65.54722729101195,
+   "fold": "2026-10",
+   "train_start": "2026-04-24T22:00:00+00:00",
+   "train_end": "2026-10-24T22:00:00+00:00",
+   "test_start": "2026-10-24T22:00:00+00:00",
+   "test_end": "2027-11-28T22:00:00+00:00",
+   "train_rows_h0": 87835,
+   "short_share_h0": 0.519041384413958,
+   "train_rows_h1": 87830,
+   "short_share_h1": 0.5190709324832062
+  }
+ ],
+ "how_to_use": "euroflex live run --strategy prism | forecast-mpc | rl-dqn (models dir: $EUROFLEX_MODELS_DIR)"
+}

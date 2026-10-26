@@ -1,0 +1,33 @@
+{
+ "strategy": "prism_live",
+ "mechanism": "new2026",
+ "period": "B",
+ "start_utc": "2026-01-01T00:00:00+00:00",
+ "end_utc": "2026-08-01T00:00:00+00:00",
+ "battery": {
+  "power_mw": 1.0,
+  "energy_mwh": 2.0,
+  "charge_efficiency": 0.95,
+  "discharge_efficiency": 0.95,
+  "soc_min_frac": 0.05,
+  "soc_max_frac": 0.95,
+  "initial_soc_frac": 0.5,
+  "degradation_eur_per_mwh": 8.0,
+  "availability": 1.0
+ },
+ "publication": {
+  "minute_lag": 1,
+  "qh_final_lag_minutes": 5,
+  "da_publication_hour_local": 13
+ },
+ "price_taker": true,
+ "fleet_mw": 1.0,
+ "source": "scripts/research/realtime_backtest.py on data/public (Elia Open Data, CC BY 4.0)",
+ "summary": {
+  "eur_per_mw_year": 80474.3977153228,
+  "cycles_per_day": 2.7602892799856833,
+  "pnl_eur": 46709.30134332221,
+  "daily_pnl_cvar05_eur": -24.399627960117424,
+  "capture_vs_oracle": 0.3054143304872149
+ }
+}

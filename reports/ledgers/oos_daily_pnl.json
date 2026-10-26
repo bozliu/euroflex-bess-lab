@@ -1,0 +1,48 @@
+{
+ "description": "net P&L per local delivery day (Europe/Brussels) for every arm of every evaluation; input of the paired block-bootstrap statistics in oos_summary.json",
+ "columns": [
+  "evaluation",
+  "arm",
+  "date",
+  "revenue_eur",
+  "degradation_eur",
+  "pnl_eur",
+  "discharged_mwh",
+  "charged_mwh",
+  "n_qh"
+ ],
+ "evaluations": [
+  "current_2025-06-30",
+  "current_2025-12-31",
+  "current_2026-03-31",
+  "new2026_2025-12-31"
+ ],
+ "arms": [
+  "forecast_mpc_risk_frozen",
+  "forecast_mpc_risk_wf",
+  "oracle_qh",
+  "prism_risk_frozen",
+  "prism_risk_wf",
+  "prism_zero_live_risk_frozen",
+  "prism_zero_live_risk_wf",
+  "prism_zero_risk_frozen",
+  "prism_zero_risk_wf",
+  "threshold_price",
+  "threshold_si"
+ ],
+ "battery": {
+  "power_mw": 1.0,
+  "energy_mwh": 2.0,
+  "charge_efficiency": 0.95,
+  "discharge_efficiency": 0.95,
+  "soc_min_frac": 0.05,
+  "soc_max_frac": 0.95,
+  "initial_soc_frac": 0.5,
+  "degradation_eur_per_mwh": 8.0
+ },
+ "publication": {
+  "minute_lag": 1,
+  "qh_final_lag_minutes": 5
+ },
+ "source": "scripts/research/out_of_sample.py on data/public (Elia Open Data, CC BY 4.0)"
+}

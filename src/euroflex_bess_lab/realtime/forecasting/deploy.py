@@ -33,7 +33,7 @@ DEPLOY_FILES: dict[str, str] = {
 FUSION_FILE = "deploy_fusion_variance.json"
 RL_POLICY_FILE = "rl_policy.npz"
 COMMITTED_RL_POLICY = Path("reports") / "ledgers" / "realtime_rl_policy.npz"
-BUILD_HINT = "python scripts/research/realtime_backtest.py --stages deploy"
+BUILD_HINT = "python scripts/ops/build_models.py build"
 
 
 class DeploymentModelsMissing(FileNotFoundError, ValueError):

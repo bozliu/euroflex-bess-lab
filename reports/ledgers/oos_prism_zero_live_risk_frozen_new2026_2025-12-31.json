@@ -1,0 +1,35 @@
+{
+ "strategy": "prism_zero_live_risk_frozen",
+ "label": "SCALES-L zero-history + live running price, risk filter - frozen 2026-01-01",
+ "mechanism": "new2026",
+ "evaluation": "new2026_2025-12-31",
+ "start_utc": "2025-12-31T23:00:00+00:00",
+ "end_utc": "2026-07-31T22:00:00+00:00",
+ "cutoff_utc": "2025-12-31T23:00:00+00:00",
+ "train_start_utc": "2025-06-30T22:00:00+00:00",
+ "frozen": true,
+ "battery": {
+  "power_mw": 1.0,
+  "energy_mwh": 2.0,
+  "charge_efficiency": 0.95,
+  "discharge_efficiency": 0.95,
+  "soc_min_frac": 0.05,
+  "soc_max_frac": 0.95,
+  "initial_soc_frac": 0.5,
+  "degradation_eur_per_mwh": 8.0
+ },
+ "publication": {
+  "minute_lag": 1,
+  "qh_final_lag_minutes": 5
+ },
+ "price_taker": true,
+ "fleet_mw": 1.0,
+ "source": "scripts/research/out_of_sample.py on data/public (Elia Open Data, CC BY 4.0)",
+ "summary": {
+  "eur_per_mw_year": 80007.23002755549,
+  "pnl_eur": 46429.018839855664,
+  "cycles_per_day": 1.9077579081828706,
+  "capture_vs_oracle": 0.30361641524669725,
+  "daily_pnl_cvar05_eur": -6.689434494652525
+ }
+}

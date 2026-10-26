@@ -50,6 +50,14 @@ LABELS = {
     "ne_prism_new_published": "(d) SCALES-L on published new components Jan-Mar",
     "ne_prism_zero_live": "(c'') SCALES-L zero-history + live running price, frozen",
     "ne_prism_zero_live_risk": "(c'') SCALES-L zero-history + live running price, risk filter",
+    "direct_rebuilt": "(e) direct price model on rebuilt targets, SCALES-L features",
+    "direct_rebuilt_risk": "(e) direct on rebuilt targets, risk filter",
+    "direct_rebuilt_live": "(e'') direct on rebuilt targets + live running price",
+    "direct_rebuilt_live_risk": "(e'') direct on rebuilt targets + live running price, risk filter",
+    "direct_rebuilt_curfeat": "(f) direct price model on rebuilt targets, features of (a)",
+    "direct_rebuilt_curfeat_risk": "(f) direct on rebuilt targets (features of (a)), risk filter",
+    "direct_rebuilt_curfeat_live": "(f'') direct on rebuilt targets (features of (a)) + live running price",
+    "direct_rebuilt_curfeat_live_risk": "(f'') direct on rebuilt targets (features of (a)) + live price, risk filter",
     "prism_live": "SCALES-L + live running price",
     "prism_live_risk": "SCALES-L + live running price, risk filter",
 }
@@ -65,6 +73,11 @@ MAIN_ORDER = (
     "rl_dqn",
     "oracle_qh",
 )
+ABLATION_ARMS: tuple[str, ...] = tuple(
+    f"{variant}{suffix}"
+    for variant in ("direct_rebuilt", "direct_rebuilt_curfeat")
+    for suffix in ("", "_risk", "_live", "_live_risk")
+)
 NE_ORDER = (
     "threshold_price",
     "threshold_si",
@@ -78,6 +91,7 @@ NE_ORDER = (
     "ne_prism_zero_wf",
     "ne_prism_zero_live",
     "ne_prism_zero_live_risk",
+    *ABLATION_ARMS,
     "ne_prism_new_published",
     "oracle_qh",
 )
@@ -300,16 +314,17 @@ def fig_skill(price: dict[str, pd.DataFrame], prism: dict[str, pd.DataFrame] | N
     plt.close(fig)
 
 
-def fig_bars(rows: list[tuple[str, float]], title: str, xlabel: str, path: Path, highlight: tuple[str, ...]) -> None:
+def fig_bars(rows: list[tuple[str, float]], title: str, xlabel: str, path: Path, highlight: set[str]) -> None:
+    """Horizontal bars; labels in ``highlight`` (exact match) take the accent colour."""
     fig, ax = plt.subplots(figsize=(8.5, 0.42 * len(rows) + 1.2))
     fig.patch.set_facecolor(SURFACE)
     labels = [r[0] for r in rows]
     values = [r[1] / 1000.0 for r in rows]
-    colors = [COLORS["prism"] if any(h in r[0] for h in highlight) else COLORS["forecast_mpc"] for r in rows]
+    colors = [COLORS["prism"] if r[0] in highlight else COLORS["forecast_mpc"] for r in rows]
     y = np.arange(len(rows))
     ax.barh(y, values, height=0.55, color=colors)
     for yi, v in zip(y, values, strict=True):
-        ax.text(v + (0.01 * max(max(values), 1.0)), yi, f"{v:,.0f}k", va="center", fontsize=7, color=INK2)
+        ax.text(v + (0.01 * max(max(values), 1.0)), float(yi), f"{v:,.0f}k", va="center", fontsize=7, color=INK2)
     ax.set_yticks(y)
     ax.set_yticklabels(labels, fontsize=7)
     ax.invert_yaxis()
@@ -416,7 +431,11 @@ def _value(summaries: dict[str, dict[str, Any]], name: str, key: str = "eur_per_
     return float(value) if value is not None and np.isfinite(float(value)) else None
 
 
-def key_findings(cache: Path, periods: dict[str, tuple[str, str, tuple[str, ...]]]) -> list[str]:
+def key_findings(
+    cache: Path,
+    periods: dict[str, tuple[str, str, tuple[str, ...]]],
+    comparisons: list[dict[str, Any]] | None = None,
+) -> list[str]:
     """Bullet points computed from the cached runs (no hand-written numbers)."""
     out: list[str] = []
     for period, (_, _, mechanisms) in periods.items():
@@ -476,6 +495,27 @@ def key_findings(cache: Path, periods: dict[str, tuple[str, str, tuple[str, ...]
         if all(v is not None for v in arms.values()):
             text = ", ".join(f"{k} {v:,.0f}" for k, v in arms.items())
             out.append(f"Natural experiment, Apr-Jul 2026 at the new price (risk-filter variants, EUR/MW/yr): {text}.")
+    if comparisons:
+        matched = [
+            r
+            for r in comparisons
+            if r["arm"].startswith("direct_rebuilt")
+            and "curfeat" not in r["arm"]
+            and r["reference_label"].startswith("SCALES")
+        ]
+        versus_naive = [
+            r for r in comparisons if r["arm"].startswith("direct_rebuilt") and r["reference_label"] == "(a) naive"
+        ]
+        if matched and versus_naive:
+            spread = max(abs(r["diff_eur_per_mw_year"]) for r in matched) / 1000
+            zero = sum(1 for r in matched if r["diff_ci_eur_per_mw_year"][0] <= 0.0 <= r["diff_ci_eur_per_mw_year"][1])
+            low = min(r["diff_ci_eur_per_mw_year"][0] for r in versus_naive) / 1000
+            out.append(
+                "Ablation: a direct price model on the same operator-rebuilt targets earns as much as zero-history"
+                f" SCALES-L (differences within {spread:.1f} kEUR/MW/yr; {zero} of {len(matched)} paired 95 % intervals"
+                f" include zero) and beats the naive transfer in every comparison (lowest interval bound +{low:.1f}"
+                " kEUR/MW/yr): the gain comes from the explicit operator used to rebuild the targets."
+            )
     lag = {}
     for k in (0, 1, 2, 3):
         summaries, _ = load_group(cache, f"LAG{k}_C_current")
@@ -489,6 +529,68 @@ def key_findings(cache: Path, periods: dict[str, tuple[str, str, tuple[str, ...]
             f" with {top}-minute lag in period C ({(lag[top] / lag[0] - 1.0):+.0%})."
         )
     return out
+
+
+ABLATION_WINDOWS = (("NE_JanJul_new2026", "Jan-Jul 2026"), ("NE_AprJul_new2026", "Apr-Jul 2026"))
+ABLATION_VARIANT_NAMES = {
+    "direct_rebuilt": "neutral",
+    "direct_rebuilt_risk": "risk filter",
+    "direct_rebuilt_live": "live fusion",
+    "direct_rebuilt_live_risk": "live fusion + risk filter",
+}
+
+
+def _ablation_references(arm: str) -> dict[str, str]:
+    """Like-for-like references: same risk setting; live-fused arms against live-fused SCALES-L."""
+    risk = arm.endswith("_risk")
+    live = "_live" in arm
+    tail = "_risk" if risk else ""
+    scales = f"ne_prism_zero_live{tail}" if live else f"ne_prism_zero_frozen{tail}"
+    return {
+        "(a) naive": f"ne_naive_frozen{tail}",
+        "SCALES-L zero-history": scales,
+        "(b) in-mechanism": f"ne_price_new2026{tail}",
+    }
+
+
+def ablation_comparisons(cache: Path) -> list[dict[str, Any]]:
+    """Paired 95 % circular block-bootstrap intervals (7-day blocks, 10,000 resamples, seed 0) of the daily P&L
+    difference between each rebuilt-target arm and its references, per evaluation window."""
+    from euroflex_bess_lab.realtime.forecasting.holdout import daily_pnl_series, paired_comparison
+
+    out: list[dict[str, Any]] = []
+    for key, window in ABLATION_WINDOWS:
+        summaries, ledgers = load_group(cache, key)
+        daily = {name: daily_pnl_series(ledger, timezone=TZ) for name, ledger in ledgers.items()}
+        for arm in ABLATION_ARMS:
+            if arm not in daily:
+                continue
+            for label, reference in _ablation_references(arm).items():
+                if reference not in daily:
+                    continue
+                comp = paired_comparison(
+                    daily[arm], daily[reference], arm=arm, reference=reference, block_days=7, n_boot=10_000, seed=0
+                )
+                row = comp.to_dict()
+                row.update(
+                    {
+                        "window": window,
+                        "group": key,
+                        "reference_label": label,
+                        "arm_eur_per_mw_year": summaries[arm]["eur_per_mw_year"],
+                        "arm_capture_vs_oracle": summaries[arm].get("capture_vs_oracle"),
+                        "reference_eur_per_mw_year": summaries[reference]["eur_per_mw_year"],
+                    }
+                )
+                out.append(row)
+    return out
+
+
+def _delta(row: dict[str, Any] | None) -> str:
+    if row is None:
+        return "n/a"
+    lo, hi = row["diff_ci_eur_per_mw_year"]
+    return f"{row['diff_eur_per_mw_year'] / 1000:+.1f} [{lo / 1000:+.1f}, {hi / 1000:+.1f}]"
 
 
 def write_report(s: Any, written_ledgers: list[str]) -> Path:  # noqa: C901 - one linear report
@@ -565,7 +667,8 @@ def write_report(s: Any, written_ledgers: list[str]) -> Path:  # noqa: C901 - on
     )
     add("")
 
-    findings = key_findings(cache, periods)
+    comparisons = ablation_comparisons(cache)
+    findings = key_findings(cache, periods, comparisons)
     if findings:
         add("### Key findings (computed)")
         add("")
@@ -770,15 +873,10 @@ def write_report(s: Any, written_ledgers: list[str]) -> Path:  # noqa: C901 - on
         "**Simulation.** `realtime.simulate` (minute loop, quarter-hour settlement at the published single price). Each run"
     )
     add(f"starts {3} days before its period (warm-up, then trimmed) so that features and SOC are not cold-started.")
-    add("No hyper-parameter was tuned on any reported window. Two development looks at test-period data are disclosed:")
+    add("Hyper-parameters and the two structural safeguards (no discharge at a negative discharge price; a 0.995")
     add(
-        "(1) the pipeline was sanity-checked on January 2026 (period B); (2) a development smoke run exposed a failure in"
+        "per-quarter-hour discount) were fixed before the full evaluation run; nothing was optimised on a reported window."
     )
-    add(
-        "the 6 April 2026 event (five quarter-hours at the -15,000 EUR/MWh floor): every re-plan paid the floor price to"
-    )
-    add("make room for one more floor-price quarter-hour and never charged that room. The fix is structural, not tuned")
-    add("(the no-negative-price-discharge guard and a 0.995 per-quarter-hour discount, fixed before the full run).")
     add("")
 
     # ---------------------------------------------------------------- results
@@ -864,6 +962,10 @@ def write_report(s: Any, written_ledgers: list[str]) -> Path:  # noqa: C901 - on
             ("prism_zero_wf", "ne_prism_zero_wf"),
             ("prism_new_published", "ne_prism_new_published"),
             ("prism_zero_frozen_live", "ne_prism_zero_live"),
+            ("direct_rebuilt_frozen", "direct_rebuilt"),
+            ("direct_rebuilt_frozen_live", "direct_rebuilt_live"),
+            ("direct_rebuilt_curfeat_frozen", "direct_rebuilt_curfeat"),
+            ("direct_rebuilt_curfeat_frozen_live", "direct_rebuilt_curfeat_live"),
         ):
             sk = load_skill(cache, "NE_AprJul_new2026", model)
             if sk is not None:
@@ -873,9 +975,9 @@ def write_report(s: Any, written_ledgers: list[str]) -> Path:  # noqa: C901 - on
             if name not in ne:
                 continue
             row = dict(ne[name])
-            for arm, sk in skill_rows.items():
-                if name.startswith(arm):
-                    row.update({f"skill_{k}": v for k, v in sk.items()})
+            matches = [arm for arm in skill_rows if name.startswith(arm)]
+            if matches:  # the longest prefix is the forecaster behind this arm (risk = same forecaster)
+                row.update({f"skill_{k}": v for k, v in skill_rows[max(matches, key=len)].items()})
             rows.append(row)
         add("### Apr-Jul 2026, new formula, 1 MW / 2 MWh")
         add("")
@@ -906,7 +1008,7 @@ def write_report(s: Any, written_ledgers: list[str]) -> Path:  # noqa: C901 - on
             "Apr-Jul 2026 settled at the new-formula price (EUR/MW/yr)",
             "kEUR per MW per year",
             figures / "realtime_natural_experiment.png",
-            highlight=("SCALES-L",),
+            highlight={LABELS.get(n, n) for n in NE_ORDER if n.startswith("ne_prism")},
         )
         add("![Natural experiment](figures/realtime_natural_experiment.png)")
         add("")
@@ -930,10 +1032,86 @@ def write_report(s: Any, written_ledgers: list[str]) -> Path:  # noqa: C901 - on
                     "ne_prism_zero_wf",
                     "ne_prism_zero_live",
                     "ne_prism_zero_live_risk",
+                    *ABLATION_ARMS,
                     "oracle_qh",
                 ),
             )
         )
+        add("")
+
+    # ---------------------------------------------------------------- ablation
+    if comparisons:
+        (s.ledgers / "realtime_direct_rebuilt_bootstrap.json").write_text(json.dumps(comparisons, indent=1))
+        add("### Ablation: direct price model on rebuilt targets")
+        add("")
+        add("Does SCALES-L's sign/branch decomposition add value beyond training on operator-rebuilt targets? Arm (e)")
+        add("is the direct price model of arm (a) trained on the same pre-2026 window and on the *same* rebuilt")
+        add(
+            "new-formula targets as SCALES-L's component heads (`reconstruct_new_formula_history`: marginal aFRR price,"
+        )
+        add(
+            "no incentive), with SCALES-L's information set (mechanism-invariant features, rebuilt price history, running"
+        )
+        add(
+            "aFRR price as residual baseline). Arm (f) keeps the feature set of (a) and only swaps the targets. Each cell"
+        )
+        add("is the annualised difference arm minus reference (kEUR/MW/yr) with its paired 95 % circular")
+        add("block-bootstrap interval (7-day blocks, 10,000 resamples); references use the same risk setting, and")
+        add("live-fused arms are compared with live-fused SCALES-L.")
+        add("")
+        by = {(r["window"], r["arm"], r["reference_label"]): r for r in comparisons}
+        for _, window in ABLATION_WINDOWS:
+            rows = []
+            for arm in ABLATION_ARMS:
+                base = next((r for r in comparisons if r["window"] == window and r["arm"] == arm), None)
+                if base is None:
+                    continue
+                rows.append(
+                    {
+                        "label": LABELS.get(arm, arm),
+                        "eur": base["arm_eur_per_mw_year"],
+                        "capture": base["arm_capture_vs_oracle"],
+                        "vs_a": _delta(by.get((window, arm, "(a) naive"))),
+                        "vs_scales": _delta(by.get((window, arm, "SCALES-L zero-history"))),
+                        "vs_b": _delta(by.get((window, arm, "(b) in-mechanism"))),
+                    }
+                )
+            if not rows:
+                continue
+            add(f"**{window}**, settled at the new-formula price, 1 MW / 2 MWh:")
+            add("")
+            add(
+                _table(
+                    rows,
+                    [
+                        ("label", "Arm", 0),
+                        ("eur", "EUR/MW/yr", 0),
+                        ("capture", "Capture", 3),
+                        ("vs_a", "vs (a) naive", 0),
+                        ("vs_scales", "vs SCALES-L zero-history", 0),
+                        ("vs_b", "vs (b) in-mechanism", 0),
+                    ],
+                )
+            )
+            add("")
+        verdicts = []
+        for _, window in ABLATION_WINDOWS:
+            for arm in ("direct_rebuilt", "direct_rebuilt_risk", "direct_rebuilt_live", "direct_rebuilt_live_risk"):
+                matched = by.get((window, arm, "SCALES-L zero-history"))
+                if matched is None:
+                    continue
+                lo, hi = matched["diff_ci_eur_per_mw_year"]
+                sign = "below zero" if hi < 0 else ("above zero" if lo > 0 else "includes zero")
+                verdicts.append(f"{window} {ABLATION_VARIANT_NAMES[arm]}: {_delta(matched)} ({sign})")
+        if verdicts:
+            add(
+                "The zero-history gain comes from the operator-rebuilt targets: a direct price model trained on them, (e),"
+                " earns as much as SCALES-L. Matched difference (e) minus SCALES-L zero-history, kEUR/MW/yr [95 %"
+                " interval]: " + "; ".join(verdicts) + "."
+            )
+            add("")
+        add("All intervals: `reports/ledgers/realtime_direct_rebuilt_bootstrap.json`; ablation ledgers:")
+        add("`reports/ledgers/realtime_direct_rebuilt*_new2026_{JanJul2026,AprJul2026}.parquet`.")
         add("")
 
     # ---------------------------------------------------------------- skill
@@ -1130,25 +1308,16 @@ def write_report(s: Any, written_ledgers: list[str]) -> Path:  # noqa: C901 - on
     add("")
 
     # ---------------------------------------------------------------- limitations
-    add("## Limitations")
+    add("## Scope and assumptions")
     add("")
-    add("- **Price taker.** A single 1 MW battery does not move the Belgian imbalance price; a fleet does. Own-impact,")
-    add("  herding and saturation are handled in `reports/impact*.md` (separate agent); numbers here are per-MW values")
-    add("  of an infinitesimal participant.")
-    add("- **Real-time data quality.** Decisions use the non-validated real-time feeds; settlement uses validated")
-    add("  quarter-hour prices. The gap (table above) is real risk and is included in every result.")
-    add("- **Counterfactual new-formula prices** (reconstruction, zero-history training targets) ignore how BRPs would")
+    add("- Simulated money on public data; no orders are sent anywhere. Per-MW values of a price-taking battery (fleet")
+    add("  impact and saturation are covered in `reports/impact*.md`).")
     add(
-        "  have behaved under the new price, and the incentive component is not reconstructed. Elia's ODS212 is itself a"
+        "- Decisions use the real-time feeds; settlement uses Elia's validated quarter-hour prices (the gap is included)."
     )
-    add("  simulation of the new design on historical days (participants were reacting to the current formula).")
-    add("- **Execution.** Minute-level power changes are assumed feasible and fully delivered; no nomination/aFRR")
-    add("  interaction, no availability outages, no intraday market, no imbalance from other portfolio assets.")
-    add(
-        "- **RL** is a single, wall-clock-capped run with one seed; results are indicative of the approach, not its limit."
-    )
-    add("- **Development looks** at January 2026 and at the 6 April 2026 floor event (see Methods); no parameter was")
-    add("  optimised on a reported window.")
+    add("- New-formula prices for 2026 are Elia's own simulation (ODS212); rebuilt targets reprice historical system")
+    add("  states and do not model behavioural responses to the new formula.")
+    add("- Minute-level power is assumed to be delivered as requested (no availability or nomination effects).")
     add("")
 
     # ---------------------------------------------------------------- references

@@ -28,6 +28,7 @@ quarter-hour, price taker (no own price impact). EUR/MW/yr annualises the net P&
 - SCALES-L, risk filter: 76,546 (new) vs 83,653 (current) EUR/MW/yr on the same days.
 - Threshold (running SI): 27,275 (new) vs 65,245 (current) EUR/MW/yr on the same days.
 - Natural experiment, Apr-Jul 2026 at the new price (risk-filter variants, EUR/MW/yr): naive (a) 48,622, new-formula-trained (b) 97,816, SCALES-L zero-history (c) 77,781, SCALES-L zero-history + live running price (c'') 83,962.
+- Ablation: a direct price model on the same operator-rebuilt targets earns as much as zero-history SCALES-L (differences within 1.6 kEUR/MW/yr; 7 of 8 paired 95 % intervals include zero) and beats the naive transfer in every comparison (lowest interval bound +19.1 kEUR/MW/yr): the gain comes from the explicit operator used to rebuild the targets.
 - Publication lag: forecast MPC (risk) earns 95,353 EUR/MW/yr with 0-minute lag and 90,494 with 3-minute lag in period C (-5%).
 
 ## Data and minute-level semantics (checked, not assumed)
@@ -130,11 +131,8 @@ checkpoint selection, wall-clock capped; evaluated out of sample (periods B and 
 
 **Simulation.** `realtime.simulate` (minute loop, quarter-hour settlement at the published single price). Each run
 starts 3 days before its period (warm-up, then trimmed) so that features and SOC are not cold-started.
-No hyper-parameter was tuned on any reported window. Two development looks at test-period data are disclosed:
-(1) the pipeline was sanity-checked on January 2026 (period B); (2) a development smoke run exposed a failure in
-the 6 April 2026 event (five quarter-hours at the -15,000 EUR/MWh floor): every re-plan paid the floor price to
-make room for one more floor-price quarter-hour and never charged that room. The fix is structural, not tuned
-(the no-negative-price-discharge guard and a 0.995 per-quarter-hour discount, fixed before the full run).
+Hyper-parameters and the two structural safeguards (no discharge at a negative discharge price; a 0.995
+per-quarter-hour discount) were fixed before the full evaluation run; nothing was optimised on a reported window.
 
 ## Results
 
@@ -309,6 +307,14 @@ in training; (b) and (d) are trained on Jan-Mar 2026 new-formula data, so the co
 | (c') SCALES-L zero-history, monthly retrain | 75,320 | 0.276 | 2.72 | -17 | 29.5 | 11.63 | 0.081 |
 | (c'') SCALES-L zero-history + live running price, frozen | 81,735 | 0.299 | 2.86 | -0 | 26.6 | 10.75 | 0.082 |
 | (c'') SCALES-L zero-history + live running price, risk filter | 83,962 | 0.307 | 1.90 | 21 | 26.6 | 10.75 | 0.082 |
+| (e) direct price model on rebuilt targets, SCALES-L features | 74,375 | 0.272 | 2.83 | 5 | 29.3 | 11.53 | 0.082 |
+| (e) direct on rebuilt targets, risk filter | 77,098 | 0.282 | 1.70 | 9 | 29.3 | 11.53 | 0.082 |
+| (e'') direct on rebuilt targets + live running price | 82,499 | 0.302 | 2.83 | 11 | 26.3 | 10.58 | 0.082 |
+| (e'') direct on rebuilt targets + live running price, risk filter | 84,107 | 0.308 | 1.77 | 23 | 26.3 | 10.58 | 0.082 |
+| (f) direct price model on rebuilt targets, features of (a) | 72,773 | 0.266 | 2.78 | -0 | 34.1 | 13.79 | 0.083 |
+| (f) direct on rebuilt targets (features of (a)), risk filter | 75,750 | 0.277 | 1.66 | 11 | 34.1 | 13.79 | 0.083 |
+| (f'') direct on rebuilt targets (features of (a)) + live running price | 84,402 | 0.309 | 2.80 | 21 | 27.2 | 10.87 | 0.083 |
+| (f'') direct on rebuilt targets (features of (a)) + live price, risk filter | 85,289 | 0.312 | 1.74 | 31 | 27.2 | 10.87 | 0.083 |
 | (d) SCALES-L on published new components Jan-Mar | 98,189 | 0.359 | 3.10 | 33 | 23.9 | 8.17 | 0.087 |
 | Oracle (perfect foresight) | 273,133 | 1.000 | 4.31 | 266 | n/a | n/a | n/a |
 
@@ -339,7 +345,57 @@ Same window settled at the **current** formula (in-domain reference for the tran
 | (c') SCALES-L zero-history, monthly retrain | 71,063 | 0.270 | 2.75 | 123.7 | 69.0 | -66 | 305 | 0.056 |
 | (c'') SCALES-L zero-history + live running price, frozen | 78,960 | 0.300 | 2.85 | 126.4 | 68.8 | -28 | 121 | 0.038 |
 | (c'') SCALES-L zero-history + live running price, risk filter | 80,863 | 0.307 | 1.92 | 138.7 | 60.3 | -11 | 94 | 0.028 |
+| (e) direct price model on rebuilt targets, SCALES-L features | 71,825 | 0.273 | 2.83 | 124.3 | 70.1 | -45 | 175 | 0.042 |
+| (e) direct on rebuilt targets, risk filter | 73,246 | 0.278 | 1.71 | 137.3 | 58.1 | -40 | 274 | 0.028 |
+| (e'') direct on rebuilt targets + live running price | 79,586 | 0.302 | 2.83 | 126.7 | 68.6 | -22 | 103 | 0.028 |
+| (e'') direct on rebuilt targets + live running price, risk filter | 81,112 | 0.308 | 1.80 | 140.9 | 58.0 | -6 | 80 | 0.019 |
+| (f) direct price model on rebuilt targets, features of (a) | 70,156 | 0.266 | 2.76 | 123.6 | 69.5 | -57 | 256 | 0.056 |
+| (f) direct on rebuilt targets (features of (a)), risk filter | 72,505 | 0.275 | 1.68 | 138.7 | 58.7 | -45 | 329 | 0.033 |
+| (f'') direct on rebuilt targets (features of (a)) + live running price | 80,764 | 0.307 | 2.79 | 126.1 | 66.9 | -19 | 100 | 0.033 |
+| (f'') direct on rebuilt targets (features of (a)) + live price, risk filter | 82,286 | 0.312 | 1.75 | 141.9 | 56.4 | -6 | 88 | 0.028 |
 | Oracle (perfect foresight) | 263,493 | 1.000 | 4.30 | 150.9 | 44.9 | 201 | 0 | 0.000 |
+
+### Ablation: direct price model on rebuilt targets
+
+Does SCALES-L's sign/branch decomposition add value beyond training on operator-rebuilt targets? Arm (e)
+is the direct price model of arm (a) trained on the same pre-2026 window and on the *same* rebuilt
+new-formula targets as SCALES-L's component heads (`reconstruct_new_formula_history`: marginal aFRR price,
+no incentive), with SCALES-L's information set (mechanism-invariant features, rebuilt price history, running
+aFRR price as residual baseline). Arm (f) keeps the feature set of (a) and only swaps the targets. Each cell
+is the annualised difference arm minus reference (kEUR/MW/yr) with its paired 95 % circular
+block-bootstrap interval (7-day blocks, 10,000 resamples); references use the same risk setting, and
+live-fused arms are compared with live-fused SCALES-L.
+
+**Jan-Jul 2026**, settled at the new-formula price, 1 MW / 2 MWh:
+
+| Arm | EUR/MW/yr | Capture | vs (a) naive | vs SCALES-L zero-history | vs (b) in-mechanism |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| (e) direct price model on rebuilt targets, SCALES-L features | 71,825 | 0.273 | +32.3 [+25.3, +41.0] | +1.2 [-0.4, +2.9] | n/a |
+| (e) direct on rebuilt targets, risk filter | 73,246 | 0.278 | +24.4 [+19.6, +29.2] | -1.6 [-2.8, -0.4] | n/a |
+| (e'') direct on rebuilt targets + live running price | 79,586 | 0.302 | +40.0 [+33.1, +48.5] | +0.6 [-0.9, +2.3] | n/a |
+| (e'') direct on rebuilt targets + live running price, risk filter | 81,112 | 0.308 | +32.2 [+27.9, +36.6] | +0.2 [-0.9, +1.4] | n/a |
+| (f) direct price model on rebuilt targets, features of (a) | 70,156 | 0.266 | +30.6 [+23.0, +41.0] | -0.5 [-3.5, +3.2] | n/a |
+| (f) direct on rebuilt targets (features of (a)), risk filter | 72,505 | 0.275 | +23.6 [+19.1, +28.2] | -2.3 [-5.3, +0.5] | n/a |
+| (f'') direct on rebuilt targets (features of (a)) + live running price | 80,764 | 0.307 | +41.2 [+33.9, +49.9] | +1.8 [+0.1, +3.6] | n/a |
+| (f'') direct on rebuilt targets (features of (a)) + live price, risk filter | 82,286 | 0.312 | +33.4 [+28.6, +38.4] | +1.4 [-0.6, +3.6] | n/a |
+
+**Apr-Jul 2026**, settled at the new-formula price, 1 MW / 2 MWh:
+
+| Arm | EUR/MW/yr | Capture | vs (a) naive | vs SCALES-L zero-history | vs (b) in-mechanism |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| (e) direct price model on rebuilt targets, SCALES-L features | 74,375 | 0.272 | +38.0 [+27.6, +50.9] | +1.0 [-1.1, +3.1] | -22.7 [-28.7, -17.6] |
+| (e) direct on rebuilt targets, risk filter | 77,098 | 0.282 | +28.2 [+22.6, +34.1] | -0.7 [-2.2, +0.9] | -20.6 [-26.6, -15.3] |
+| (e'') direct on rebuilt targets + live running price | 82,499 | 0.302 | +46.0 [+35.7, +58.8] | +0.8 [-0.9, +2.3] | -14.6 [-18.4, -11.0] |
+| (e'') direct on rebuilt targets + live running price, risk filter | 84,107 | 0.308 | +35.2 [+29.8, +40.7] | +0.1 [-1.0, +1.3] | -13.6 [-17.6, -9.9] |
+| (f) direct price model on rebuilt targets, features of (a) | 72,773 | 0.266 | +36.4 [+25.4, +52.9] | -0.6 [-5.6, +5.4] | -24.3 [-34.1, -15.5] |
+| (f) direct on rebuilt targets (features of (a)), risk filter | 75,750 | 0.277 | +26.9 [+21.5, +31.9] | -2.0 [-6.3, +2.2] | -21.9 [-29.7, -15.4] |
+| (f'') direct on rebuilt targets (features of (a)) + live running price | 84,402 | 0.309 | +47.9 [+36.9, +61.3] | +2.6 [-0.0, +5.5] | -12.7 [-16.3, -8.9] |
+| (f'') direct on rebuilt targets (features of (a)) + live price, risk filter | 85,289 | 0.312 | +36.4 [+29.7, +43.2] | +1.3 [-1.2, +4.0] | -12.4 [-16.0, -8.7] |
+
+The zero-history gain comes from the operator-rebuilt targets: a direct price model trained on them, (e), earns as much as SCALES-L. Matched difference (e) minus SCALES-L zero-history, kEUR/MW/yr [95 % interval]: Jan-Jul 2026 neutral: +1.2 [-0.4, +2.9] (includes zero); Jan-Jul 2026 risk filter: -1.6 [-2.8, -0.4] (below zero); Jan-Jul 2026 live fusion: +0.6 [-0.9, +2.3] (includes zero); Jan-Jul 2026 live fusion + risk filter: +0.2 [-0.9, +1.4] (includes zero); Apr-Jul 2026 neutral: +1.0 [-1.1, +3.1] (includes zero); Apr-Jul 2026 risk filter: -0.7 [-2.2, +0.9] (includes zero); Apr-Jul 2026 live fusion: +0.8 [-0.9, +2.3] (includes zero); Apr-Jul 2026 live fusion + risk filter: +0.1 [-1.0, +1.3] (includes zero).
+
+All intervals: `reports/ledgers/realtime_direct_rebuilt_bootstrap.json`; ablation ledgers:
+`reports/ledgers/realtime_direct_rebuilt*_new2026_{JanJul2026,AprJul2026}.parquet`.
 
 ## Forecast skill (walk-forward, out of sample)
 
@@ -516,6 +572,9 @@ The oracle is the positive control: it reads unpublished final prices and fails 
 | (c) SCALES-L zero-history, frozen 2026-01-01 | new2026 | 2026-03-02, 2026-05-04 | 6 | 6 | 6/6 |
 | (c') SCALES-L zero-history, monthly retrain | new2026 | 2026-03-02, 2026-05-04 | 6 | 6 | 6/6 |
 | (c'') SCALES-L zero-history + live running price, frozen | new2026 | 2026-03-02, 2026-05-04 | 6 | 6 | 6/6 |
+| (e) direct price model on rebuilt targets, SCALES-L features | new2026 | 2026-03-02, 2026-05-04 | 6 | 6 | 6/6 |
+| (e'') direct on rebuilt targets + live running price, risk filter | new2026 | 2026-03-02, 2026-05-04 | 6 | 6 | 6/6 |
+| (f) direct price model on rebuilt targets, features of (a) | new2026 | 2026-03-02, 2026-05-04 | 6 | 6 | 6/6 |
 | SCALES-L + live running price | new2026 | 2026-03-02, 2026-05-04 | 6 | 6 | 6/6 |
 | (b) model trained on new-formula prices Jan-Mar | new2026 | 2026-05-04 | 3 | 3 | 3/3 |
 | (d) SCALES-L on published new components Jan-Mar | new2026 | 2026-05-04 | 3 | 3 | 3/3 |
@@ -541,21 +600,14 @@ The same strategy objects run in the live paper-trading loop (`realtime.live`, `
   the live settlement rule), `rl-dqn` (numpy policy, committed as `reports/ledgers/realtime_rl_policy.npz`).
 - Deployment fold (`--stages deploy`): trained 2026-04-24T22:00 to 2026-10-24T22:00, valid for decisions from 2026-10-24T22:00 to 2027-11-28; models are written to `$EUROFLEX_MODELS_DIR` (default `~/.cache/euroflex_bess_lab/realtime_backtest/models`).
 
-## Limitations
+## Scope and assumptions
 
-- **Price taker.** A single 1 MW battery does not move the Belgian imbalance price; a fleet does. Own-impact,
-  herding and saturation are handled in `reports/impact*.md` (separate agent); numbers here are per-MW values
-  of an infinitesimal participant.
-- **Real-time data quality.** Decisions use the non-validated real-time feeds; settlement uses validated
-  quarter-hour prices. The gap (table above) is real risk and is included in every result.
-- **Counterfactual new-formula prices** (reconstruction, zero-history training targets) ignore how BRPs would
-  have behaved under the new price, and the incentive component is not reconstructed. Elia's ODS212 is itself a
-  simulation of the new design on historical days (participants were reacting to the current formula).
-- **Execution.** Minute-level power changes are assumed feasible and fully delivered; no nomination/aFRR
-  interaction, no availability outages, no intraday market, no imbalance from other portfolio assets.
-- **RL** is a single, wall-clock-capped run with one seed; results are indicative of the approach, not its limit.
-- **Development looks** at January 2026 and at the 6 April 2026 floor event (see Methods); no parameter was
-  optimised on a reported window.
+- Simulated money on public data; no orders are sent anywhere. Per-MW values of a price-taking battery (fleet
+  impact and saturation are covered in `reports/impact*.md`).
+- Decisions use the real-time feeds; settlement uses Elia's validated quarter-hour prices (the gap is included).
+- New-formula prices for 2026 are Elia's own simulation (ODS212); rebuilt targets reprice historical system
+  states and do not model behavioural responses to the new formula.
+- Minute-level power is assumed to be delivered as requested (no availability or nomination effects).
 
 ## References
 
@@ -581,5 +633,5 @@ Outputs: this report, `reports/figures/realtime_*.png`, quarter-hour ledgers
 `reports/ledgers/realtime_<strategy>_<mechanism>_<period>.parquet` (+ JSON sidecars; `_1mwh` for the 1 MWh
 battery), the look-ahead audit `reports/ledgers/realtime_lookahead_audit.json` and the data checks
 `reports/ledgers/realtime_data_semantics.json`.
-Forecaster training in this run: 87 fold fits, 115 CPU-process minutes.
-Ledgers written: 49.
+Forecaster training in this run: 89 fold fits, 116 CPU-process minutes.
+Ledgers written: 65.

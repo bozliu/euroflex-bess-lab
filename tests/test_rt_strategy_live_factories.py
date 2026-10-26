@@ -46,9 +46,9 @@ def test_deployment_fold_covers_the_live_period() -> None:
 
 
 def test_missing_models_raise_with_build_hint(tmp_path: Path) -> None:
-    with pytest.raises(FileNotFoundError, match="--stages deploy"):
+    with pytest.raises(FileNotFoundError, match="build_models.py build"):
         load_forecaster("price_current", tmp_path)
-    with pytest.raises(FileNotFoundError, match="--stages deploy"):
+    with pytest.raises(FileNotFoundError, match="build_models.py build"):
         forecast_mpc.live_forecast_mpc(models_dir=str(tmp_path))
     assert models_dir(tmp_path) == tmp_path
 

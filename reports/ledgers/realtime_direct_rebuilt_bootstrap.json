@@ -1,0 +1,1402 @@
+[
+ {
+  "arm": "direct_rebuilt",
+  "reference": "ne_naive_frozen",
+  "days": 213,
+  "total_eur": 41688.88041261262,
+  "reference_total_eur": 22871.22117512964,
+  "ratio": 1.8227658284353203,
+  "ratio_ci": [
+   1.5362699956740118,
+   2.3308313522667254
+  ],
+  "uplift_pct": 82.27658284353203,
+  "uplift_ci_pct": [
+   53.62699956740118,
+   133.08313522667254
+  ],
+  "diff_eur_per_mw_year": 32268.310030472578,
+  "diff_ci_eur_per_mw_year": [
+   25288.34274399512,
+   41008.785805728934
+  ],
+  "p_value": 9.999000099990002e-05,
+  "months": 8,
+  "months_won": 8,
+  "share_months_won": 1.0,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 71824.82816371112,
+  "arm_capture_vs_oracle": 0.2725877102377155,
+  "reference_eur_per_mw_year": 39404.30912366085
+ },
+ {
+  "arm": "direct_rebuilt",
+  "reference": "ne_prism_zero_frozen",
+  "days": 213,
+  "total_eur": 41688.88041261262,
+  "reference_total_eur": 40996.34890472559,
+  "ratio": 1.016892516684753,
+  "ratio_ci": [
+   0.9936462536226397,
+   1.0404253851981444
+  ],
+  "uplift_pct": 1.689251668475289,
+  "uplift_ci_pct": [
+   -0.6353746377360303,
+   4.042538519814443
+  ],
+  "diff_eur_per_mw_year": 1187.5452265527588,
+  "diff_ci_eur_per_mw_year": [
+   -446.2209549274918,
+   2907.4764211944457
+  ],
+  "p_value": 0.08439156084391561,
+  "months": 8,
+  "months_won": 5,
+  "share_months_won": 0.625,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 71824.82816371112,
+  "arm_capture_vs_oracle": 0.2725877102377155,
+  "reference_eur_per_mw_year": 70631.68130873123
+ },
+ {
+  "arm": "direct_rebuilt_risk",
+  "reference": "ne_naive_frozen_risk",
+  "days": 213,
+  "total_eur": 42513.72168125132,
+  "reference_total_eur": 28311.820688778393,
+  "ratio": 1.501624432726856,
+  "ratio_ci": [
+   1.3631932014262533,
+   1.6620219693277056
+  ],
+  "uplift_pct": 50.1624432726856,
+  "uplift_ci_pct": [
+   36.31932014262533,
+   66.20219693277056
+  ],
+  "diff_eur_per_mw_year": 24353.259800472944,
+  "diff_ci_eur_per_mw_year": [
+   19645.212694424517,
+   29199.202476788072
+  ],
+  "p_value": 9.999000099990002e-05,
+  "months": 8,
+  "months_won": 8,
+  "share_months_won": 1.0,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 73245.92850979738,
+  "arm_capture_vs_oracle": 0.27798103312147837,
+  "reference_eur_per_mw_year": 48777.79484234107
+ },
+ {
+  "arm": "direct_rebuilt_risk",
+  "reference": "ne_prism_zero_frozen_risk",
+  "days": 213,
+  "total_eur": 42513.72168125132,
+  "reference_total_eur": 43429.4683143719,
+  "ratio": 0.9789141643067839,
+  "ratio_ci": [
+   0.9627082846160055,
+   0.9951124685389884
+  ],
+  "uplift_pct": -2.1085835693216093,
+  "uplift_ci_pct": [
+   -3.729171538399445,
+   -0.48875314610116183
+  ],
+  "diff_eur_per_mw_year": -1570.3120082032458,
+  "diff_ci_eur_per_mw_year": [
+   -2767.9271056808207,
+   -359.7694795117418
+  ],
+  "p_value": 0.9945005499450055,
+  "months": 8,
+  "months_won": 2,
+  "share_months_won": 0.25,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 73245.92850979738,
+  "arm_capture_vs_oracle": 0.27798103312147837,
+  "reference_eur_per_mw_year": 74823.6476501148
+ },
+ {
+  "arm": "direct_rebuilt_live",
+  "reference": "ne_naive_frozen",
+  "days": 213,
+  "total_eur": 46193.48270304908,
+  "reference_total_eur": 22871.22117512964,
+  "ratio": 2.0197208688305746,
+  "ratio_ci": [
+   1.7020853352497276,
+   2.581259616063721
+  ],
+  "uplift_pct": 101.97208688305746,
+  "uplift_ci_pct": [
+   70.20853352497276,
+   158.1259616063721
+  ],
+  "diff_eur_per_mw_year": 39992.75128203088,
+  "diff_ci_eur_per_mw_year": [
+   33073.611951130806,
+   48516.22712904321
+  ],
+  "p_value": 9.999000099990002e-05,
+  "months": 8,
+  "months_won": 8,
+  "share_months_won": 1.0,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 79585.70545890885,
+  "arm_capture_vs_oracle": 0.30204158886742694,
+  "reference_eur_per_mw_year": 39404.30912366085
+ },
+ {
+  "arm": "direct_rebuilt_live",
+  "reference": "ne_prism_zero_live",
+  "days": 213,
+  "total_eur": 46193.48270304908,
+  "reference_total_eur": 45830.559947545684,
+  "ratio": 1.0079187938336074,
+  "ratio_ci": [
+   0.9879840063341223,
+   1.0280521403682596
+  ],
+  "uplift_pct": 0.7918793833607385,
+  "uplift_ci_pct": [
+   -1.201599366587769,
+   2.805214036825965
+  ],
+  "diff_eur_per_mw_year": 622.3358518667383,
+  "diff_ci_eur_per_mw_year": [
+   -929.2135539459018,
+   2265.2032379400766
+  ],
+  "p_value": 0.21887811218878112,
+  "months": 8,
+  "months_won": 4,
+  "share_months_won": 0.5,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 79585.70545890885,
+  "arm_capture_vs_oracle": 0.30204158886742694,
+  "reference_eur_per_mw_year": 78960.43406057105
+ },
+ {
+  "arm": "direct_rebuilt_live_risk",
+  "reference": "ne_naive_frozen_risk",
+  "days": 213,
+  "total_eur": 47079.32977180073,
+  "reference_total_eur": 28311.820688778393,
+  "ratio": 1.6628859828312272,
+  "ratio_ci": [
+   1.5137482056784173,
+   1.8342824351377032
+  ],
+  "uplift_pct": 66.28859828312272,
+  "uplift_ci_pct": [
+   51.37482056784173,
+   83.42824351377031
+  ],
+  "diff_eur_per_mw_year": 32182.313110675645,
+  "diff_ci_eur_per_mw_year": [
+   27884.953666701847,
+   36575.80744123449
+  ],
+  "p_value": 9.999000099990002e-05,
+  "months": 8,
+  "months_won": 8,
+  "share_months_won": 1.0,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 81111.91131674631,
+  "arm_capture_vs_oracle": 0.30783380544177147,
+  "reference_eur_per_mw_year": 48777.79484234107
+ },
+ {
+  "arm": "direct_rebuilt_live_risk",
+  "reference": "ne_prism_zero_live_risk",
+  "days": 213,
+  "total_eur": 47079.32977180073,
+  "reference_total_eur": 46934.62579689263,
+  "ratio": 1.0030830963803632,
+  "ratio_ci": [
+   0.9887010948022507,
+   1.0173037353222771
+  ],
+  "uplift_pct": 0.3083096380363193,
+  "uplift_ci_pct": [
+   -1.1298905197749343,
+   1.7303735322277136
+  ],
+  "diff_eur_per_mw_year": 248.13674570511233,
+  "diff_ci_eur_per_mw_year": [
+   -908.5233508703913,
+   1389.7221837870804
+  ],
+  "p_value": 0.3330666933306669,
+  "months": 8,
+  "months_won": 6,
+  "share_months_won": 0.75,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 81111.91131674631,
+  "arm_capture_vs_oracle": 0.30783380544177147,
+  "reference_eur_per_mw_year": 80862.60411469353
+ },
+ {
+  "arm": "direct_rebuilt_curfeat",
+  "reference": "ne_naive_frozen",
+  "days": 213,
+  "total_eur": 40720.00157883842,
+  "reference_total_eur": 22871.22117512964,
+  "ratio": 1.7804034715521746,
+  "ratio_ci": [
+   1.4812851487320677,
+   2.3428290563818983
+  ],
+  "uplift_pct": 78.04034715521746,
+  "uplift_ci_pct": [
+   48.128514873206775,
+   134.28290563818985
+  ],
+  "diff_eur_per_mw_year": 30606.88752326118,
+  "diff_ci_eur_per_mw_year": [
+   22970.698645896227,
+   40997.81524447283
+  ],
+  "p_value": 9.999000099990002e-05,
+  "months": 8,
+  "months_won": 8,
+  "share_months_won": 1.0,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 70155.56875788081,
+  "arm_capture_vs_oracle": 0.26625258057766366,
+  "reference_eur_per_mw_year": 39404.30912366085
+ },
+ {
+  "arm": "direct_rebuilt_curfeat",
+  "reference": "ne_prism_zero_frozen",
+  "days": 213,
+  "total_eur": 40720.00157883842,
+  "reference_total_eur": 40996.34890472559,
+  "ratio": 0.9932592210460156,
+  "ratio_ci": [
+   0.9504432564171731,
+   1.0472117633350027
+  ],
+  "uplift_pct": -0.6740778953984394,
+  "uplift_ci_pct": [
+   -4.955674358282691,
+   4.721176333500265
+  ],
+  "diff_eur_per_mw_year": -473.8772806586441,
+  "diff_ci_eur_per_mw_year": [
+   -3537.788769162328,
+   3245.0249643572693
+  ],
+  "p_value": 0.5857414258574143,
+  "months": 8,
+  "months_won": 3,
+  "share_months_won": 0.375,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 70155.56875788081,
+  "arm_capture_vs_oracle": 0.26625258057766366,
+  "reference_eur_per_mw_year": 70631.68130873123
+ },
+ {
+  "arm": "direct_rebuilt_curfeat_risk",
+  "reference": "ne_naive_frozen_risk",
+  "days": 213,
+  "total_eur": 42083.71343094723,
+  "reference_total_eur": 28311.820688778393,
+  "ratio": 1.4864361389385117,
+  "ratio_ci": [
+   1.351788909363725,
+   1.6428021440675342
+  ],
+  "uplift_pct": 48.64361389385117,
+  "uplift_ci_pct": [
+   35.1788909363725,
+   64.28021440675342
+  ],
+  "diff_eur_per_mw_year": 23615.886498014872,
+  "diff_ci_eur_per_mw_year": [
+   19084.019845834067,
+   28197.36339286017
+  ],
+  "p_value": 9.999000099990002e-05,
+  "months": 8,
+  "months_won": 8,
+  "share_months_won": 1.0,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 72505.07703138432,
+  "arm_capture_vs_oracle": 0.2751693729575787,
+  "reference_eur_per_mw_year": 48777.79484234107
+ },
+ {
+  "arm": "direct_rebuilt_curfeat_risk",
+  "reference": "ne_prism_zero_frozen_risk",
+  "days": 213,
+  "total_eur": 42083.71343094723,
+  "reference_total_eur": 43429.4683143719,
+  "ratio": 0.9690128630246361,
+  "ratio_ci": [
+   0.9305063525092017,
+   1.0074949613709479
+  ],
+  "uplift_pct": -3.0987136975363927,
+  "uplift_ci_pct": [
+   -6.949364749079834,
+   0.749496137094785
+  ],
+  "diff_eur_per_mw_year": -2307.685310661325,
+  "diff_ci_eur_per_mw_year": [
+   -5311.341941769157,
+   547.7735266371426
+  ],
+  "p_value": 0.9384061593840616,
+  "months": 8,
+  "months_won": 1,
+  "share_months_won": 0.125,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 72505.07703138432,
+  "arm_capture_vs_oracle": 0.2751693729575787,
+  "reference_eur_per_mw_year": 74823.6476501148
+ },
+ {
+  "arm": "direct_rebuilt_curfeat_live",
+  "reference": "ne_naive_frozen",
+  "days": 213,
+  "total_eur": 46877.13044419886,
+  "reference_total_eur": 22871.22117512964,
+  "ratio": 2.0496120467399197,
+  "ratio_ci": [
+   1.7147712604165937,
+   2.635497243410809
+  ],
+  "uplift_pct": 104.96120467399197,
+  "uplift_ci_pct": [
+   71.47712604165936,
+   163.5497243410809
+  ],
+  "diff_eur_per_mw_year": 41165.06272548139,
+  "diff_ci_eur_per_mw_year": [
+   33906.39920136444,
+   49913.62923619009
+  ],
+  "p_value": 9.999000099990002e-05,
+  "months": 8,
+  "months_won": 7,
+  "share_months_won": 0.875,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 80763.54667331906,
+  "arm_capture_vs_oracle": 0.3065117010538129,
+  "reference_eur_per_mw_year": 39404.30912366085
+ },
+ {
+  "arm": "direct_rebuilt_curfeat_live",
+  "reference": "ne_prism_zero_live",
+  "days": 213,
+  "total_eur": 46877.13044419886,
+  "reference_total_eur": 45830.559947545684,
+  "ratio": 1.022835647171909,
+  "ratio_ci": [
+   1.000707873064531,
+   1.045958803968791
+  ],
+  "uplift_pct": 2.283564717190889,
+  "uplift_ci_pct": [
+   0.07078730645309061,
+   4.595880396879104
+  ],
+  "diff_eur_per_mw_year": 1794.6472953172502,
+  "diff_ci_eur_per_mw_year": [
+   56.3752485582508,
+   3578.4647924995397
+  ],
+  "p_value": 0.024197580241975804,
+  "months": 8,
+  "months_won": 5,
+  "share_months_won": 0.625,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 80763.54667331906,
+  "arm_capture_vs_oracle": 0.3065117010538129,
+  "reference_eur_per_mw_year": 78960.43406057105
+ },
+ {
+  "arm": "direct_rebuilt_curfeat_live_risk",
+  "reference": "ne_naive_frozen_risk",
+  "days": 213,
+  "total_eur": 47760.94430179453,
+  "reference_total_eur": 28311.820688778393,
+  "ratio": 1.6869612458631087,
+  "ratio_ci": [
+   1.5278592139629166,
+   1.8767630008583538
+  ],
+  "uplift_pct": 68.69612458631087,
+  "uplift_ci_pct": [
+   52.785921396291656,
+   87.67630008583538
+  ],
+  "diff_eur_per_mw_year": 33351.13802654527,
+  "diff_ci_eur_per_mw_year": [
+   28599.59314749352,
+   38387.69828742165
+  ],
+  "p_value": 9.999000099990002e-05,
+  "months": 8,
+  "months_won": 7,
+  "share_months_won": 0.875,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 82286.24955769081,
+  "arm_capture_vs_oracle": 0.3122906232348335,
+  "reference_eur_per_mw_year": 48777.79484234107
+ },
+ {
+  "arm": "direct_rebuilt_curfeat_live_risk",
+  "reference": "ne_prism_zero_live_risk",
+  "days": 213,
+  "total_eur": 47760.94430179453,
+  "reference_total_eur": 46934.62579689263,
+  "ratio": 1.0176057333124964,
+  "ratio_ci": [
+   0.9929819687589914,
+   1.044370969871102
+  ],
+  "uplift_pct": 1.7605733312496374,
+  "uplift_ci_pct": [
+   -0.7018031241008638,
+   4.4370969871101895
+  ],
+  "diff_eur_per_mw_year": 1416.961661574744,
+  "diff_ci_eur_per_mw_year": [
+   -569.5095742133209,
+   3550.800526828419
+  ],
+  "p_value": 0.09469053094690531,
+  "months": 8,
+  "months_won": 6,
+  "share_months_won": 0.75,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Jan-Jul 2026",
+  "group": "NE_JanJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 82286.24955769081,
+  "arm_capture_vs_oracle": 0.3122906232348335,
+  "reference_eur_per_mw_year": 80862.60411469353
+ },
+ {
+  "arm": "direct_rebuilt",
+  "reference": "ne_naive_frozen",
+  "days": 123,
+  "total_eur": 24842.70535812428,
+  "reference_total_eur": 12057.687453895363,
+  "ratio": 2.060320890976369,
+  "ratio_ci": [
+   1.6012323212128927,
+   3.225204631675673
+  ],
+  "uplift_pct": 106.03208909763691,
+  "uplift_ci_pct": [
+   60.12323212128927,
+   222.52046316756727
+  ],
+  "diff_eur_per_mw_year": 37965.26658146024,
+  "diff_ci_eur_per_mw_year": [
+   27643.56776061189,
+   50932.82146425145
+  ],
+  "p_value": 9.999000099990002e-05,
+  "months": 5,
+  "months_won": 5,
+  "share_months_won": 1.0,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 74375.3945250401,
+  "arm_capture_vs_oracle": 0.2723047634331751,
+  "reference_eur_per_mw_year": 36098.937233895755
+ },
+ {
+  "arm": "direct_rebuilt",
+  "reference": "ne_prism_zero_frozen",
+  "days": 123,
+  "total_eur": 24842.70535812428,
+  "reference_total_eur": 24498.21339352745,
+  "ratio": 1.014061921947657,
+  "ratio_ci": [
+   0.9849405705636199,
+   1.0456681177839275
+  ],
+  "uplift_pct": 1.4061921947656986,
+  "uplift_ci_pct": [
+   -1.5059429436380056,
+   4.566811778392754
+  ],
+  "diff_eur_per_mw_year": 1022.9730899917864,
+  "diff_ci_eur_per_mw_year": [
+   -1124.1226874564518,
+   3128.1462008532403
+  ],
+  "p_value": 0.17528247175282471,
+  "months": 5,
+  "months_won": 3,
+  "share_months_won": 0.6,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 74375.3945250401,
+  "arm_capture_vs_oracle": 0.2723047634331751,
+  "reference_eur_per_mw_year": 73344.03640972052
+ },
+ {
+  "arm": "direct_rebuilt",
+  "reference": "ne_price_new2026",
+  "days": 123,
+  "total_eur": 24842.70535812428,
+  "reference_total_eur": 32484.134558333102,
+  "ratio": 0.7647642671074769,
+  "ratio_ci": [
+   0.7115879118180963,
+   0.8129692745652969
+  ],
+  "uplift_pct": -23.523573289252308,
+  "uplift_ci_pct": [
+   -28.841208818190367,
+   -18.703072543470313
+  ],
+  "diff_eur_per_mw_year": -22691.3171981811,
+  "diff_ci_eur_per_mw_year": [
+   -28741.591310013922,
+   -17600.380258843397
+  ],
+  "p_value": 1.0,
+  "months": 5,
+  "months_won": 1,
+  "share_months_won": 0.2,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(b) in-mechanism",
+  "arm_eur_per_mw_year": 74375.3945250401,
+  "arm_capture_vs_oracle": 0.2723047634331751,
+  "reference_eur_per_mw_year": 97252.70612648499
+ },
+ {
+  "arm": "direct_rebuilt_risk",
+  "reference": "ne_naive_frozen_risk",
+  "days": 123,
+  "total_eur": 25752.008639414238,
+  "reference_total_eur": 16240.63937895109,
+  "ratio": 1.5856523895722046,
+  "ratio_ci": [
+   1.420068756955472,
+   1.8002786750517792
+  ],
+  "uplift_pct": 58.56523895722046,
+  "uplift_ci_pct": [
+   42.006875695547194,
+   80.02786750517792
+  ],
+  "diff_eur_per_mw_year": 28244.127011253386,
+  "diff_ci_eur_per_mw_year": [
+   22563.75396686162,
+   34109.37174656803
+  ],
+  "p_value": 9.999000099990002e-05,
+  "months": 5,
+  "months_won": 5,
+  "share_months_won": 1.0,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 77097.71438972173,
+  "arm_capture_vs_oracle": 0.2822717783508841,
+  "reference_eur_per_mw_year": 48622.07814067118
+ },
+ {
+  "arm": "direct_rebuilt_risk",
+  "reference": "ne_prism_zero_frozen_risk",
+  "days": 123,
+  "total_eur": 25752.008639414238,
+  "reference_total_eur": 25980.0788744614,
+  "ratio": 0.9912213416999531,
+  "ratio_ci": [
+   0.9720782362943371,
+   1.012128645202443
+  ],
+  "uplift_pct": -0.8778658300046871,
+  "uplift_ci_pct": [
+   -2.7921763705662905,
+   1.2128645202442945
+  ],
+  "diff_eur_per_mw_year": -677.2573443168802,
+  "diff_ci_eur_per_mw_year": [
+   -2240.280416451196,
+   916.9506109553105
+  ],
+  "p_value": 0.8045195480451954,
+  "months": 5,
+  "months_won": 2,
+  "share_months_won": 0.4,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 77097.71438972173,
+  "arm_capture_vs_oracle": 0.2822717783508841,
+  "reference_eur_per_mw_year": 77780.52302374611
+ },
+ {
+  "arm": "direct_rebuilt_risk",
+  "reference": "ne_price_new2026_risk",
+  "days": 123,
+  "total_eur": 25752.008639414238,
+  "reference_total_eur": 32672.36128701463,
+  "ratio": 0.7881893938791981,
+  "ratio_ci": [
+   0.7276992571779209,
+   0.8424486192081512
+  ],
+  "uplift_pct": -21.181060612080195,
+  "uplift_ci_pct": [
+   -27.230074282207905,
+   -15.755138079184883
+  ],
+  "diff_eur_per_mw_year": -20550.071581593853,
+  "diff_ci_eur_per_mw_year": [
+   -26574.128055403115,
+   -15283.180734436106
+  ],
+  "p_value": 1.0,
+  "months": 5,
+  "months_won": 1,
+  "share_months_won": 0.2,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(b) in-mechanism",
+  "arm_eur_per_mw_year": 77097.71438972173,
+  "arm_capture_vs_oracle": 0.2822717783508841,
+  "reference_eur_per_mw_year": 97816.22918100077
+ },
+ {
+  "arm": "direct_rebuilt_live",
+  "reference": "ne_naive_frozen",
+  "days": 123,
+  "total_eur": 27556.17139322294,
+  "reference_total_eur": 12057.687453895363,
+  "ratio": 2.2853612269009864,
+  "ratio_ci": [
+   1.773621035530815,
+   3.5687156341073814
+  ],
+  "uplift_pct": 128.53612269009864,
+  "uplift_ci_pct": [
+   77.36210355308151,
+   256.87156341073813
+  ],
+  "diff_eur_per_mw_year": 46022.93706373493,
+  "diff_ci_eur_per_mw_year": [
+   35727.94705071425,
+   58801.02023659352
+  ],
+  "p_value": 9.999000099990002e-05,
+  "months": 5,
+  "months_won": 5,
+  "share_months_won": 1.0,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 82499.1114866777,
+  "arm_capture_vs_oracle": 0.3020474873483005,
+  "reference_eur_per_mw_year": 36098.937233895755
+ },
+ {
+  "arm": "direct_rebuilt_live",
+  "reference": "ne_prism_zero_live",
+  "days": 123,
+  "total_eur": 27556.17139322294,
+  "reference_total_eur": 27300.988428143435,
+  "ratio": 1.009347022938424,
+  "ratio_ci": [
+   0.9894399088104108,
+   1.0298892302604608
+  ],
+  "uplift_pct": 0.9347022938424043,
+  "uplift_ci_pct": [
+   -1.0560091189589227,
+   2.9889230260460753
+  ],
+  "diff_eur_per_mw_year": 757.7689267909627,
+  "diff_ci_eur_per_mw_year": [
+   -896.6987880141653,
+   2311.7421539446286
+  ],
+  "p_value": 0.17748225177482252,
+  "months": 5,
+  "months_won": 4,
+  "share_months_won": 0.8,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 82499.1114866777,
+  "arm_capture_vs_oracle": 0.3020474873483005,
+  "reference_eur_per_mw_year": 81735.13133917534
+ },
+ {
+  "arm": "direct_rebuilt_live",
+  "reference": "ne_price_new2026",
+  "days": 123,
+  "total_eur": 27556.17139322294,
+  "reference_total_eur": 32484.134558333102,
+  "ratio": 0.8482963073477973,
+  "ratio_ci": [
+   0.8119925879959158,
+   0.8845617304911563
+  ],
+  "uplift_pct": -15.170369265220273,
+  "uplift_ci_pct": [
+   -18.80074120040842,
+   -11.543826950884373
+  ],
+  "diff_eur_per_mw_year": -14633.646715906412,
+  "diff_ci_eur_per_mw_year": [
+   -18386.260234496618,
+   -11014.233312016393
+  ],
+  "p_value": 1.0,
+  "months": 5,
+  "months_won": 1,
+  "share_months_won": 0.2,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(b) in-mechanism",
+  "arm_eur_per_mw_year": 82499.1114866777,
+  "arm_capture_vs_oracle": 0.3020474873483005,
+  "reference_eur_per_mw_year": 97252.70612648499
+ },
+ {
+  "arm": "direct_rebuilt_live_risk",
+  "reference": "ne_naive_frozen_risk",
+  "days": 123,
+  "total_eur": 28093.3324355429,
+  "reference_total_eur": 16240.63937895109,
+  "ratio": 1.7298168982160678,
+  "ratio_ci": [
+   1.5487180881049352,
+   1.9647130059742703
+  ],
+  "uplift_pct": 72.98168982160678,
+  "uplift_ci_pct": [
+   54.87180881049352,
+   96.47130059742703
+  ],
+  "diff_eur_per_mw_year": 35196.71657658667,
+  "diff_ci_eur_per_mw_year": [
+   29795.62846024037,
+   40658.27513364563
+  ],
+  "p_value": 9.999000099990002e-05,
+  "months": 5,
+  "months_won": 5,
+  "share_months_won": 1.0,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 84107.29239411514,
+  "arm_capture_vs_oracle": 0.30793539321224944,
+  "reference_eur_per_mw_year": 48622.07814067118
+ },
+ {
+  "arm": "direct_rebuilt_live_risk",
+  "reference": "ne_prism_zero_live_risk",
+  "days": 123,
+  "total_eur": 28093.3324355429,
+  "reference_total_eur": 28044.92200216107,
+  "ratio": 1.0017261746485906,
+  "ratio_ci": [
+   0.9877192964300452,
+   1.015639307138622
+  ],
+  "uplift_pct": 0.1726174648590595,
+  "uplift_ci_pct": [
+   -1.228070356995481,
+   1.563930713862205
+  ],
+  "diff_eur_per_mw_year": 143.75537229849212,
+  "diff_ci_eur_per_mw_year": [
+   -999.674833312963,
+   1311.2794249953245
+  ],
+  "p_value": 0.41145885411458855,
+  "months": 5,
+  "months_won": 4,
+  "share_months_won": 0.8,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 84107.29239411514,
+  "arm_capture_vs_oracle": 0.30793539321224944,
+  "reference_eur_per_mw_year": 83962.35869909287
+ },
+ {
+  "arm": "direct_rebuilt_live_risk",
+  "reference": "ne_price_new2026_risk",
+  "days": 123,
+  "total_eur": 28093.3324355429,
+  "reference_total_eur": 32672.36128701463,
+  "ratio": 0.8598500790546892,
+  "ratio_ci": [
+   0.8169027664624288,
+   0.8985198394458173
+  ],
+  "uplift_pct": -14.014992094531076,
+  "uplift_ci_pct": [
+   -18.309723353757125,
+   -10.148016055418275
+  ],
+  "diff_eur_per_mw_year": -13597.482016260565,
+  "diff_ci_eur_per_mw_year": [
+   -17577.38711899838,
+   -9937.525414490945
+  ],
+  "p_value": 1.0,
+  "months": 5,
+  "months_won": 1,
+  "share_months_won": 0.2,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(b) in-mechanism",
+  "arm_eur_per_mw_year": 84107.29239411514,
+  "arm_capture_vs_oracle": 0.30793539321224944,
+  "reference_eur_per_mw_year": 97816.22918100077
+ },
+ {
+  "arm": "direct_rebuilt_curfeat",
+  "reference": "ne_naive_frozen",
+  "days": 123,
+  "total_eur": 24307.32848146213,
+  "reference_total_eur": 12057.687453895363,
+  "ratio": 2.015919601035055,
+  "ratio_ci": [
+   1.5509208002634773,
+   3.3024375211042316
+  ],
+  "uplift_pct": 101.59196010350549,
+  "uplift_ci_pct": [
+   55.09208002634773,
+   230.24375211042317
+  ],
+  "diff_eur_per_mw_year": 36375.45841722569,
+  "diff_ci_eur_per_mw_year": [
+   25351.7695087804,
+   52859.70914114915
+  ],
+  "p_value": 0.00029997000299970003,
+  "months": 5,
+  "months_won": 5,
+  "share_months_won": 1.0,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 72772.5551463446,
+  "arm_capture_vs_oracle": 0.2664364140869392,
+  "reference_eur_per_mw_year": 36098.937233895755
+ },
+ {
+  "arm": "direct_rebuilt_curfeat",
+  "reference": "ne_prism_zero_frozen",
+  "days": 123,
+  "total_eur": 24307.32848146213,
+  "reference_total_eur": 24498.21339352745,
+  "ratio": 0.9922082109009731,
+  "ratio_ci": [
+   0.9261002746948324,
+   1.0764146187996353
+  ],
+  "uplift_pct": -0.7791789099026891,
+  "uplift_ci_pct": [
+   -7.389972530516764,
+   7.641461879963529
+  ],
+  "diff_eur_per_mw_year": -566.8350742427764,
+  "diff_ci_eur_per_mw_year": [
+   -5606.336174479174,
+   5437.812749745929
+  ],
+  "p_value": 0.5511448855114488,
+  "months": 5,
+  "months_won": 2,
+  "share_months_won": 0.4,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 72772.5551463446,
+  "arm_capture_vs_oracle": 0.2664364140869392,
+  "reference_eur_per_mw_year": 73344.03640972052
+ },
+ {
+  "arm": "direct_rebuilt_curfeat",
+  "reference": "ne_price_new2026",
+  "days": 123,
+  "total_eur": 24307.32848146213,
+  "reference_total_eur": 32484.134558333102,
+  "ratio": 0.7482830868654499,
+  "ratio_ci": [
+   0.6621779973092614,
+   0.8335673682058562
+  ],
+  "uplift_pct": -25.171691313455014,
+  "uplift_ci_pct": [
+   -33.78220026907386,
+   -16.64326317941438
+  ],
+  "diff_eur_per_mw_year": -24281.125362415663,
+  "diff_ci_eur_per_mw_year": [
+   -34133.813930925724,
+   -15541.972761093519
+  ],
+  "p_value": 1.0,
+  "months": 5,
+  "months_won": 1,
+  "share_months_won": 0.2,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(b) in-mechanism",
+  "arm_eur_per_mw_year": 72772.5551463446,
+  "arm_capture_vs_oracle": 0.2664364140869392,
+  "reference_eur_per_mw_year": 97252.70612648499
+ },
+ {
+  "arm": "direct_rebuilt_curfeat_risk",
+  "reference": "ne_naive_frozen_risk",
+  "days": 123,
+  "total_eur": 25301.840590586926,
+  "reference_total_eur": 16240.63937895109,
+  "ratio": 1.5579337734313425,
+  "ratio_ci": [
+   1.4036754927887545,
+   1.7519261260820038
+  ],
+  "uplift_pct": 55.79337734313425,
+  "uplift_ci_pct": [
+   40.367549278875444,
+   75.19261260820038
+  ],
+  "diff_eur_per_mw_year": 26907.34750040642,
+  "diff_ci_eur_per_mw_year": [
+   21479.127234002946,
+   31928.24193702532
+  ],
+  "p_value": 9.999000099990002e-05,
+  "months": 5,
+  "months_won": 5,
+  "share_months_won": 1.0,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 75749.97766976946,
+  "arm_capture_vs_oracle": 0.27733741624039804,
+  "reference_eur_per_mw_year": 48622.07814067118
+ },
+ {
+  "arm": "direct_rebuilt_curfeat_risk",
+  "reference": "ne_prism_zero_frozen_risk",
+  "days": 123,
+  "total_eur": 25301.840590586926,
+  "reference_total_eur": 25980.0788744614,
+  "ratio": 0.9738939097470876,
+  "ratio_ci": [
+   0.9215978135835998,
+   1.0304205028235602
+  ],
+  "uplift_pct": -2.610609025291244,
+  "uplift_ci_pct": [
+   -7.840218641640018,
+   3.0420502823560236
+  ],
+  "diff_eur_per_mw_year": -2014.03685516384,
+  "diff_ci_eur_per_mw_year": [
+   -6290.687028061181,
+   2231.6246184274755
+  ],
+  "p_value": 0.8232176782321767,
+  "months": 5,
+  "months_won": 1,
+  "share_months_won": 0.2,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 75749.97766976946,
+  "arm_capture_vs_oracle": 0.27733741624039804,
+  "reference_eur_per_mw_year": 77780.52302374611
+ },
+ {
+  "arm": "direct_rebuilt_curfeat_risk",
+  "reference": "ne_price_new2026_risk",
+  "days": 123,
+  "total_eur": 25301.840590586926,
+  "reference_total_eur": 32672.36128701463,
+  "ratio": 0.7744111412187077,
+  "ratio_ci": [
+   0.6996388905893972,
+   0.838792768560534
+  ],
+  "uplift_pct": -22.55888587812923,
+  "uplift_ci_pct": [
+   -30.03611094106028,
+   -16.120723143946602
+  ],
+  "diff_eur_per_mw_year": -21886.851092440815,
+  "diff_ci_eur_per_mw_year": [
+   -29740.887503284495,
+   -15399.500569796786
+  ],
+  "p_value": 1.0,
+  "months": 5,
+  "months_won": 1,
+  "share_months_won": 0.2,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(b) in-mechanism",
+  "arm_eur_per_mw_year": 75749.97766976946,
+  "arm_capture_vs_oracle": 0.27733741624039804,
+  "reference_eur_per_mw_year": 97816.22918100077
+ },
+ {
+  "arm": "direct_rebuilt_curfeat_live",
+  "reference": "ne_naive_frozen",
+  "days": 123,
+  "total_eur": 28191.61460789084,
+  "reference_total_eur": 12057.687453895363,
+  "ratio": 2.3380614828246555,
+  "ratio_ci": [
+   1.8077050633134377,
+   3.644632770809534
+  ],
+  "uplift_pct": 133.80614828246556,
+  "uplift_ci_pct": [
+   80.77050633134377,
+   264.4632770809534
+  ],
+  "diff_eur_per_mw_year": 47909.89343899874,
+  "diff_ci_eur_per_mw_year": [
+   36853.94271857121,
+   61250.92178001973
+  ],
+  "p_value": 9.999000099990002e-05,
+  "months": 5,
+  "months_won": 4,
+  "share_months_won": 0.8,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 84401.53471747648,
+  "arm_capture_vs_oracle": 0.30901267941377625,
+  "reference_eur_per_mw_year": 36098.937233895755
+ },
+ {
+  "arm": "direct_rebuilt_curfeat_live",
+  "reference": "ne_prism_zero_live",
+  "days": 123,
+  "total_eur": 28191.61460789084,
+  "reference_total_eur": 27300.988428143435,
+  "ratio": 1.03262248845281,
+  "ratio_ci": [
+   0.9995971242297773,
+   1.0678693548186577
+  ],
+  "uplift_pct": 3.2622488452809906,
+  "uplift_ci_pct": [
+   -0.04028757702226882,
+   6.7869354818657746
+  ],
+  "diff_eur_per_mw_year": 2644.7253020547814,
+  "diff_ci_eur_per_mw_year": [
+   -31.750206082938192,
+   5451.123526188163
+  ],
+  "p_value": 0.0332966703329667,
+  "months": 5,
+  "months_won": 3,
+  "share_months_won": 0.6,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 84401.53471747648,
+  "arm_capture_vs_oracle": 0.30901267941377625,
+  "reference_eur_per_mw_year": 81735.13133917534
+ },
+ {
+  "arm": "direct_rebuilt_curfeat_live",
+  "reference": "ne_price_new2026",
+  "days": 123,
+  "total_eur": 28191.61460789084,
+  "reference_total_eur": 32484.134558333102,
+  "ratio": 0.867857955620335,
+  "ratio_ci": [
+   0.8305525957814889,
+   0.9088021080261615
+  ],
+  "uplift_pct": -13.214204437966504,
+  "uplift_ci_pct": [
+   -16.94474042185111,
+   -9.119789197383854
+  ],
+  "diff_eur_per_mw_year": -12746.69034064259,
+  "diff_ci_eur_per_mw_year": [
+   -16296.064306999699,
+   -8887.492162461082
+  ],
+  "p_value": 1.0,
+  "months": 5,
+  "months_won": 1,
+  "share_months_won": 0.2,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(b) in-mechanism",
+  "arm_eur_per_mw_year": 84401.53471747648,
+  "arm_capture_vs_oracle": 0.30901267941377625,
+  "reference_eur_per_mw_year": 97252.70612648499
+ },
+ {
+  "arm": "direct_rebuilt_curfeat_live_risk",
+  "reference": "ne_naive_frozen_risk",
+  "days": 123,
+  "total_eur": 28488.002862298094,
+  "reference_total_eur": 16240.63937895109,
+  "ratio": 1.754118307633896,
+  "ratio_ci": [
+   1.5457556367546847,
+   2.020629603414592
+  ],
+  "uplift_pct": 75.4118307633896,
+  "uplift_ci_pct": [
+   54.57556367546847,
+   102.0629603414592
+  ],
+  "diff_eur_per_mw_year": 36368.69522189019,
+  "diff_ci_eur_per_mw_year": [
+   29664.299898229106,
+   43179.040039974134
+  ],
+  "p_value": 9.999000099990002e-05,
+  "months": 5,
+  "months_won": 4,
+  "share_months_won": 0.8,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(a) naive",
+  "arm_eur_per_mw_year": 85288.87742175719,
+  "arm_capture_vs_oracle": 0.3122614372417696,
+  "reference_eur_per_mw_year": 48622.07814067118
+ },
+ {
+  "arm": "direct_rebuilt_curfeat_live_risk",
+  "reference": "ne_prism_zero_live_risk",
+  "days": 123,
+  "total_eur": 28488.002862298094,
+  "reference_total_eur": 28044.92200216107,
+  "ratio": 1.0157989692430909,
+  "ratio_ci": [
+   0.98576105380006,
+   1.0482418986304742
+  ],
+  "uplift_pct": 1.5798969243090877,
+  "uplift_ci_pct": [
+   -1.423894619994004,
+   4.824189863047423
+  ],
+  "diff_eur_per_mw_year": 1315.734017602017,
+  "diff_ci_eur_per_mw_year": [
+   -1188.4734365518048,
+   4022.452963919134
+  ],
+  "p_value": 0.16548345165483452,
+  "months": 5,
+  "months_won": 3,
+  "share_months_won": 0.6,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "SCALES-L zero-history",
+  "arm_eur_per_mw_year": 85288.87742175719,
+  "arm_capture_vs_oracle": 0.3122614372417696,
+  "reference_eur_per_mw_year": 83962.35869909287
+ },
+ {
+  "arm": "direct_rebuilt_curfeat_live_risk",
+  "reference": "ne_price_new2026_risk",
+  "days": 123,
+  "total_eur": 28488.002862298094,
+  "reference_total_eur": 32672.36128701463,
+  "ratio": 0.8719297210275531,
+  "ratio_ci": [
+   0.8326781246258685,
+   0.9121249167196006
+  ],
+  "uplift_pct": -12.807027897244694,
+  "uplift_ci_pct": [
+   -16.732187537413147,
+   -8.787508328039939
+  ],
+  "diff_eur_per_mw_year": -12425.503370957042,
+  "diff_ci_eur_per_mw_year": [
+   -15996.33282690733,
+   -8687.617301806276
+  ],
+  "p_value": 1.0,
+  "months": 5,
+  "months_won": 0,
+  "share_months_won": 0.0,
+  "block_days": 7,
+  "n_boot": 10000,
+  "confidence": 0.95,
+  "window": "Apr-Jul 2026",
+  "group": "NE_AprJul_new2026",
+  "reference_label": "(b) in-mechanism",
+  "arm_eur_per_mw_year": 85288.87742175719,
+  "arm_capture_vs_oracle": 0.3122614372417696,
+  "reference_eur_per_mw_year": 97816.22918100077
+ }
+]

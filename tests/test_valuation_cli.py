@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pandas as pd
@@ -202,17 +203,24 @@ def test_attribution_command_with_mechanism_decomposition(ledgers: Path, tmp_pat
     no_absolute_paths(out / "attribution.md", tmp_path)
 
 
+def _plain(text: str) -> str:
+    """CLI output without ANSI colour codes, box drawing and line wrapping (CI terminals colour typer errors)."""
+    text = re.sub(r"\x1b\[[0-9;]*[A-Za-z]", "", text)
+    text = re.sub(r"[\u2500-\u257f]", " ", text)
+    return " ".join(text.split())
+
+
 def test_cli_errors_are_reported_cleanly(ledgers: Path, tmp_path: Path) -> None:
     bare = tmp_path / "bare.parquet"
     pd.read_parquet(ledgers / "strategy.parquet").to_parquet(bare)
     result = CliRunner().invoke(value_app, ["toll", "-l", str(bare), "-o", str(tmp_path / "x"), *FAST])
-    assert result.exit_code != 0 and "power_mw" in result.output
+    assert result.exit_code != 0 and "power_mw" in _plain(result.output)
     result = CliRunner().invoke(value_app, ["toll", "-l", str(tmp_path / "missing.parquet"), "-o", str(tmp_path / "x")])
-    assert result.exit_code != 0 and "not found" in result.output
+    assert result.exit_code != 0 and "not found" in _plain(result.output)
     result = CliRunner().invoke(
         value_app,
         ["toll", "-l", str(ledgers / "strategy.parquet"), "--capacity-curve", "placeholder", "-o", str(tmp_path)],
     )
-    assert result.exit_code != 0 and "--fleet" in result.output
+    assert result.exit_code != 0 and "--fleet" in _plain(result.output)
     ok = CliRunner().invoke(value_app, ["toll", "-l", str(bare), "--power-mw", "1", "-o", str(tmp_path / "ok"), *FAST])
     assert ok.exit_code == 0, ok.output

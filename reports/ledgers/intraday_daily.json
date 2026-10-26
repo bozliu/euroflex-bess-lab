@@ -1,0 +1,58 @@
+{
+  "table": "intraday_daily",
+  "owner": "intraday",
+  "description": "Daily P&L per strategy of the DE-LU day-ahead + continuous-intraday backtest (1 MW / 2 MWh). pnl_eur = da_revenue - da_fees + id_revenue - id_fees - slippage - degradation; revenue_eur = pnl_eur + degradation_eur. Daily (not quarter-hourly) on purpose: quarter-hour ledgers would let readers back out the ID AEP index, which is not redistributable.",
+  "period": [
+    "2024-03-01",
+    "2026-10-25"
+  ],
+  "strategies": {
+    "da_id_reopt_da": "DA + ID: re-optimise at DA prices",
+    "da_id_reopt_profile": "DA + ID: + intraday profile (published index)",
+    "da_id_rolling": "DA + ID: rolling, live residual",
+    "da_only": "DA only (persistence)",
+    "oracle_da": "Oracle DA only",
+    "oracle_da_id": "Oracle DA + ID",
+    "oracle_id": "Oracle ID (perfect ID, persistence DA)"
+  },
+  "settings": {
+    "battery": {
+      "power_mw": 1.0,
+      "energy_mwh": 2.0,
+      "soc_min_mwh": 0.1,
+      "soc_max_mwh": 1.9,
+      "initial_and_terminal_soc_mwh": 1.0,
+      "charge_efficiency": 0.95,
+      "discharge_efficiency": 0.95,
+      "degradation_eur_per_mwh_discharged": 8.0
+    },
+    "costs": {
+      "da_fee_eur_mwh": 0.1,
+      "id_fee_eur_mwh": 0.15,
+      "slippage_eur_mwh": 1.0
+    },
+    "timing": {
+      "da_decision_local": "D-1 12:00 Europe/Berlin",
+      "gate_closure_minutes_before_delivery": 30,
+      "visibility_lag_minutes_after_delivery_end": 0,
+      "visible_offset_qh": 3,
+      "published_day_lag": 2
+    },
+    "forecast": {
+      "profile_days": 56,
+      "residual_window": 2,
+      "max_lead": 128,
+      "winsor_eur_mwh": 300.0,
+      "profile_shrinkage": "soft",
+      "profile_threshold_se": 2.0,
+      "beta_min_t": 2.0
+    }
+  },
+  "intraday_price": "ID AEP (netztransparenz.de) as a VWAP-execution proxy; DA-price fallback when undefined",
+  "data_sources": {
+    "day_ahead": "data/public/energy_charts/da_prices_DE-LU.parquet (Energy-Charts; CC BY 4.0, Bundesnetzagentur | SMARD.de)",
+    "intraday": "netztransparenz.de Index Ausgleichsenergiepreis, built locally under data/raw/intraday (not redistributed; reproduction requires the German TSOs' prior written consent)"
+  },
+  "generated_by": "scripts/research/intraday_backtest.py",
+  "rows": 6783
+}
